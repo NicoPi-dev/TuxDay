@@ -1,0 +1,938 @@
+@level 1
+@type shell
+
+CMD pwd
+TH navigation
+FR `pwd` (print working directory) affiche le dossier où tu te trouves. Dans un terminal, tu es toujours « quelque part ».
+EN `pwd` (print working directory) shows the folder you are in. In a terminal, you are always "somewhere".
+
+CMD ls
+TH navigation
+FR `ls` (list) affiche le contenu du dossier courant : fichiers et sous-dossiers.
+EN `ls` (list) shows what the current folder contains: files and subfolders.
+
+CMD ls -l
+TH navigation
+FR `-l` (long) ajoute une ligne de détails par élément : droits, propriétaire, taille et date de modification.
+EN `-l` (long) adds one line of details per item: permissions, owner, size and modification date.
+
+CMD ls -a
+TH navigation
+FR `-a` (all) montre aussi les fichiers cachés, ceux dont le nom commence par un point.
+EN `-a` (all) also shows hidden files, the ones whose name starts with a dot.
+
+CMD ls -lh
+TH navigation
+FR `-h` (human) affiche les tailles en Ko, Mo ou Go au lieu d'un nombre d'octets.
+EN `-h` (human) shows sizes in KB, MB or GB instead of a raw byte count.
+
+CMD ls -lt
+TH navigation
+FR `-t` (time) trie par date de modification : les éléments les plus récents en premier.
+EN `-t` (time) sorts by modification date, newest items first.
+
+CMD ls -lS
+TH navigation
+FR `-S` (size) trie par taille, du plus gros au plus petit. Attention à la majuscule.
+EN `-S` (size) sorts by size, largest first. Mind the capital letter.
+
+CMD ls -r ~
+TH navigation
+FR `-r` (reverse) inverse l'ordre de tri : ici, ton dossier perso `~` de Z à A.
+EN `-r` (reverse) flips the sort order: here, your home folder `~` from Z to A.
+
+CMD ls -1 ~
+TH navigation
+FR `-1` (le chiffre un) affiche un seul élément par ligne, pratique pour une liste lisible.
+EN `-1` (the digit one) prints one item per line, handy for a readable list.
+
+CMD ls -la ~
+TH navigation
+FR On peut combiner les options : `-l` pour les détails et `-a` pour les fichiers cachés de ton dossier perso.
+EN Options can be combined: `-l` for details and `-a` for hidden files in your home folder.
+
+CMD ls /
+TH navigation
+FR `/` est la racine du système : tout part de là. Tu y vois `etc`, `home`, `usr`…
+EN `/` is the root of the system: everything starts there. You will see `etc`, `home`, `usr`…
+
+CMD ls /etc
+TH navigation
+FR `/etc` contient les fichiers de configuration du système. On regarde, on ne touche pas.
+EN `/etc` holds the system configuration files. Look, don't touch.
+
+CMD ls -l /home
+TH navigation
+FR `/home` contient un dossier par utilisateur. Le tien porte ton nom.
+EN `/home` contains one folder per user. Yours bears your name.
+
+CMD ls ~/.config
+TH navigation
+FR `~/.config` est un dossier caché où tes applications rangent leurs réglages.
+EN `~/.config` is a hidden folder where your apps keep their settings.
+
+CMD ls -d ~/*/
+TH navigation
+FR `-d` affiche les dossiers eux-mêmes et non leur contenu. `*/` ne garde que les dossiers.
+EN `-d` lists the folders themselves, not their contents. `*/` keeps only folders.
+
+CMD ls -ld ~
+TH navigation
+FR `-ld` donne les détails du dossier `~` lui-même : ses droits et son propriétaire.
+EN `-ld` shows details of the `~` folder itself: its permissions and owner.
+
+CMD ls -l /usr/bin/python3
+TH navigation
+FR La flèche `->` indique un lien symbolique : `python3` pointe vers la vraie version installée.
+EN The `->` arrow marks a symbolic link: `python3` points to the real installed version.
+
+CMD ls -lh /boot
+TH navigation
+FR `/boot` contient de quoi démarrer : le noyau Linux (`vmlinuz`) et ses fichiers associés.
+EN `/boot` holds what is needed to start: the Linux kernel (`vmlinuz`) and its companion files.
+
+CMD ls /var/log
+TH navigation
+FR `/var/log` regroupe les journaux du système. `var` signifie « variable » : son contenu change sans cesse.
+EN `/var/log` gathers system logs. `var` means "variable": its contents keep changing.
+
+CMD ls -l /tmp
+TH navigation
+FR `/tmp` est le dossier temporaire, vidé à chaque redémarrage.
+EN `/tmp` is the temporary folder, emptied at every reboot.
+
+CMD ls /sys/class/net
+TH materiel
+FR Liste tes interfaces réseau. `lo` est la boucle locale, les autres sont tes cartes Ethernet et Wi-Fi.
+EN Lists your network interfaces. `lo` is the loopback, the others are your Ethernet and Wi-Fi cards.
+
+CMD ls -d /usr/*
+TH navigation
+FR `/usr` contient les programmes installés. `*` remplace n'importe quel nom.
+EN `/usr` holds installed programs. `*` stands for any name.
+
+CMD cd ~/essai_linux && pwd
+TH navigation
+FR `cd` (change directory) te déplace dans un dossier. `&&` lance `pwd` ensuite pour confirmer où tu es.
+EN `cd` (change directory) moves you into a folder. `&&` then runs `pwd` to confirm where you are.
+
+CMD cd / && ls
+TH navigation
+FR Tu te places à la racine `/`, puis `ls` en affiche le contenu.
+EN You move to the root `/`, then `ls` shows its contents.
+
+CMD cd ~ && cd .. && pwd
+TH navigation
+FR `..` désigne le dossier parent. Depuis ton dossier perso, tu remontes dans `/home`.
+EN `..` means the parent folder. From your home folder, you go up to `/home`.
+
+CMD cd
+TH navigation
+FR `cd` tout seul te ramène directement dans ton dossier perso, d'où que tu sois.
+EN `cd` on its own takes you straight back to your home folder, wherever you are.
+
+CMD echo ~
+TH variables
+FR `echo` affiche du texte. Le shell remplace `~` par le chemin complet de ton dossier perso.
+EN `echo` prints text. The shell replaces `~` with the full path of your home folder.
+
+CMD echo $HOME
+TH variables
+FR `$HOME` est une variable d'environnement : elle contient le chemin de ton dossier perso.
+EN `$HOME` is an environment variable: it holds the path of your home folder.
+
+CMD echo $USER
+TH variables
+FR `$USER` contient ton nom d'utilisateur.
+EN `$USER` holds your username.
+
+CMD echo $SHELL
+TH variables
+FR `$SHELL` indique ton shell par défaut, le programme qui interprète tes commandes. Sur Fedora, c'est `bash`.
+EN `$SHELL` shows your default shell, the program that interprets your commands. On Fedora, it is `bash`.
+
+CMD echo $PATH
+TH variables
+FR `$PATH` liste les dossiers où le shell cherche les programmes, séparés par `:`.
+EN `$PATH` lists the folders where the shell looks for programs, separated by `:`.
+
+CMD echo $LANG
+TH variables
+FR `$LANG` indique la langue et l'encodage du système, par exemple `fr_FR.UTF-8`.
+EN `$LANG` shows the system language and encoding, for example `fr_FR.UTF-8`.
+
+CMD echo $PWD
+TH variables
+FR `$PWD` contient le dossier courant : c'est la variable que lit `pwd`.
+EN `$PWD` holds the current folder: it is the variable `pwd` reads.
+
+CMD echo $HOSTNAME
+TH variables
+FR `$HOSTNAME` contient le nom de ton ordinateur sur le réseau.
+EN `$HOSTNAME` holds your computer's name on the network.
+
+CMD echo $XDG_CURRENT_DESKTOP
+TH variables
+FR Affiche ton environnement de bureau. Par exemple `KDE` ou `GNOME`.
+EN Shows your desktop environment. For example `KDE` or `GNOME`.
+
+CMD printenv XDG_SESSION_TYPE
+TH variables
+FR `printenv` affiche une variable. Ici, le type de session graphique : `wayland` ou `x11`.
+EN `printenv` prints a variable. Here, the graphical session type: `wayland` or `x11`.
+
+CMD echo $0
+TH variables
+FR `$0` contient le nom du programme en cours : ici, ton shell lui-même.
+EN `$0` holds the name of the running program: here, your shell itself.
+
+CMD echo $COLUMNS $LINES
+TH variables
+FR Ces deux variables donnent la taille de ton terminal : nombre de colonnes et de lignes.
+EN These two variables give your terminal size: number of columns and lines.
+
+CMD echo $RANDOM
+TH variables
+FR `$RANDOM` donne un nombre aléatoire entre 0 et 32767, différent à chaque appel.
+EN `$RANDOM` gives a random number between 0 and 32767, different on each call.
+
+CMD whoami
+TH utilisateurs
+FR `whoami` répond à la question « qui suis-je ? » : ton nom d'utilisateur.
+EN `whoami` answers "who am I?": your username.
+
+CMD id
+TH utilisateurs
+FR `id` affiche ton numéro d'utilisateur (`uid`) et les groupes dont tu fais partie.
+EN `id` shows your user number (`uid`) and the groups you belong to.
+
+CMD groups
+TH utilisateurs
+FR `groups` liste tes groupes. Le groupe `wheel` donne le droit d'utiliser `sudo`.
+EN `groups` lists your groups. The `wheel` group grants the right to use `sudo`.
+
+CMD getent passwd $USER
+TH utilisateurs
+FR `getent` lit la fiche de ton compte : dossier perso et shell, séparés par des `:`.
+EN `getent` reads your account record: home folder and shell, separated by `:`.
+
+CMD who
+TH utilisateurs
+FR `who` liste les utilisateurs connectés et depuis quand.
+EN `who` lists logged-in users and since when.
+
+CMD w
+TH utilisateurs
+FR `w` en dit plus que `who` : ce que fait chaque utilisateur et la charge du système.
+EN `w` says more than `who`: what each user is doing and the system load.
+
+CMD users
+TH utilisateurs
+FR `users` affiche simplement les noms des utilisateurs connectés, sur une ligne.
+EN `users` simply prints the names of logged-in users, on one line.
+
+CMD loginctl
+TH utilisateurs
+FR `loginctl` liste tes sessions ouvertes, gérées par `systemd`.
+EN `loginctl` lists your open sessions, managed by `systemd`.
+
+CMD hostname
+TH systeme
+FR `hostname` affiche le nom de ta machine.
+EN `hostname` prints your machine's name.
+
+CMD hostnamectl
+TH systeme
+FR `hostnamectl` donne une fiche complète : nom, système, noyau, architecture et modèle du PC.
+EN `hostnamectl` gives a full card: name, system, kernel, architecture and PC model.
+
+CMD uname
+TH systeme
+FR `uname` affiche le nom du noyau : `Linux`. Fedora est une distribution construite autour de lui.
+EN `uname` prints the kernel name: `Linux`. Fedora is a distribution built around it.
+
+CMD uname -r
+TH systeme
+FR `-r` (release) donne la version exacte du noyau. Elle change à chaque mise à jour importante.
+EN `-r` (release) gives the exact kernel version. It changes with every major update.
+
+CMD uname -m
+TH systeme
+FR `-m` (machine) indique l'architecture du processeur, en général `x86_64`.
+EN `-m` (machine) shows the processor architecture, usually `x86_64`.
+
+CMD uname -a
+TH systeme
+FR `-a` (all) affiche toutes les informations du noyau sur une seule ligne.
+EN `-a` (all) prints every kernel detail on a single line.
+
+CMD cat /etc/os-release
+TH systeme
+FR `cat` affiche le contenu d'un fichier. Celui-ci décrit ta distribution : nom, version, site web.
+EN `cat` prints a file's contents. This one describes your distribution: name, version, website.
+
+CMD cat /etc/fedora-release
+TH systeme
+FR Un fichier d'une ligne qui donne la version de Fedora installée.
+EN A one-line file giving the installed Fedora version.
+
+CMD cat /proc/version
+TH systeme
+FR `/proc` est un dossier virtuel : ses fichiers sont générés par le noyau à la lecture.
+EN `/proc` is a virtual folder: its files are generated by the kernel when read.
+
+CMD cat /etc/hostname
+TH systeme
+FR Le nom de ta machine est simplement stocké dans ce fichier texte.
+EN Your machine's name is simply stored in this text file.
+
+CMD cat /etc/shells
+TH systeme
+FR Ce fichier liste les shells installés que tu as le droit d'utiliser.
+EN This file lists the installed shells you are allowed to use.
+
+CMD cat /etc/hosts
+TH reseau
+FR `/etc/hosts` associe des noms à des adresses IP, avant même d'interroger Internet.
+EN `/etc/hosts` maps names to IP addresses, before asking the Internet.
+
+CMD cat /etc/resolv.conf
+TH reseau
+FR Ce fichier indique quel serveur DNS traduit les noms de sites en adresses IP.
+EN This file says which DNS server turns website names into IP addresses.
+
+CMD cat /etc/machine-id
+TH systeme
+FR Un identifiant unique généré à l'installation, qui distingue ta machine des autres.
+EN A unique ID generated at install time that sets your machine apart.
+
+CMD cat ~/.bashrc
+TH systeme
+FR `~/.bashrc` est lu à chaque ouverture de terminal. On y met ses alias et réglages perso.
+EN `~/.bashrc` is read each time a terminal opens. It holds your personal aliases and settings.
+
+CMD cat ~/.bash_profile
+TH systeme
+FR `~/.bash_profile` est lu une fois, à la connexion. Il appelle souvent `~/.bashrc`.
+EN `~/.bash_profile` is read once, at login. It often calls `~/.bashrc`.
+
+CMD cat -n /etc/shells
+TH texte
+FR `-n` numérote les lignes affichées, pratique pour se repérer.
+EN `-n` numbers the printed lines, handy to find your way.
+
+CMD tac /etc/shells
+TH texte
+FR `tac` est `cat` à l'envers : il affiche le fichier en commençant par la dernière ligne.
+EN `tac` is `cat` backwards: it prints the file starting from the last line.
+
+CMD nl /etc/shells
+TH texte
+FR `nl` (number lines) numérote les lignes non vides d'un fichier.
+EN `nl` (number lines) numbers the non-empty lines of a file.
+
+CMD sort /etc/shells
+TH texte
+FR `sort` affiche les lignes triées par ordre alphabétique, sans modifier le fichier.
+EN `sort` prints the lines in alphabetical order without changing the file.
+
+CMD head /etc/passwd
+TH texte
+FR `head` affiche le début d'un fichier : les 10 premières lignes par défaut.
+EN `head` prints the start of a file: the first 10 lines by default.
+
+CMD tail /etc/passwd
+TH texte
+FR `tail` affiche la fin d'un fichier : les 10 dernières lignes par défaut.
+EN `tail` prints the end of a file: the last 10 lines by default.
+
+CMD head -n 3 /etc/os-release
+TH texte
+FR `-n 3` limite l'affichage aux 3 premières lignes.
+EN `-n 3` limits the output to the first 3 lines.
+
+CMD tail -n 2 /etc/os-release
+TH texte
+FR `-n 2` affiche seulement les 2 dernières lignes du fichier.
+EN `-n 2` prints only the last 2 lines of the file.
+
+CMD head -n 5 /etc/group
+TH utilisateurs
+FR `/etc/group` liste les groupes du système et leurs membres.
+EN `/etc/group` lists the system groups and their members.
+
+CMD head -n 3 /proc/meminfo
+TH materiel
+FR Les premières lignes de `/proc/meminfo` : mémoire totale, libre et disponible, en Ko.
+EN The first lines of `/proc/meminfo`: total, free and available memory, in KB.
+
+CMD head -n 20 /proc/cpuinfo
+TH materiel
+FR `/proc/cpuinfo` décrit ton processeur, cœur par cœur. On n'en lit ici que le début.
+EN `/proc/cpuinfo` describes your processor, core by core. Here we only read the start.
+
+CMD wc -l /etc/passwd
+TH texte
+FR `wc` (word count) compte. `-l` compte les lignes : ici, le nombre de comptes du système.
+EN `wc` (word count) counts. `-l` counts lines: here, the number of system accounts.
+
+CMD wc -w /etc/os-release
+TH texte
+FR `-w` compte les mots du fichier.
+EN `-w` counts the words in the file.
+
+CMD wc -c /etc/hostname
+TH texte
+FR `-c` compte les octets : chaque caractère, plus le retour à la ligne final.
+EN `-c` counts bytes: each character, plus the final newline.
+
+CMD wc /etc/os-release
+TH texte
+FR Sans option, `wc` donne trois nombres : lignes, mots et octets.
+EN With no option, `wc` gives three numbers: lines, words and bytes.
+
+CMD file /etc/os-release
+TH fichiers
+FR `file` devine le type d'un fichier en lisant son contenu, pas son nom.
+EN `file` guesses a file's type by reading its contents, not its name.
+
+CMD file /usr/bin/ls
+TH fichiers
+FR Ici, `file` reconnaît un programme compilé : un exécutable `ELF`.
+EN Here, `file` recognises a compiled program: an `ELF` executable.
+
+CMD file ~
+TH fichiers
+FR Pour Linux, un dossier est un type de fichier particulier : `file` répond `directory`.
+EN To Linux, a folder is a special kind of file: `file` answers `directory`.
+
+CMD stat /etc/hostname
+TH fichiers
+FR `stat` donne la fiche d'identité complète d'un fichier : taille, droits et trois dates.
+EN `stat` gives a file's full ID card: size, permissions and three dates.
+
+CMD basename /etc/os-release
+TH fichiers
+FR `basename` extrait le nom du fichier d'un chemin complet : `os-release`.
+EN `basename` extracts the file name from a full path: `os-release`.
+
+CMD dirname /etc/os-release
+TH fichiers
+FR `dirname` garde au contraire le chemin du dossier : `/etc`.
+EN `dirname` keeps the folder part instead: `/etc`.
+
+CMD realpath .
+TH fichiers
+FR `.` désigne le dossier courant. `realpath` le transforme en chemin complet depuis la racine.
+EN `.` means the current folder. `realpath` turns it into a full path from the root.
+
+CMD readlink -f /usr/bin/python3
+TH fichiers
+FR `readlink -f` suit les liens jusqu'au vrai fichier : la version exacte de Python installée.
+EN `readlink -f` follows links to the real file: the exact Python version installed.
+
+CMD which ls
+TH commandes
+FR `which` indique où se trouve le programme d'une commande. `ls` est un fichier dans `/usr/bin`.
+EN `which` shows where a command's program lives. `ls` is a file in `/usr/bin`.
+
+CMD which python3
+TH commandes
+FR Même question pour Python : où se trouve le programme `python3` ?
+EN Same question for Python: where does the `python3` program live?
+
+CMD type cd
+TH commandes
+FR `type` indique la nature d'une commande. `cd` est intégrée au shell (`builtin`), sans fichier.
+EN `type` tells what kind of command it is. `cd` is built into the shell (`builtin`), with no file.
+
+CMD type ls
+TH commandes
+FR Sur Fedora, `ls` est souvent un `alias` : un raccourci qui ajoute la couleur.
+EN On Fedora, `ls` is often an `alias`: a shortcut that adds colour.
+
+CMD command -v git
+TH commandes
+FR `command -v` vérifie si une commande existe. Rien ne s'affiche si `git` n'est pas installé.
+EN `command -v` checks whether a command exists. Nothing prints if `git` is not installed.
+
+CMD whereis bash
+TH commandes
+FR `whereis` trouve le programme, mais aussi sa page de manuel et ses fichiers associés.
+EN `whereis` finds the program, but also its manual page and related files.
+
+CMD whatis ls
+TH commandes
+FR `whatis` résume une commande en une ligne, tirée de son manuel.
+EN `whatis` sums up a command in one line, taken from its manual.
+
+CMD man ls
+TH commandes
+FR `man` ouvre le manuel d'une commande. Flèches pour défiler, `q` pour quitter.
+EN `man` opens a command's manual. Arrows to scroll, `q` to quit.
+
+CMD man man
+TH commandes
+FR Le manuel a lui aussi son manuel. Il explique les sections et la navigation. `q` pour quitter.
+EN The manual has its own manual. It explains sections and navigation. `q` to quit.
+
+CMD ls --help
+TH commandes
+FR `--help` affiche l'aide rapide d'une commande. Presque toutes la proposent.
+EN `--help` prints a command's quick help. Almost all commands offer it.
+
+CMD alias
+TH commandes
+FR `alias` sans argument liste tes raccourcis actifs, comme `ll` pour `ls -l`.
+EN `alias` with no argument lists your active shortcuts, like `ll` for `ls -l`.
+
+CMD history
+TH commandes
+FR `history` liste les commandes que tu as déjà tapées, numérotées.
+EN `history` lists the commands you have already typed, numbered.
+
+CMD clear
+TH commandes
+FR `clear` efface l'écran du terminal. Raccourci équivalent : Ctrl+L.
+EN `clear` wipes the terminal screen. Equivalent shortcut: Ctrl+L.
+
+CMD bash --version
+TH commandes
+FR `--version` affiche la version d'un programme : ici, celle de ton shell.
+EN `--version` prints a program's version: here, your shell's.
+
+CMD python3 --version
+TH commandes
+FR Même option pour Python : quelle version est installée sur ton Fedora ?
+EN Same option for Python: which version is installed on your Fedora?
+
+CMD echo "Bonjour Linux"
+TH texte
+FR `echo` affiche le texte entre guillemets. C'est la commande la plus simple qui soit.
+EN `echo` prints the quoted text. It is the simplest command there is.
+
+CMD echo -e "ligne 1\nligne 2"
+TH texte
+FR `-e` active les codes spéciaux. `\n` provoque un retour à la ligne.
+EN `-e` enables special codes. `\n` starts a new line.
+
+CMD echo -e "nom\tâge"
+TH texte
+FR `\t` insère une tabulation, utile pour aligner des colonnes.
+EN `\t` inserts a tab, handy to line up columns.
+
+CMD printf "%s\n" pomme poire kiwi
+TH texte
+FR `printf` formate le texte. `%s\n` affiche chaque mot suivi d'un retour à la ligne.
+EN `printf` formats text. `%s\n` prints each word followed by a newline.
+
+CMD printf "%05d\n" 42
+TH texte
+FR `%05d` affiche un nombre sur 5 chiffres, complété par des zéros : `00042`.
+EN `%05d` prints a number on 5 digits, padded with zeros: `00042`.
+
+CMD echo {1..10}
+TH texte
+FR `{1..10}` est une expansion d'accolades : le shell la remplace par les nombres de 1 à 10.
+EN `{1..10}` is a brace expansion: the shell replaces it with the numbers 1 to 10.
+
+CMD echo {a..e}
+TH texte
+FR Les accolades marchent aussi avec les lettres : de `a` à `e`.
+EN Braces work with letters too: from `a` to `e`.
+
+CMD echo fichier{A,B,C}
+TH texte
+FR Les accolades avec des virgules génèrent une variante par élément : `fichierA fichierB fichierC`.
+EN Braces with commas generate one variant per item: `fichierA fichierB fichierC`.
+
+CMD seq 5
+TH texte
+FR `seq` (sequence) affiche les nombres de 1 à 5, un par ligne.
+EN `seq` (sequence) prints the numbers 1 to 5, one per line.
+
+CMD seq 2 2 10
+TH texte
+FR Avec trois nombres : départ `2`, pas de `2`, arrivée `10`. Résultat : les nombres pairs.
+EN With three numbers: start `2`, step `2`, end `10`. Result: the even numbers.
+
+CMD expr 7 + 3
+TH calcul
+FR `expr` calcule une expression simple. Les espaces autour du `+` sont obligatoires.
+EN `expr` evaluates a simple expression. The spaces around `+` are required.
+
+CMD echo $((6 * 7))
+TH calcul
+FR `$(( ))` fait calculer le shell lui-même. Ici, il affiche `42`.
+EN `$(( ))` makes the shell do the maths itself. Here it prints `42`.
+
+CMD echo $((17 / 5)) $((17 % 5))
+TH calcul
+FR Le shell ne calcule qu'en nombres entiers : `/` donne le quotient, `%` le reste.
+EN The shell only does whole numbers: `/` gives the quotient, `%` the remainder.
+
+CMD factor 360
+TH calcul
+FR `factor` décompose un nombre en facteurs premiers : 360 = 2 × 2 × 2 × 3 × 3 × 5.
+EN `factor` breaks a number into prime factors: 360 = 2 × 2 × 2 × 3 × 3 × 5.
+
+CMD date
+TH dates
+FR `date` affiche la date et l'heure actuelles.
+EN `date` prints the current date and time.
+
+CMD date +%A
+TH dates
+FR `+` introduit un format. `%A` donne le jour de la semaine en toutes lettres.
+EN `+` introduces a format. `%A` gives the full day of the week.
+
+CMD date +%d/%m/%Y
+TH dates
+FR `%d`, `%m` et `%Y` donnent le jour, le mois et l'année : la date à la française.
+EN `%d`, `%m` and `%Y` give the day, month and year: the date in French order.
+
+CMD date +%H:%M
+TH dates
+FR `%H` et `%M` donnent l'heure et les minutes.
+EN `%H` and `%M` give the hour and minutes.
+
+CMD date +%j
+TH dates
+FR `%j` donne le numéro du jour dans l'année, de 001 à 366.
+EN `%j` gives the day number in the year, from 001 to 366.
+
+CMD date +%V
+TH dates
+FR `%V` donne le numéro de la semaine, celui qu'on utilise au travail.
+EN `%V` gives the week number, the one used at work.
+
+CMD date -d tomorrow
+TH dates
+FR `-d` affiche une autre date que maintenant. `date` comprend des mots comme `tomorrow`.
+EN `-d` shows a date other than now. `date` understands words like `tomorrow`.
+
+CMD date -u
+TH dates
+FR `-u` affiche l'heure universelle UTC, sans le décalage horaire français.
+EN `-u` shows universal UTC time, without the local time offset.
+
+CMD cal
+TH dates
+FR `cal` affiche le calendrier du mois en cours, avec aujourd'hui en surbrillance.
+EN `cal` shows the current month's calendar, with today highlighted.
+
+CMD cal -3
+TH dates
+FR `-3` affiche trois mois : le précédent, l'actuel et le suivant.
+EN `-3` shows three months: the previous, the current and the next one.
+
+CMD cal 12 2026
+TH dates
+FR Avec un mois et une année, `cal` affiche ce mois précis : décembre 2026.
+EN With a month and a year, `cal` shows that exact month: December 2026.
+
+CMD timedatectl
+TH dates
+FR `timedatectl` affiche le fuseau horaire et indique si l'horloge est synchronisée par Internet.
+EN `timedatectl` shows the time zone and whether the clock is synced over the Internet.
+
+CMD ls -l /etc/localtime
+TH dates
+FR Ton fuseau horaire est un lien vers un fichier du dossier `zoneinfo`, ici `Europe/Paris`.
+EN Your time zone is a link to a file in the `zoneinfo` folder, here `Europe/Paris`.
+
+CMD sleep 3
+TH commandes
+FR `sleep` attend le nombre de secondes indiqué, puis rend la main. Utile dans les scripts.
+EN `sleep` waits for the given number of seconds, then hands back control. Useful in scripts.
+
+CMD uptime
+TH systeme
+FR `uptime` indique depuis combien de temps la machine tourne et la charge moyenne du processeur.
+EN `uptime` shows how long the machine has been running and the average CPU load.
+
+CMD uptime -p
+TH systeme
+FR `-p` (pretty) donne la durée de fonctionnement en phrase lisible.
+EN `-p` (pretty) gives the uptime as a readable phrase.
+
+CMD cat /proc/uptime
+TH systeme
+FR Le premier nombre est le temps écoulé depuis le démarrage, en secondes.
+EN The first number is the time since boot, in seconds.
+
+CMD cat /proc/loadavg
+TH systeme
+FR Les trois premiers nombres sont la charge moyenne sur 1, 5 et 15 minutes.
+EN The first three numbers are the average load over 1, 5 and 15 minutes.
+
+CMD systemd-analyze
+TH systeme
+FR `systemd-analyze` mesure la durée de ton dernier démarrage, étape par étape.
+EN `systemd-analyze` measures how long your last boot took, stage by stage.
+
+CMD free -h
+TH materiel
+FR `free` affiche la mémoire vive utilisée et disponible. `-h` la rend lisible.
+EN `free` shows used and available RAM. `-h` makes it readable.
+
+CMD free -m
+TH materiel
+FR `-m` affiche les valeurs en mégaoctets, pour plus de précision.
+EN `-m` shows the values in megabytes, for more precision.
+
+CMD swapon --show
+TH materiel
+FR Affiche l'espace d'échange (swap). Fedora utilise `zram` : un swap compressé en mémoire vive.
+EN Shows swap space. Fedora uses `zram`: compressed swap held in RAM.
+
+CMD df -h
+TH disques
+FR `df` (disk free) affiche l'espace libre de chaque partition. Repère la ligne montée sur `/`.
+EN `df` (disk free) shows free space on each partition. Look for the line mounted on `/`.
+
+CMD df -h ~
+TH disques
+FR Avec un chemin, `df` ne montre que la partition qui le contient.
+EN With a path, `df` only shows the partition that holds it.
+
+CMD df -T
+TH disques
+FR `-T` ajoute le type de système de fichiers. Fedora utilise `btrfs` par défaut.
+EN `-T` adds the file system type. Fedora uses `btrfs` by default.
+
+CMD df -h /boot
+TH disques
+FR `/boot` est souvent une petite partition séparée, réservée au démarrage.
+EN `/boot` is often a small separate partition, reserved for booting.
+
+CMD du -sh ~/.config
+TH disques
+FR `du` (disk usage) mesure la place occupée. `-s` donne le total, `-h` le rend lisible.
+EN `du` (disk usage) measures used space. `-s` gives the total, `-h` makes it readable.
+
+CMD du -sh ~/.cache
+TH disques
+FR `~/.cache` contient des fichiers temporaires d'applications. Il peut devenir gros avec le temps.
+EN `~/.cache` holds temporary app files. It can grow large over time.
+
+CMD du -sh ~/.local
+TH disques
+FR `~/.local` contient des données et programmes installés pour toi seul.
+EN `~/.local` holds data and programs installed for you alone.
+
+CMD lsblk
+TH disques
+FR `lsblk` dessine l'arbre de tes disques et de leurs partitions.
+EN `lsblk` draws a tree of your disks and their partitions.
+
+CMD lsblk -f
+TH disques
+FR `-f` ajoute le système de fichiers et l'identifiant (UUID) de chaque partition.
+EN `-f` adds the file system and ID (UUID) of each partition.
+
+CMD cat /proc/partitions
+TH disques
+FR La liste brute des partitions, telle que le noyau la voit, avec leur taille en blocs.
+EN The raw list of partitions as the kernel sees them, with their size in blocks.
+
+CMD lscpu
+TH materiel
+FR `lscpu` résume ton processeur : modèle, nombre de cœurs, fréquences et mémoires cache.
+EN `lscpu` sums up your processor: model, core count, frequencies and caches.
+
+CMD nproc
+TH materiel
+FR `nproc` donne le nombre de cœurs logiques disponibles.
+EN `nproc` gives the number of available logical cores.
+
+CMD lsusb
+TH materiel
+FR `lsusb` liste les appareils branchés en USB : clavier, souris, webcam…
+EN `lsusb` lists the devices plugged in over USB: keyboard, mouse, webcam…
+
+CMD lspci
+TH materiel
+FR `lspci` liste les composants internes : carte graphique, carte réseau, contrôleurs…
+EN `lspci` lists internal components: graphics card, network card, controllers…
+
+CMD getconf LONG_BIT
+TH materiel
+FR Indique si ton système fonctionne en 32 ou en 64 bits. Sur un PC récent : `64`.
+EN Tells whether your system runs in 32 or 64 bits. On a recent PC: `64`.
+
+CMD cat /sys/class/power_supply/BAT*/capacity
+TH materiel
+FR Le niveau de ta batterie en pourcentage, lu directement depuis le noyau. `*` complète le nom.
+EN Your battery level in percent, read straight from the kernel. `*` completes the name.
+
+CMD ip a
+TH reseau
+FR `ip a` (address) liste tes interfaces réseau et leurs adresses IP.
+EN `ip a` (address) lists your network interfaces and their IP addresses.
+
+CMD hostname -I
+TH reseau
+FR `-I` affiche seulement les adresses IP de ta machine sur le réseau local.
+EN `-I` prints only your machine's IP addresses on the local network.
+
+CMD ping -c 3 fedoraproject.org
+TH reseau
+FR `ping` vérifie qu'une machine répond. `-c 3` envoie 3 essais puis s'arrête.
+EN `ping` checks that a machine answers. `-c 3` sends 3 tries, then stops.
+
+CMD nmcli device
+TH reseau
+FR `nmcli` pilote le gestionnaire réseau. `device` montre l'état de chaque carte réseau.
+EN `nmcli` drives the network manager. `device` shows the state of each network card.
+
+CMD tty
+TH systeme
+FR `tty` affiche le nom du terminal que tu utilises, par exemple `/dev/pts/0`.
+EN `tty` prints the name of the terminal you are using, for example `/dev/pts/0`.
+
+CMD locale
+TH systeme
+FR `locale` détaille les réglages régionaux : langue, format des dates, des nombres et de la monnaie.
+EN `locale` details regional settings: language, date, number and currency formats.
+
+CMD xdg-open ~/essai_linux
+TH commandes
+FR `xdg-open` ouvre un fichier ou un dossier avec l'application graphique par défaut : ici Dolphin.
+EN `xdg-open` opens a file or folder with the default graphical app: here Dolphin.
+
+CMD mkdir ~/essai_linux/photos
+TH fichiers
+FR `mkdir` (make directory) crée le dossier `photos` dans ton dossier de test.
+EN `mkdir` (make directory) creates the `photos` folder in your test folder.
+INV rmdir ~/essai_linux/photos
+IFR `rmdir` (remove directory) supprime ce dossier. Il refuse si le dossier n'est pas vide : c'est une sécurité.
+IEN `rmdir` (remove directory) deletes this folder. It refuses if the folder isn't empty: a safety net.
+
+CMD mkdir -p ~/essai_linux/a/b/c
+TH fichiers
+FR `-p` (parents) crée toute la chaîne de dossiers d'un coup : `a`, puis `b`, puis `c`.
+EN `-p` (parents) creates the whole chain of folders at once: `a`, then `b`, then `c`.
+INV rm -r ~/essai_linux/a
+IFR `rm -r` (recursive) supprime le dossier `a` et tout ce qu'il contient. À manier avec précaution.
+IEN `rm -r` (recursive) deletes the `a` folder and everything inside it. Handle with care.
+
+CMD mkdir ~/essai_linux/{lundi,mardi,mercredi}
+TH fichiers
+FR Les accolades créent trois dossiers en une seule commande.
+EN The braces create three folders in a single command.
+INV rmdir ~/essai_linux/{lundi,mardi,mercredi}
+IFR Le même principe supprime les trois dossiers d'un coup.
+IEN The same trick deletes all three folders at once.
+
+CMD mkdir ~/essai_linux/"mon dossier"
+TH fichiers
+FR Les guillemets permettent un nom avec un espace. Sans eux, `mkdir` créerait deux dossiers.
+EN Quotes allow a name with a space. Without them, `mkdir` would create two folders.
+INV rmdir ~/essai_linux/"mon dossier"
+IFR Pour le supprimer, il faut aussi les guillemets autour du nom.
+IEN To delete it, you need the quotes around the name too.
+
+CMD touch ~/essai_linux/note.txt
+TH fichiers
+FR `touch` crée un fichier vide. S'il existe déjà, il met seulement à jour sa date.
+EN `touch` creates an empty file. If it already exists, it only updates its date.
+INV rm ~/essai_linux/note.txt
+IFR `rm` (remove) supprime ce fichier. Il ne passe pas par la corbeille : c'est définitif.
+IEN `rm` (remove) deletes this file. It skips the trash: it is permanent.
+
+CMD touch ~/essai_linux/fichier{1..5}.txt
+TH fichiers
+FR Les accolades créent cinq fichiers vides numérotés de 1 à 5.
+EN The braces create five empty files numbered 1 to 5.
+INV rm ~/essai_linux/fichier{1..5}.txt
+IFR La même expansion supprime exactement ces cinq fichiers, pas un de plus.
+IEN The same expansion deletes exactly these five files, not one more.
+
+CMD touch ~/essai_linux/.secret
+TH fichiers
+FR Un nom qui commence par un point crée un fichier caché. Vérifie avec `ls -a ~/essai_linux`.
+EN A name starting with a dot makes a hidden file. Check with `ls -a ~/essai_linux`.
+INV rm ~/essai_linux/.secret
+IFR `rm` supprime le fichier caché comme n'importe quel autre.
+IEN `rm` deletes the hidden file like any other.
+
+CMD echo "Bonjour" > ~/essai_linux/salut.txt
+TH fichiers
+FR `>` redirige la sortie vers un fichier au lieu de l'écran. Le fichier est créé ou écrasé.
+EN `>` sends the output to a file instead of the screen. The file is created or overwritten.
+INV rm ~/essai_linux/salut.txt
+IFR `rm` supprime le fichier créé par la redirection.
+IEN `rm` deletes the file created by the redirection.
+
+CMD date > ~/essai_linux/date.txt
+TH fichiers
+FR La sortie de `date` part dans un fichier. Lis-le ensuite avec `cat`.
+EN The output of `date` goes into a file. Read it afterwards with `cat`.
+INV rm ~/essai_linux/date.txt
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD cal > ~/essai_linux/calendrier.txt
+TH fichiers
+FR N'importe quelle sortie peut être enregistrée : ici, le calendrier du mois.
+EN Any output can be saved: here, this month's calendar.
+INV rm ~/essai_linux/calendrier.txt
+IFR `rm` supprime le calendrier enregistré.
+IEN `rm` deletes the saved calendar.
+
+CMD uname -a > ~/essai_linux/systeme.txt
+TH fichiers
+FR Tu gardes une trace écrite de la version de ton système dans un fichier.
+EN You keep a written record of your system version in a file.
+INV rm ~/essai_linux/systeme.txt
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD ls -l ~ > ~/essai_linux/inventaire.txt
+TH fichiers
+FR Le contenu détaillé de ton dossier perso est enregistré au lieu d'être affiché.
+EN The detailed contents of your home folder are saved instead of shown.
+INV rm ~/essai_linux/inventaire.txt
+IFR `rm` supprime l'inventaire.
+IEN `rm` deletes the inventory.
+
+CMD cp /etc/os-release ~/essai_linux/
+TH fichiers
+FR `cp` (copy) copie un fichier. Le `/` final signifie « dans ce dossier, sous le même nom ».
+EN `cp` (copy) copies a file. The trailing `/` means "into this folder, same name".
+INV rm ~/essai_linux/os-release
+IFR `rm` supprime la copie. L'original dans `/etc` n'est pas touché.
+IEN `rm` deletes the copy. The original in `/etc` is untouched.
+
+CMD cp /etc/hostname ~/essai_linux/nom.txt
+TH fichiers
+FR En donnant un nom de destination, `cp` copie et renomme en même temps.
+EN By giving a destination name, `cp` copies and renames at the same time.
+INV rm ~/essai_linux/nom.txt
+IFR `rm` supprime la copie renommée.
+IEN `rm` deletes the renamed copy.
+
+CMD cp -r /etc/skel ~/essai_linux/skel
+TH fichiers
+FR `-r` copie un dossier entier. `/etc/skel` est le modèle de dossier perso donné aux nouveaux comptes.
+EN `-r` copies a whole folder. `/etc/skel` is the home-folder template given to new accounts.
+INV rm -r ~/essai_linux/skel
+IFR `rm -r` supprime la copie du dossier et son contenu.
+IEN `rm -r` deletes the folder copy and its contents.
+
+CMD ln -s /etc/os-release ~/essai_linux/lien
+TH fichiers
+FR `ln -s` crée un lien symbolique, un raccourci vers un autre fichier. `ls -l` montre la flèche.
+EN `ln -s` creates a symbolic link, a shortcut to another file. `ls -l` shows the arrow.
+INV rm ~/essai_linux/lien
+IFR `rm` supprime le raccourci seulement. Le fichier d'origine reste en place.
+IEN `rm` deletes only the shortcut. The original file stays in place.
+
+CMD touch ~/essai_linux/ancien.txt && mv ~/essai_linux/ancien.txt ~/essai_linux/nouveau.txt
+TH fichiers
+FR `mv` (move) déplace ou renomme. Ici, `ancien.txt` devient `nouveau.txt`.
+EN `mv` (move) moves or renames. Here, `ancien.txt` becomes `nouveau.txt`.
+INV rm ~/essai_linux/nouveau.txt
+IFR `rm` supprime le fichier renommé.
+IEN `rm` deletes the renamed file.

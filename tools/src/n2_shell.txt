@@ -1,0 +1,936 @@
+@level 2
+@type shell
+
+CMD grep bash /etc/shells
+TH recherche
+FR `grep` cherche un mot dans un fichier et n'affiche que les lignes qui le contiennent.
+EN `grep` looks for a word in a file and prints only the lines that contain it.
+
+CMD grep -i fedora /etc/os-release
+TH recherche
+FR `-i` ignore la casse : `fedora`, `Fedora` et `FEDORA` sont trouvés pareil.
+EN `-i` ignores case: `fedora`, `Fedora` and `FEDORA` all match.
+
+CMD grep -n root /etc/passwd
+TH recherche
+FR `-n` affiche le numéro de chaque ligne trouvée.
+EN `-n` shows the number of each matching line.
+
+CMD grep -c nologin /etc/passwd
+TH recherche
+FR `-c` compte les lignes trouvées au lieu de les afficher : ici, les comptes qui ne peuvent pas se connecter.
+EN `-c` counts the matching lines instead of printing them: here, accounts that can't log in.
+
+CMD grep -v nologin /etc/passwd
+TH recherche
+FR `-v` inverse la recherche : seules les lignes qui ne contiennent pas le mot s'affichent.
+EN `-v` inverts the search: only lines without the word are printed.
+
+CMD grep -w ID /etc/os-release
+TH recherche
+FR `-w` cherche un mot entier : `ID` est trouvé, mais pas `VERSION_ID`.
+EN `-w` looks for a whole word: `ID` matches, but not `VERSION_ID`.
+
+CMD grep ^NAME /etc/os-release
+TH recherche
+FR `^` signifie « en début de ligne » : seules les lignes qui commencent par `NAME` sont gardées.
+EN `^` means "at the start of the line": only lines beginning with `NAME` are kept.
+
+CMD grep 'sh$' /etc/passwd
+TH recherche
+FR `$` signifie « en fin de ligne » : on trouve les comptes dont le shell se termine par `sh`.
+EN `$` means "at the end of the line": we find accounts whose shell ends in `sh`.
+
+CMD grep -E 'NAME|VERSION' /etc/os-release
+TH recherche
+FR `-E` active les expressions étendues. `|` signifie « ou » : l'un ou l'autre mot.
+EN `-E` enables extended expressions. `|` means "or": either word.
+
+CMD grep -o '[0-9]\+' /etc/fedora-release
+TH recherche
+FR `-o` n'affiche que la partie trouvée. `[0-9]\+` désigne un ou plusieurs chiffres : le numéro de version.
+EN `-o` prints only the matched part. `[0-9]\+` means one or more digits: the version number.
+
+CMD grep -A 2 '^NAME' /etc/os-release
+TH recherche
+FR `-A 2` (after) affiche aussi les 2 lignes qui suivent chaque résultat.
+EN `-A 2` (after) also prints the 2 lines following each match.
+
+CMD grep -B 1 '^ID=' /etc/os-release
+TH recherche
+FR `-B 1` (before) affiche la ligne qui précède chaque résultat.
+EN `-B 1` (before) prints the line before each match.
+
+CMD grep -m 1 'model name' /proc/cpuinfo
+TH recherche
+FR `-m 1` s'arrête au premier résultat : le nom de ton processeur, une seule fois.
+EN `-m 1` stops at the first match: your processor's name, just once.
+
+CMD grep -c processor /proc/cpuinfo
+TH recherche
+FR Chaque cœur logique a sa ligne `processor` : les compter donne le nombre de cœurs.
+EN Each logical core has a `processor` line: counting them gives the core count.
+
+CMD grep MemTotal /proc/meminfo
+TH recherche
+FR La quantité totale de mémoire vive, en Ko, extraite d'un long fichier.
+EN The total amount of RAM, in KB, pulled out of a long file.
+
+CMD grep -l alias ~/.bashrc ~/.bash_profile
+TH recherche
+FR `-l` affiche seulement les noms des fichiers qui contiennent le mot, pas les lignes.
+EN `-l` prints only the names of files containing the word, not the lines.
+
+CMD grep -r --include='*.conf' -l bluetooth /etc 2>/dev/null
+TH recherche
+FR `-r` cherche dans tout un dossier. `--include` limite aux fichiers `.conf`, `2>/dev/null` masque les refus d'accès.
+EN `-r` searches a whole folder. `--include` limits it to `.conf` files, `2>/dev/null` hides access errors.
+
+CMD ls ~ | wc -l
+TH pipes
+FR Le pipe `|` envoie le résultat de `ls` à `wc -l`, qui compte les lignes : le nombre d'éléments de ton dossier.
+EN The pipe `|` sends the output of `ls` to `wc -l`, which counts lines: the number of items in your folder.
+
+CMD ls /usr/bin | wc -l
+TH pipes
+FR Le nombre de programmes installés dans `/usr/bin`. Il y en a souvent plus de mille.
+EN The number of programs installed in `/usr/bin`. There are often over a thousand.
+
+CMD ls -l /etc | head -n 5
+TH pipes
+FR `head` limite une longue liste à ses premières lignes.
+EN `head` trims a long list down to its first lines.
+
+CMD ls -lS /etc | head -n 6
+TH pipes
+FR Les 5 plus gros fichiers de `/etc` : `-S` trie par taille, `head` garde le haut du classement.
+EN The 5 largest files in `/etc`: `-S` sorts by size, `head` keeps the top of the ranking.
+
+CMD history | tail -n 5
+TH pipes
+FR Les 5 dernières commandes de ton historique.
+EN The last 5 commands in your history.
+
+CMD history | grep ls
+TH pipes
+FR Retrouve toutes les fois où tu as tapé `ls`. Très utile pour retrouver une vieille commande.
+EN Finds every time you typed `ls`. Very handy to dig up an old command.
+
+CMD cut -d: -f1 /etc/passwd
+TH texte
+FR `cut` découpe chaque ligne. `-d:` choisit `:` comme séparateur, `-f1` garde la première colonne : les noms de comptes.
+EN `cut` slices each line. `-d:` picks `:` as the separator, `-f1` keeps the first column: account names.
+
+CMD cut -d: -f1,7 /etc/passwd
+TH texte
+FR `-f1,7` garde deux colonnes : le nom du compte et son shell.
+EN `-f1,7` keeps two columns: the account name and its shell.
+
+CMD cut -c1-5 /etc/hostname
+TH texte
+FR `-c1-5` garde les caractères 1 à 5 de chaque ligne.
+EN `-c1-5` keeps characters 1 to 5 of each line.
+
+CMD cut -d= -f2 /etc/os-release
+TH texte
+FR Avec `=` comme séparateur, on ne garde que les valeurs du fichier, sans les noms.
+EN With `=` as the separator, only the file's values remain, without the names.
+
+CMD sort -r /etc/shells
+TH texte
+FR `-r` (reverse) trie dans l'ordre inverse.
+EN `-r` (reverse) sorts in reverse order.
+
+CMD printf "10\n9\n100\n" | sort
+TH texte
+FR Piège : `sort` trie comme du texte, donc `10` et `100` passent avant `9`.
+EN Gotcha: `sort` sorts as text, so `10` and `100` come before `9`.
+
+CMD printf "10\n9\n100\n" | sort -n
+TH texte
+FR `-n` (numeric) trie selon la valeur des nombres : `9`, `10`, `100`.
+EN `-n` (numeric) sorts by the numbers' value: `9`, `10`, `100`.
+
+CMD sort -t: -k3 -n /etc/passwd | tail -n 3
+TH texte
+FR `-t:` choisit le séparateur, `-k3` trie sur la 3e colonne (le numéro de compte). On voit les 3 plus grands.
+EN `-t:` sets the separator, `-k3` sorts on the 3rd column (the account number). We see the 3 largest.
+
+CMD cut -d: -f7 /etc/passwd | sort | uniq
+TH pipes
+FR `uniq` supprime les lignes répétées qui se suivent, d'où le `sort` avant. On obtient la liste des shells utilisés.
+EN `uniq` removes repeated adjacent lines, hence the `sort` first. You get the list of shells in use.
+
+CMD cut -d: -f7 /etc/passwd | sort | uniq -c
+TH pipes
+FR `-c` ajoute devant chaque ligne le nombre de fois qu'elle apparaît.
+EN `-c` puts in front of each line the number of times it appears.
+
+CMD cut -d: -f7 /etc/passwd | sort | uniq -c | sort -rn
+TH pipes
+FR Un classement complet en une ligne : du shell le plus utilisé au moins utilisé.
+EN A full ranking in one line: from the most used shell to the least.
+
+CMD echo "Linux" | tr a-z A-Z
+TH texte
+FR `tr` (translate) remplace des caractères : ici, les minuscules par des majuscules.
+EN `tr` (translate) swaps characters: here, lowercase for uppercase.
+
+CMD echo "a-b-c" | tr - " "
+TH texte
+FR `tr` remplace chaque tiret par un espace.
+EN `tr` replaces each dash with a space.
+
+CMD echo "bonjour" | tr -d o
+TH texte
+FR `-d` (delete) supprime tous les caractères indiqués.
+EN `-d` (delete) removes every character given.
+
+CMD echo "aaabbbccc" | tr -s a
+TH texte
+FR `-s` (squeeze) réduit les répétitions d'un caractère à un seul.
+EN `-s` (squeeze) collapses repeats of a character into one.
+
+CMD echo $PATH | tr : '\n'
+TH texte
+FR Chaque dossier de `$PATH` sur sa propre ligne : bien plus lisible.
+EN Each folder of `$PATH` on its own line: much more readable.
+
+CMD echo "Fedora" | rev
+TH texte
+FR `rev` inverse chaque ligne, caractère par caractère.
+EN `rev` reverses each line, character by character.
+
+CMD echo "un deux trois" | wc -w
+TH texte
+FR `wc -w` compte les mots reçus par le pipe : `3`.
+EN `wc -w` counts the words received through the pipe: `3`.
+
+CMD echo -n "Fedora" | wc -c
+TH texte
+FR `-n` empêche `echo` d'ajouter un retour à la ligne : on compte exactement 6 caractères.
+EN `-n` stops `echo` adding a newline: we count exactly 6 characters.
+
+CMD seq 100 | grep 7
+TH pipes
+FR Tous les nombres de 1 à 100 qui contiennent le chiffre 7.
+EN Every number from 1 to 100 that contains the digit 7.
+
+CMD seq 100 | grep -c 7
+TH pipes
+FR Combien de nombres entre 1 et 100 contiennent un 7 ? `grep -c` répond.
+EN How many numbers between 1 and 100 contain a 7? `grep -c` answers.
+
+CMD seq 5 | tac
+TH pipes
+FR `tac` inverse l'ordre des lignes : un compte à rebours.
+EN `tac` reverses the line order: a countdown.
+
+CMD seq -s, 1 5
+TH texte
+FR `-s,` remplace le retour à la ligne par une virgule : `1,2,3,4,5`.
+EN `-s,` replaces the newline with a comma: `1,2,3,4,5`.
+
+CMD seq -w 1 10
+TH texte
+FR `-w` aligne les nombres sur la même largeur en ajoutant des zéros : `01` à `10`.
+EN `-w` pads the numbers to the same width with zeros: `01` to `10`.
+
+CMD shuf -i 1-49 -n 6
+TH texte
+FR `shuf` mélange au hasard. Ici, 6 nombres tirés entre 1 et 49 : une grille de loto.
+EN `shuf` shuffles at random. Here, 6 numbers drawn between 1 and 49: a lottery ticket.
+
+CMD shuf -n 1 /etc/shells
+TH texte
+FR `-n 1` tire une seule ligne au hasard dans le fichier.
+EN `-n 1` picks a single random line from the file.
+
+CMD yes "Linux" | head -n 5
+TH pipes
+FR `yes` répète un texte à l'infini. `head` l'arrête après 5 lignes.
+EN `yes` repeats text forever. `head` stops it after 5 lines.
+
+CMD seq 1 3 | xargs echo
+TH pipes
+FR `xargs` transforme les lignes reçues en arguments : `echo 1 2 3`.
+EN `xargs` turns the received lines into arguments: `echo 1 2 3`.
+
+CMD find ~/essai_linux
+TH recherche
+FR `find` parcourt un dossier et tous ses sous-dossiers, et liste tout ce qu'il trouve.
+EN `find` walks a folder and all its subfolders, listing everything it finds.
+
+CMD find ~/.config -maxdepth 1 -type d
+TH recherche
+FR `-type d` ne garde que les dossiers. `-maxdepth 1` empêche de descendre plus bas.
+EN `-type d` keeps only folders. `-maxdepth 1` stops it going deeper.
+
+CMD find ~ -maxdepth 1 -type f
+TH recherche
+FR `-type f` ne garde que les fichiers ordinaires de ton dossier perso.
+EN `-type f` keeps only the regular files in your home folder.
+
+CMD find ~ -maxdepth 1 -name ".*"
+TH recherche
+FR `-name` filtre par nom. `".*"` trouve les éléments cachés.
+EN `-name` filters by name. `".*"` finds hidden items.
+
+CMD find /etc -maxdepth 1 -name "*.conf"
+TH recherche
+FR Tous les fichiers de configuration `.conf` directement dans `/etc`.
+EN All `.conf` configuration files directly in `/etc`.
+
+CMD find /usr/bin -name "py*"
+TH recherche
+FR Les programmes dont le nom commence par `py` : toutes les variantes de Python installées.
+EN Programs whose name starts with `py`: all installed Python variants.
+
+CMD find ~ -maxdepth 2 -mmin -60
+TH recherche
+FR `-mmin -60` trouve ce qui a été modifié il y a moins de 60 minutes.
+EN `-mmin -60` finds what was modified less than 60 minutes ago.
+
+CMD find ~ -maxdepth 2 -mtime -1
+TH recherche
+FR `-mtime -1` trouve ce qui a été modifié depuis moins d'un jour.
+EN `-mtime -1` finds what was modified less than a day ago.
+
+CMD find ~ -maxdepth 3 -size +50M
+TH recherche
+FR `-size +50M` repère les fichiers de plus de 50 Mo : utile pour faire de la place.
+EN `-size +50M` spots files over 50 MB: handy to free up space.
+
+CMD find ~/.config -type f | wc -l
+TH recherche
+FR Combien de fichiers de réglages tes applications ont-elles créés ?
+EN How many settings files have your apps created?
+
+CMD find /etc -maxdepth 1 -type l
+TH recherche
+FR `-type l` trouve les liens symboliques.
+EN `-type l` finds symbolic links.
+
+CMD find ~/essai_linux -empty
+TH recherche
+FR `-empty` trouve les fichiers et dossiers vides.
+EN `-empty` finds empty files and folders.
+
+CMD ls /etc/*.conf
+TH jokers
+FR `*` est un joker qui remplace n'importe quelle suite de caractères. Le shell développe la liste avant `ls`.
+EN `*` is a wildcard standing for any run of characters. The shell expands the list before `ls`.
+
+CMD ls -d /etc/[a-c]*
+TH jokers
+FR `[a-c]` remplace une seule lettre comprise entre `a` et `c`.
+EN `[a-c]` stands for a single letter between `a` and `c`.
+
+CMD ls -d /etc/????
+TH jokers
+FR `?` remplace exactement un caractère : ici, les noms de 4 lettres.
+EN `?` stands for exactly one character: here, 4-letter names.
+
+CMD ls -d /etc/*.d
+TH jokers
+FR Les dossiers terminés par `.d` contiennent des morceaux de configuration, un fichier par réglage.
+EN Folders ending in `.d` hold configuration snippets, one file per setting.
+
+CMD echo /etc/*release*
+TH jokers
+FR `echo` montre ce que le shell fait des jokers : la liste des fichiers correspondants.
+EN `echo` shows what the shell makes of wildcards: the list of matching files.
+
+CMD echo {01..12}
+TH jokers
+FR Des accolades avec des zéros : les 12 mois, tous sur deux chiffres.
+EN Braces with leading zeros: the 12 months, all on two digits.
+
+CMD echo {A..Z}
+TH jokers
+FR L'alphabet entier, généré par le shell.
+EN The whole alphabet, generated by the shell.
+
+CMD echo photo_{2024..2026}.jpg
+TH jokers
+FR Le shell génère une série de noms de fichiers numérotés.
+EN The shell generates a series of numbered file names.
+
+CMD ls /inexistant; echo $?
+TH codes
+FR `$?` contient le code de retour de la commande précédente : `0` si tout va bien, autre chose en cas d'erreur.
+EN `$?` holds the previous command's exit code: `0` if all went well, something else on error.
+
+CMD true; echo $?
+TH codes
+FR `true` ne fait rien et réussit toujours : son code de retour est `0`.
+EN `true` does nothing and always succeeds: its exit code is `0`.
+
+CMD false; echo $?
+TH codes
+FR `false` échoue toujours : son code est `1`.
+EN `false` always fails: its code is `1`.
+
+CMD ls /etc > /dev/null && echo "ok"
+TH codes
+FR `&&` lance la suite seulement si la commande réussit. `/dev/null` est une poubelle qui avale tout.
+EN `&&` runs the next part only if the command succeeds. `/dev/null` is a bin that swallows everything.
+
+CMD ls /inexistant 2> /dev/null || echo "pas trouvé"
+TH codes
+FR `||` lance la suite seulement en cas d'échec. `2>` redirige les messages d'erreur.
+EN `||` runs the next part only on failure. `2>` redirects error messages.
+
+CMD test -d ~/essai_linux && echo "le dossier existe"
+TH codes
+FR `test -d` vérifie qu'un dossier existe, sans rien afficher. Le résultat passe par le code de retour.
+EN `test -d` checks that a folder exists, silently. The answer comes through the exit code.
+
+CMD [ -f /etc/os-release ] && echo "fichier présent"
+TH codes
+FR `[ ]` est un raccourci de `test`. `-f` vérifie qu'un fichier existe. Les espaces sont obligatoires.
+EN `[ ]` is shorthand for `test`. `-f` checks that a file exists. The spaces are required.
+
+CMD [ 5 -gt 3 ] && echo "vrai"
+TH codes
+FR `-gt` (greater than) compare deux nombres : 5 est-il plus grand que 3 ?
+EN `-gt` (greater than) compares two numbers: is 5 greater than 3?
+
+CMD test -z "$INCONNU" && echo "variable vide"
+TH codes
+FR `-z` est vrai si le texte est vide : la variable `INCONNU` n'existe pas.
+EN `-z` is true if the text is empty: the `INCONNU` variable doesn't exist.
+
+CMD x=5; echo $((x * 2))
+TH variables
+FR On crée une variable `x` sans `$`, puis on la lit avec `$`. Attention : pas d'espace autour du `=`.
+EN We create a variable `x` without `$`, then read it with `$`. Careful: no spaces around `=`.
+
+CMD nom=Tux; echo "Salut $nom"
+TH variables
+FR Entre guillemets doubles, le shell remplace `$nom` par sa valeur.
+EN Inside double quotes, the shell replaces `$nom` with its value.
+
+CMD echo 'Mon dossier : $HOME'
+TH variables
+FR Entre guillemets simples, rien n'est remplacé : `$HOME` s'affiche tel quel.
+EN Inside single quotes, nothing is replaced: `$HOME` prints as is.
+
+CMD echo "Je suis $(whoami)"
+TH variables
+FR `$( )` exécute une commande et insère son résultat dans le texte.
+EN `$( )` runs a command and inserts its output into the text.
+
+CMD echo "Nous sommes le $(date +%d/%m)"
+TH variables
+FR La date du jour s'insère directement dans la phrase.
+EN Today's date slots straight into the sentence.
+
+CMD echo "Il y a $(ls ~ | wc -l) éléments dans ton dossier"
+TH variables
+FR Un pipe entier peut tourner à l'intérieur de `$( )`.
+EN A whole pipeline can run inside `$( )`.
+
+CMD echo "Noyau : $(uname -r)"
+TH variables
+FR Un message clair qui reprend la version de ton noyau.
+EN A clear message showing your kernel version.
+
+CMD echo ${#HOME}
+TH variables
+FR `${#variable}` donne la longueur de son contenu, en caractères.
+EN `${#variable}` gives the length of its contents, in characters.
+
+CMD echo ${USER^^}
+TH variables
+FR `^^` met le contenu d'une variable en majuscules, sans autre commande.
+EN `^^` turns a variable's contents to uppercase, with no other command.
+
+CMD f=photo.jpg; echo ${f%.jpg}
+TH variables
+FR `%` retire un morceau à la fin du contenu : il reste `photo`.
+EN `%` strips a piece from the end of the contents: `photo` remains.
+
+CMD f=archive.tar.gz; echo ${f##*.}
+TH variables
+FR `##*.` retire tout jusqu'au dernier point : il reste l'extension `gz`.
+EN `##*.` strips everything up to the last dot: the `gz` extension remains.
+
+CMD echo ${PATH//:/ }
+TH variables
+FR `//` remplace toutes les occurrences : chaque `:` de `$PATH` devient un espace.
+EN `//` replaces every occurrence: each `:` in `$PATH` becomes a space.
+
+CMD echo ${INCONNU:-valeur par défaut}
+TH variables
+FR `:-` fournit une valeur de secours si la variable est vide ou n'existe pas.
+EN `:-` supplies a fallback value if the variable is empty or missing.
+
+CMD export ESSAI=1; bash -c 'echo $ESSAI'
+TH variables
+FR `export` transmet une variable aux programmes lancés ensuite. Le second `bash` la reçoit.
+EN `export` passes a variable on to programs launched afterwards. The second `bash` receives it.
+
+CMD env | wc -l
+TH variables
+FR `env` liste toutes les variables d'environnement. On compte combien il y en a.
+EN `env` lists every environment variable. We count how many there are.
+
+CMD env | grep -i lang
+TH variables
+FR On filtre les variables d'environnement liées à la langue.
+EN We filter the environment variables related to language.
+
+CMD echo $BASH_VERSION
+TH variables
+FR La version exacte de `bash`, sans passer par `--version`.
+EN The exact `bash` version, without going through `--version`.
+
+CMD echo $$
+TH variables
+FR `$$` donne le numéro de processus (PID) de ton shell actuel.
+EN `$$` gives the process number (PID) of your current shell.
+
+CMD echo $SECONDS
+TH variables
+FR `$SECONDS` compte les secondes écoulées depuis l'ouverture de ce terminal.
+EN `$SECONDS` counts the seconds since this terminal was opened.
+
+CMD . /etc/os-release && echo $PRETTY_NAME
+TH variables
+FR `.` (ou `source`) charge les variables d'un fichier dans ton shell. Tu peux ensuite les lire.
+EN `.` (or `source`) loads a file's variables into your shell. You can then read them.
+
+CMD source ~/.bashrc
+TH variables
+FR `source` relit ton `.bashrc` : après une modification, pas besoin de rouvrir le terminal.
+EN `source` re-reads your `.bashrc`: after a change, no need to reopen the terminal.
+
+CMD echo $((RANDOM % 6 + 1))
+TH calcul
+FR `%` garde le reste de la division par 6 : on obtient un lancer de dé de 1 à 6.
+EN `%` keeps the remainder after dividing by 6: you get a die roll from 1 to 6.
+
+CMD echo $(( ($(date -d "$(date +%Y)-12-25" +%s) - $(date +%s)) / 86400 ))
+TH dates
+FR `+%s` donne des secondes depuis 1970. La différence divisée par 86 400 donne le nombre de jours avant Noël.
+EN `+%s` gives seconds since 1970. The difference divided by 86,400 gives the days left until Christmas.
+
+CMD date +%s
+TH dates
+FR Le nombre de secondes écoulées depuis le 1er janvier 1970 : le « temps Unix ».
+EN The number of seconds since 1 January 1970: "Unix time".
+
+CMD date -d @0
+TH dates
+FR `@0` désigne la seconde zéro du temps Unix : on revient au 1er janvier 1970.
+EN `@0` means second zero of Unix time: back to 1 January 1970.
+
+CMD date -d "next friday"
+TH dates
+FR `date` comprend des expressions en anglais : la date de vendredi prochain.
+EN `date` understands English phrases: next Friday's date.
+
+CMD date -d "$(date +%Y)-12-25" +%A
+TH dates
+FR Quel jour de la semaine tombe Noël cette année ?
+EN Which day of the week does Christmas fall on this year?
+
+CMD date +"Semaine %V, jour %u"
+TH dates
+FR `%u` donne le numéro du jour, de 1 (lundi) à 7 (dimanche).
+EN `%u` gives the day number, from 1 (Monday) to 7 (Sunday).
+
+CMD time sleep 1
+TH commandes
+FR `time` mesure la durée d'une commande. `real` est le temps réel écoulé.
+EN `time` measures how long a command takes. `real` is the elapsed wall-clock time.
+
+CMD time ls -R /usr/share > /dev/null
+TH commandes
+FR On mesure le temps de parcours d'un gros dossier, en jetant l'affichage dans `/dev/null`.
+EN We time a walk through a big folder, throwing the output into `/dev/null`.
+
+CMD watch -n 1 date
+TH commandes
+FR `watch` relance une commande toutes les secondes. Ctrl+C pour arrêter.
+EN `watch` reruns a command every second. Ctrl+C to stop.
+
+CMD less /etc/passwd
+TH commandes
+FR `less` affiche un fichier page par page. `/` pour chercher, `q` pour quitter.
+EN `less` shows a file page by page. `/` to search, `q` to quit.
+
+CMD cd /tmp && cd -
+TH navigation
+FR `cd -` te ramène au dossier précédent, comme un bouton retour.
+EN `cd -` takes you back to the previous folder, like a back button.
+
+CMD pushd /etc && popd
+TH navigation
+FR `pushd` change de dossier en mémorisant l'ancien. `popd` y revient.
+EN `pushd` changes folder while remembering the old one. `popd` goes back to it.
+
+CMD type -a python3
+TH commandes
+FR `-a` montre tous les endroits où une commande existe, dans l'ordre où le shell les essaie.
+EN `-a` shows every place a command exists, in the order the shell tries them.
+
+CMD compgen -c | wc -l
+TH commandes
+FR `compgen -c` liste toutes les commandes disponibles. Combien en as-tu ?
+EN `compgen -c` lists every available command. How many do you have?
+
+CMD help cd
+TH commandes
+FR `help` donne l'aide des commandes intégrées au shell, qui n'ont pas de page `man`.
+EN `help` shows help for commands built into the shell, which have no `man` page.
+
+CMD man -k partition
+TH commandes
+FR `-k` cherche un mot dans les descriptions de tous les manuels : quelle commande pour les partitions ?
+EN `-k` searches every manual's description for a word: which command handles partitions?
+
+CMD alias ll
+TH commandes
+FR Affiche la définition d'un alias précis : ce que `ll` exécute vraiment.
+EN Shows the definition of one alias: what `ll` really runs.
+
+CMD head -c 16 /dev/urandom | base64
+TH securite
+FR `/dev/urandom` produit des octets aléatoires. `base64` les rend lisibles : un mot de passe solide.
+EN `/dev/urandom` produces random bytes. `base64` makes them readable: a strong password.
+
+CMD echo "Linux" | base64
+TH texte
+FR `base64` encode un texte en caractères sûrs pour les transmissions. Ce n'est pas du chiffrement.
+EN `base64` encodes text into transmission-safe characters. It is not encryption.
+
+CMD echo "TGludXgK" | base64 -d
+TH texte
+FR `-d` (decode) fait le chemin inverse et retrouve le texte d'origine.
+EN `-d` (decode) goes the other way and recovers the original text.
+
+CMD md5sum /etc/hostname
+TH securite
+FR `md5sum` calcule une empreinte du fichier : le moindre changement donne une empreinte différente.
+EN `md5sum` computes a file fingerprint: the slightest change gives a different one.
+
+CMD sha256sum /etc/os-release
+TH securite
+FR `sha256sum` calcule une empreinte plus sûre, utilisée pour vérifier les images ISO téléchargées.
+EN `sha256sum` computes a stronger fingerprint, used to check downloaded ISO images.
+
+CMD du -h --max-depth=1 ~/.config | sort -h | tail -n 5
+TH disques
+FR Les 5 sous-dossiers les plus lourds de `~/.config`. `sort -h` sait trier les tailles comme `4K` ou `2M`.
+EN The 5 heaviest subfolders of `~/.config`. `sort -h` knows how to sort sizes like `4K` or `2M`.
+
+CMD df -h | grep -v tmpfs
+TH disques
+FR On masque les systèmes de fichiers temporaires `tmpfs` pour ne garder que les vrais disques.
+EN We hide temporary `tmpfs` file systems to keep only real disks.
+
+CMD df -h --output=target,pcent
+TH disques
+FR `--output` choisit les colonnes : chaque point de montage et son pourcentage d'occupation.
+EN `--output` picks the columns: each mount point and how full it is.
+
+CMD free -h | grep Mem
+TH materiel
+FR On ne garde que la ligne de la mémoire vive, sans le swap.
+EN We keep only the RAM line, without the swap.
+
+CMD lsblk -o NAME,SIZE,TYPE,MOUNTPOINTS
+TH disques
+FR `-o` choisit les colonnes affichées par `lsblk`.
+EN `-o` picks the columns `lsblk` displays.
+
+CMD lscpu | grep -i 'model name'
+TH materiel
+FR On extrait le modèle du processeur de la fiche de `lscpu`.
+EN We pull the processor model out of the `lscpu` sheet.
+
+CMD lscpu | grep MHz
+TH materiel
+FR Les fréquences du processeur, actuelle, minimale et maximale.
+EN The processor frequencies: current, minimum and maximum.
+
+CMD lspci | grep -i vga
+TH materiel
+FR La ligne qui décrit ta carte graphique.
+EN The line describing your graphics card.
+
+CMD lspci | grep -i net
+TH materiel
+FR Tes cartes réseau, filaire et sans fil.
+EN Your network cards, wired and wireless.
+
+CMD lsusb | wc -l
+TH materiel
+FR Le nombre d'appareils USB détectés, contrôleurs internes compris.
+EN The number of detected USB devices, internal controllers included.
+
+CMD cat /sys/class/thermal/thermal_zone*/temp
+TH materiel
+FR Les températures relevées par les capteurs, en millièmes de degré : `45000` signifie 45 °C.
+EN The sensor temperatures, in thousandths of a degree: `45000` means 45 °C.
+
+CMD cat /sys/class/power_supply/BAT*/status
+TH materiel
+FR L'état de la batterie : `Charging`, `Discharging` ou `Full`.
+EN The battery state: `Charging`, `Discharging` or `Full`.
+
+CMD ip -br a
+TH reseau
+FR `-br` (brief) résume chaque interface réseau en une ligne : état et adresse.
+EN `-br` (brief) sums up each network interface in one line: state and address.
+
+CMD ip route
+TH reseau
+FR La table de routage. La ligne `default` indique ta box, la porte de sortie vers Internet.
+EN The routing table. The `default` line shows your router, the way out to the Internet.
+
+CMD ip -4 -br a
+TH reseau
+FR `-4` limite l'affichage aux adresses IPv4, les plus familières.
+EN `-4` limits the output to IPv4 addresses, the most familiar ones.
+
+CMD hostname -I | cut -d' ' -f1
+TH reseau
+FR On ne garde que la première adresse IP de la machine.
+EN We keep only the machine's first IP address.
+
+CMD nmcli device wifi list
+TH reseau
+FR Les réseaux Wi-Fi visibles, avec leur puissance de signal.
+EN The visible Wi-Fi networks, with their signal strength.
+
+CMD nmcli connection show
+TH reseau
+FR Les connexions réseau enregistrées sur ta machine.
+EN The network connections saved on your machine.
+
+CMD ping -c 2 1.1.1.1
+TH reseau
+FR On teste Internet avec une adresse IP directe, sans dépendre du DNS.
+EN We test the Internet with a direct IP address, without relying on DNS.
+
+CMD getent hosts fedoraproject.org
+TH reseau
+FR `getent hosts` traduit un nom de site en adresse IP, comme le fait ton navigateur.
+EN `getent hosts` turns a site name into an IP address, as your browser does.
+
+CMD curl -s https://ifconfig.me; echo
+TH reseau
+FR `curl` télécharge une page. Celle-ci renvoie ton adresse IP publique, vue depuis Internet.
+EN `curl` downloads a page. This one returns your public IP address, as seen from the Internet.
+
+CMD curl -I https://fedoraproject.org
+TH reseau
+FR `-I` ne récupère que les en-têtes de la réponse : code `200`, type de serveur, date…
+EN `-I` fetches only the response headers: `200` code, server type, date…
+
+CMD curl -s "wttr.in/?format=3"
+TH reseau
+FR Un service web qui renvoie la météo en une ligne, directement dans le terminal.
+EN A web service that returns the weather in one line, straight in the terminal.
+
+CMD ls -l $(which python3)
+TH commandes
+FR Le résultat de `which` sert directement d'argument à `ls`.
+EN The output of `which` is used directly as an argument to `ls`.
+
+CMD file $(which ls)
+TH commandes
+FR Quel genre de fichier est le programme `ls` ?
+EN What kind of file is the `ls` program?
+
+CMD printf "%-10s|%5s\n" nom age
+TH texte
+FR `%-10s` aligne à gauche sur 10 caractères, `%5s` à droite sur 5 : la base d'un tableau.
+EN `%-10s` left-aligns on 10 characters, `%5s` right-aligns on 5: the basis of a table.
+
+CMD printf "%.2f\n" 3.14159
+TH texte
+FR `%.2f` arrondit un nombre à deux décimales.
+EN `%.2f` rounds a number to two decimals.
+
+CMD head -n 5 /etc/passwd | column -t -s:
+TH texte
+FR `column -t` aligne les colonnes en tableau. `-s:` indique le séparateur d'origine.
+EN `column -t` lines up columns as a table. `-s:` gives the original separator.
+
+CMD for f in ~/.bash*; do echo "$f"; done
+TH boucles
+FR `for` répète une action pour chaque fichier trouvé par le joker.
+EN `for` repeats an action for each file the wildcard finds.
+
+CMD for i in {1..3}; do echo "Tour $i"; done
+TH boucles
+FR Une boucle sur une série de nombres, générée par les accolades.
+EN A loop over a series of numbers, generated by the braces.
+
+CMD for i in 1 2 3 4 5; do echo $((i * i)); done
+TH boucles
+FR La boucle calcule le carré de chaque nombre de la liste.
+EN The loop computes the square of each number in the list.
+
+CMD n=3; while [ $n -gt 0 ]; do echo $n; n=$((n - 1)); done
+TH boucles
+FR `while` répète tant que la condition est vraie : un compte à rebours de 3 à 1.
+EN `while` repeats as long as the condition is true: a countdown from 3 to 1.
+
+CMD if [ $(date +%H) -lt 12 ]; then echo "Matin"; else echo "Après-midi"; fi
+TH conditions
+FR `if` choisit selon l'heure. `-lt` (less than) compare deux nombres. `fi` ferme le bloc.
+EN `if` decides based on the hour. `-lt` (less than) compares two numbers. `fi` closes the block.
+
+CMD read -p "Ton prénom : " p && echo "Salut $p"
+TH variables
+FR `read` attend une saisie au clavier et la range dans la variable `p`.
+EN `read` waits for keyboard input and stores it in the `p` variable.
+
+CMD seq 100 > ~/essai_linux/nombres.txt
+TH redirections
+FR Les nombres de 1 à 100 sont écrits dans un fichier. Vérifie avec `wc -l ~/essai_linux/nombres.txt`.
+EN The numbers 1 to 100 are written to a file. Check with `wc -l ~/essai_linux/nombres.txt`.
+INV rm ~/essai_linux/nombres.txt
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD ls /usr/bin > ~/essai_linux/programmes.txt
+TH redirections
+FR La liste de tes programmes est enregistrée. Tu peux la parcourir avec `less`.
+EN The list of your programs is saved. You can browse it with `less`.
+INV rm ~/essai_linux/programmes.txt
+IFR `rm` supprime cette liste.
+IEN `rm` deletes this list.
+
+CMD date >> ~/essai_linux/journal.txt
+TH redirections
+FR `>>` ajoute à la fin du fichier au lieu de l'écraser. Lance-la deux fois puis lis le fichier avec `cat`.
+EN `>>` appends to the end of the file instead of overwriting it. Run it twice, then read the file with `cat`.
+INV rm ~/essai_linux/journal.txt
+IFR `rm` supprime le journal.
+IEN `rm` deletes the log.
+
+CMD ls /inexistant 2> ~/essai_linux/erreurs.txt
+TH redirections
+FR `2>` envoie seulement les messages d'erreur dans un fichier. L'écran reste vide.
+EN `2>` sends only error messages to a file. The screen stays empty.
+INV rm ~/essai_linux/erreurs.txt
+IFR `rm` supprime le fichier d'erreurs.
+IEN `rm` deletes the error file.
+
+CMD ls ~ /inexistant > ~/essai_linux/tout.txt 2>&1
+TH redirections
+FR `2>&1` envoie les erreurs au même endroit que la sortie normale : tout finit dans le fichier.
+EN `2>&1` sends errors to the same place as normal output: everything ends up in the file.
+INV rm ~/essai_linux/tout.txt
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD echo "copie" | tee ~/essai_linux/tee.txt
+TH redirections
+FR `tee` fait les deux à la fois : il affiche le texte et l'écrit dans un fichier, comme un raccord en T.
+EN `tee` does both at once: it shows the text and writes it to a file, like a T-junction.
+INV rm ~/essai_linux/tee.txt
+IFR `rm` supprime le fichier.
+IEN `rm` deletes the file.
+
+CMD sort -u /etc/shells > ~/essai_linux/shells_tries.txt
+TH redirections
+FR `-u` (unique) trie et retire les doublons. Le résultat est enregistré dans un nouveau fichier.
+EN `-u` (unique) sorts and removes duplicates. The result is saved to a new file.
+INV rm ~/essai_linux/shells_tries.txt
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD cat > ~/essai_linux/libre.txt
+TH redirections
+FR `cat` attend que tu tapes du texte. Écris quelques lignes, puis Ctrl+D pour enregistrer et terminer.
+EN `cat` waits for you to type text. Write a few lines, then Ctrl+D to save and finish.
+INV rm ~/essai_linux/libre.txt
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD mkdir -p ~/essai_linux/projet/{src,doc,tests}
+TH fichiers
+FR `-p` et les accolades créent toute une arborescence de projet en une commande.
+EN `-p` and braces create a whole project tree in one command.
+INV rm -r ~/essai_linux/projet
+IFR `rm -r` supprime le projet et ses trois sous-dossiers.
+IEN `rm -r` deletes the project and its three subfolders.
+
+CMD touch ~/essai_linux/{a,b,c}.log && ls ~/essai_linux/*.log
+TH fichiers
+FR On crée trois fichiers `.log`, puis le joker `*.log` les retrouve.
+EN We create three `.log` files, then the `*.log` wildcard finds them.
+INV rm ~/essai_linux/*.log
+IFR Le joker supprime d'un coup tous les fichiers `.log` du dossier de test.
+IEN The wildcard deletes every `.log` file in the test folder at once.
+
+CMD cp -v /etc/hostname ~/essai_linux/
+TH fichiers
+FR `-v` (verbose) rend `cp` bavard : il annonce ce qu'il copie.
+EN `-v` (verbose) makes `cp` chatty: it says what it copies.
+INV rm -v ~/essai_linux/hostname
+IFR `rm -v` annonce lui aussi ce qu'il supprime.
+IEN `rm -v` also says what it deletes.
+
+CMD touch ~/essai_linux/orig && ln ~/essai_linux/orig ~/essai_linux/dur
+TH fichiers
+FR `ln` sans `-s` crée un lien physique : deux noms pour le même contenu. `ls -li` montre le même numéro.
+EN `ln` without `-s` creates a hard link: two names for the same contents. `ls -li` shows the same number.
+INV rm ~/essai_linux/orig ~/essai_linux/dur
+IFR Le contenu n'est vraiment effacé qu'une fois tous ses noms supprimés.
+IEN The contents are only truly erased once all their names are deleted.
+
+CMD mkdir ~/essai_linux/vieux && touch -d 2020-01-01 ~/essai_linux/vieux
+TH fichiers
+FR `touch -d` change la date d'un élément. `ls -ld` le montre daté de 2020.
+EN `touch -d` changes an item's date. `ls -ld` shows it dated 2020.
+INV rmdir ~/essai_linux/vieux
+IFR `rmdir` supprime ce dossier vide.
+IEN `rmdir` deletes this empty folder.
+
+CMD truncate -s 1M ~/essai_linux/gros.bin
+TH fichiers
+FR `truncate -s` crée un fichier de 1 Mo exactement, sans rien écrire dedans.
+EN `truncate -s` creates a file of exactly 1 MB, without writing anything into it.
+INV rm ~/essai_linux/gros.bin
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD dd if=/dev/zero of=$HOME/essai_linux/zero.bin bs=1M count=5
+TH fichiers
+FR `dd` copie des blocs : 5 blocs d'1 Mo de zéros. Outil puissant, à toujours manier avec prudence.
+EN `dd` copies blocks: 5 blocks of 1 MB of zeros. A powerful tool, always to be handled with care.
+INV rm ~/essai_linux/zero.bin
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.
+
+CMD tar -czf ~/essai_linux/config.tar.gz -C ~ .bashrc .bash_profile
+TH archives
+FR `tar` crée une archive : `-c` créer, `-z` compresser, `-f` nom du fichier. `-C ~` part de ton dossier perso.
+EN `tar` creates an archive: `-c` create, `-z` compress, `-f` file name. `-C ~` starts from your home folder.
+INV rm ~/essai_linux/config.tar.gz
+IFR `rm` supprime l'archive. Les fichiers d'origine ne sont pas touchés.
+IEN `rm` deletes the archive. The original files are untouched.
+
+CMD tar -czf ~/essai_linux/os.tar.gz -C /etc os-release && tar -tzf ~/essai_linux/os.tar.gz
+TH archives
+FR `-t` liste le contenu d'une archive sans l'extraire.
+EN `-t` lists an archive's contents without extracting it.
+INV rm ~/essai_linux/os.tar.gz
+IFR `rm` supprime l'archive.
+IEN `rm` deletes the archive.
+
+CMD cp /etc/services ~/essai_linux/ && gzip ~/essai_linux/services
+TH archives
+FR `gzip` compresse un fichier et le remplace par `services.gz`. Compare les tailles avec `ls -lh`.
+EN `gzip` compresses a file and replaces it with `services.gz`. Compare sizes with `ls -lh`.
+INV rm ~/essai_linux/services.gz
+IFR `rm` supprime le fichier compressé.
+IEN `rm` deletes the compressed file.

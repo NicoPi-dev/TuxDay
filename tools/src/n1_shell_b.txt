@@ -1,0 +1,35 @@
+@level 1
+@type shell
+
+CMD ls -F ~
+TH navigation
+FR `-F` ajoute un repère à chaque nom : `/` pour un dossier, `*` pour un programme, `@` pour un lien.
+EN `-F` adds a marker to each name: `/` for a folder, `*` for a program, `@` for a link.
+
+CMD ls -lh ~/essai_linux
+TH navigation
+FR Le contenu de ton dossier de test, avec les détails et des tailles lisibles.
+EN The contents of your test folder, with details and readable sizes.
+
+CMD echo $HISTSIZE
+TH variables
+FR `$HISTSIZE` indique combien de commandes ton historique conserve.
+EN `$HISTSIZE` shows how many commands your history keeps.
+
+CMD cat /proc/sys/kernel/hostname
+TH systeme
+FR Le noyau expose aussi le nom de la machine dans `/proc/sys`, où se trouvent ses réglages.
+EN The kernel also exposes the machine name in `/proc/sys`, where its settings live.
+
+CMD lsblk -d
+TH disques
+FR `-d` n'affiche que les disques entiers, sans leurs partitions.
+EN `-d` shows only whole disks, without their partitions.
+
+CMD echo "2026" > ~/essai_linux/annee.txt && cat ~/essai_linux/annee.txt
+TH fichiers
+FR On écrit dans un fichier, puis `&&` enchaîne avec `cat` pour vérifier son contenu.
+EN We write to a file, then `&&` chains `cat` to check its contents.
+INV rm ~/essai_linux/annee.txt
+IFR `rm` supprime ce fichier.
+IEN `rm` deletes this file.

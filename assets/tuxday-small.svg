@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>TuxDay (petites tailles)</title>
+  <rect width="512" height="512" rx="104" fill="#1c1e2c"/>
+  <path d="M76 340 A180 180 0 0 1 436 340 Z" fill="#f7e08a"/>
+  <path d="M180 206 L250 262 L180 318" fill="none" stroke="#1c1e2c" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="270" y="286" width="84" height="34" rx="8" fill="#1c1e2c"/>
+  <rect x="48" y="340" width="416" height="26" rx="13" fill="#7fd3f5"/>
+  <rect x="146" y="404" width="220" height="20" rx="10" fill="#7fd3f5" fill-opacity="0.5"/>
+</svg>

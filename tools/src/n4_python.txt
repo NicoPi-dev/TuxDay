@@ -1,0 +1,941 @@
+@level 4
+@type python
+
+CMD python3 -c "import ctypes; libc = ctypes.CDLL('libc.so.6'); print(libc.getpid())"
+TH bas_niveau
+FR `ctypes` appelle directement une fonction de la bibliothèque C du système, sans passer par Python.
+EN `ctypes` calls a function from the system's C library directly, bypassing Python.
+
+CMD python3 -c "import ctypes; libc = ctypes.CDLL('libc.so.6'); libc.printf(b'Bonjour depuis la libc\n')"
+TH bas_niveau
+FR On utilise le vrai `printf` du langage C, celui que la commande shell `printf` imite.
+EN We use the real C language `printf`, the one the shell's `printf` command imitates.
+
+CMD python3 -c "import ctypes; print(ctypes.sizeof(ctypes.c_int), ctypes.sizeof(ctypes.c_long), ctypes.sizeof(ctypes.c_void_p))"
+TH bas_niveau
+FR La taille en octets des types C de base sur ta machine 64 bits.
+EN The size in bytes of basic C types on your 64-bit machine.
+
+CMD python3 -c "import struct; h = open('/usr/bin/ls', 'rb').read(64); print('ELF', {1: '32 bits', 2: '64 bits'}[h[4]], 'type', struct.unpack('<H', h[16:18])[0])"
+TH bas_niveau
+FR On décode l'en-tête binaire d'un exécutable : sa classe (32 ou 64 bits) et son type, octet par octet.
+EN We decode an executable's binary header: its class (32 or 64 bits) and type, byte by byte.
+
+CMD python3 -c "import mmap; f = open('/etc/services', 'rb'); m = mmap.mmap(f.fileno(), 0, prot=mmap.PROT_READ); print(m.find(b'ssh'), len(m))"
+TH bas_niveau
+FR `mmap` projette un fichier en mémoire : on y cherche comme dans un texte, sans le lire en entier.
+EN `mmap` maps a file into memory: you search it like text, without reading it all.
+
+CMD python3 -c "import os; r, w = os.pipe(); os.write(w, b'via un tube'); os.close(w); print(os.read(r, 100))"
+TH bas_niveau
+FR `os.pipe()` crée un tube anonyme, le même mécanisme que le `|` du shell.
+EN `os.pipe()` creates an anonymous pipe, the same mechanism as the shell's `|`.
+
+CMD python3 -c "import os; pid = os.fork(); print('enfant' if pid == 0 else f'parent de {pid}'); os._exit(0) if pid == 0 else os.wait()"
+TH bas_niveau
+FR `os.fork()` duplique le processus : deux copies du programme continuent, chacune sait qui elle est.
+EN `os.fork()` duplicates the process: two copies of the program carry on, each knowing which it is.
+
+CMD python3 -c "import os; os.execvp('uname', ['uname', '-sr'])"
+TH bas_niveau
+FR `exec` remplace le programme Python par `uname` dans le même processus. C'est ainsi que le shell lance chaque commande.
+EN `exec` replaces the Python program with `uname` in the same process. That's how the shell starts every command.
+
+CMD python3 -c "import os, sys; os.dup2(os.open('/dev/null', os.O_WRONLY), 1); print('invisible'); sys.stderr.write('visible\n')"
+TH bas_niveau
+FR `dup2()` redirige la sortie standard vers `/dev/null` : l'équivalent Python de `> /dev/null`.
+EN `dup2()` redirects standard output to `/dev/null`: Python's equivalent of `> /dev/null`.
+
+CMD python3 -c "import os; st = os.statvfs('/'); print(f'{st.f_bavail * st.f_frsize / 1e9:.1f} Go libres, {st.f_favail} inodes libres')"
+TH bas_niveau
+FR `statvfs()` interroge le système de fichiers directement : la source des chiffres de `df`.
+EN `statvfs()` queries the file system directly: the source of `df`'s figures.
+
+CMD python3 -c "import os; print(os.major(os.stat('/dev/null').st_rdev), os.minor(os.stat('/dev/null').st_rdev))"
+TH bas_niveau
+FR Chaque périphérique a deux numéros : le pilote (majeur) et l'appareil (mineur). `/dev/null` est le 1,3.
+EN Every device has two numbers: driver (major) and device (minor). `/dev/null` is 1,3.
+
+CMD python3 -c "import os; print(os.readlink('/proc/self/exe'), os.readlink('/proc/self/cwd'))"
+TH bas_niveau
+FR Via `/proc/self`, le programme retrouve son propre exécutable et son dossier de travail.
+EN Through `/proc/self`, the program finds its own executable and working folder.
+
+CMD python3 -c "import os; print(len(os.listdir('/proc/self/fd')), 'descripteurs ouverts')"
+TH bas_niveau
+FR Combien de fichiers ce processus a-t-il ouverts ? On compte ses descripteurs.
+EN How many files does this process have open? We count its descriptors.
+
+CMD python3 -c "import resource, os; resource.setrlimit(resource.RLIMIT_NOFILE, (10, 10)); [open('/dev/null') for _ in range(20)]"
+TH bas_niveau
+FR On abaisse volontairement la limite de fichiers ouverts à 10 : le 11e déclenche l'erreur « Too many open files ».
+EN We deliberately lower the open-file limit to 10: the 11th triggers the "Too many open files" error.
+
+CMD python3 -c "import signal, time; signal.alarm(2); print('attente…'); time.sleep(10)"
+TH bas_niveau
+FR `signal.alarm()` programme un réveil : au bout de 2 secondes, le noyau envoie `SIGALRM` et coupe le programme.
+EN `signal.alarm()` sets an alarm: after 2 seconds the kernel sends `SIGALRM` and cuts the program off.
+
+CMD python3 -c "import pty; pty.spawn(['bash', '-c', 'tty; echo \"dans un pseudo-terminal\"'])"
+TH bas_niveau
+FR `pty.spawn()` lance un programme dans un pseudo-terminal, comme le fait Konsole pour ton shell.
+EN `pty.spawn()` runs a program inside a pseudo-terminal, as Konsole does for your shell.
+
+CMD python3 -c "import termios, sys; print(termios.tcgetattr(sys.stdin)[3] & termios.ECHO != 0)"
+TH bas_niveau
+FR `termios` lit les réglages du terminal : l'écho des touches est-il activé ? C'est lui que `getpass` coupe.
+EN `termios` reads the terminal settings: is key echo on? That's what `getpass` switches off.
+
+CMD python3 -c "import tty, sys, termios; o = termios.tcgetattr(0); tty.setraw(0); c = sys.stdin.read(1); termios.tcsetattr(0, termios.TCSADRAIN, o); print('touche :', repr(c))"
+TH bas_niveau
+FR Le mode brut lit une seule touche sans attendre Entrée, comme dans un jeu. Appuie sur n'importe quelle touche.
+EN Raw mode reads a single key without waiting for Enter, as in a game. Press any key.
+
+CMD python3 -c "import selectors, sys; s = selectors.DefaultSelector(); s.register(sys.stdin, selectors.EVENT_READ); print('saisie prête' if s.select(timeout=3) else 'rien en 3 s')"
+TH bas_niveau
+FR `selectors` surveille plusieurs sources à la fois sans bloquer : la base des serveurs réseau.
+EN `selectors` watches several sources at once without blocking: the basis of network servers.
+
+CMD python3 -c "import asyncio; asyncio.run(asyncio.sleep(1, 'fini')); print('asyncio prêt')"
+TH asyncio
+FR `asyncio` est le moteur de programmation asynchrone de Python : une seule tâche, sans fils d'exécution.
+EN `asyncio` is Python's asynchronous programming engine: one task, no threads.
+
+CMD python3 -c "import asyncio, time; exec('async def m(): await asyncio.gather(*[asyncio.sleep(1) for _ in range(100)])'); t = time.time(); asyncio.run(m()); print(round(time.time() - t, 1), 's pour 100 pauses')"
+TH asyncio
+FR `gather()` lance 100 attentes d'une seconde en même temps : le tout dure une seule seconde. `exec` sert à définir la fonction `async` sur une ligne.
+EN `gather()` runs 100 one-second waits at once: the whole thing takes just one second. `exec` lets us define the `async` function on one line.
+
+CMD python3 -c "import asyncio; a = asyncio.run(asyncio.open_connection('fedoraproject.org', 443, ssl=True)); print('connecté', a[1].get_extra_info('peername'))"
+TH asyncio
+FR Une connexion chiffrée ouverte de façon asynchrone, avec l'adresse du serveur atteint.
+EN An encrypted connection opened asynchronously, with the address of the server reached.
+
+CMD python3 -c "import asyncio; print(asyncio.run(asyncio.to_thread(sum, range(10 ** 7))))"
+TH asyncio
+FR `to_thread()` confie un calcul bloquant à un fil séparé, pour que la boucle asynchrone reste réactive.
+EN `to_thread()` hands a blocking computation to a separate thread, so the async loop stays responsive.
+
+CMD python3 -c "import asyncio; asyncio.run(asyncio.wait_for(asyncio.sleep(10), 1))"
+TH asyncio
+FR `wait_for()` impose un délai maximal à une tâche : au-delà, elle est annulée avec `TimeoutError`.
+EN `wait_for()` puts a time limit on a task: past it, the task is cancelled with `TimeoutError`.
+
+CMD python3 -m asyncio
+TH asyncio
+FR Un mode interactif où `await` marche directement. Essaie `await asyncio.sleep(1)`, puis `exit()`.
+EN An interactive mode where `await` works directly. Try `await asyncio.sleep(1)`, then `exit()`.
+
+CMD python3 -c "import socket; a, b = socket.socketpair(); a.sendall(b'ping'); print(b.recv(4))"
+TH sockets
+FR `socketpair()` crée deux sockets reliées : ce qui entre d'un côté sort de l'autre.
+EN `socketpair()` creates two linked sockets: what goes in one end comes out the other.
+
+CMD python3 -c "import socket, concurrent.futures as cf; f = lambda p: p if socket.socket().connect_ex(('127.0.0.1', p)) == 0 else None; print([p for p in cf.ThreadPoolExecutor(100).map(f, range(1, 1025)) if p])"
+TH sockets
+FR Un scanner de ports parallèle sur ta propre machine : 1024 ports testés par 100 fils à la fois.
+EN A parallel port scanner on your own machine: 1,024 ports tested by 100 threads at once.
+
+CMD python3 -c "import socket; print(socket.gethostbyaddr('1.1.1.1')[0])"
+TH sockets
+FR La résolution inverse : on retrouve le nom associé à une adresse IP.
+EN Reverse lookup: we find the name tied to an IP address.
+
+CMD python3 -c "import http.server, functools; http.server.ThreadingHTTPServer(('127.0.0.1', 8000), functools.partial(http.server.SimpleHTTPRequestHandler, directory='/usr/share/doc')).serve_forever()"
+TH web
+FR Le même serveur que `python3 -m http.server`, monté pièce par pièce. Ouvre `localhost:8000`, Ctrl+C pour arrêter.
+EN The same server as `python3 -m http.server`, assembled piece by piece. Open `localhost:8000`, Ctrl+C to stop.
+
+CMD python3 -c "import http.server as h; h.HTTPServer(('127.0.0.1', 8000), type('H', (h.BaseHTTPRequestHandler,), {'do_GET': lambda s: (s.send_response(200), s.end_headers(), s.wfile.write(b'Linux du jour'))})).serve_forever()"
+TH web
+FR Un serveur web qui répond son propre texte à chaque visite de `localhost:8000`. `type()` fabrique une classe à la volée.
+EN A web server that answers its own text on every visit to `localhost:8000`. `type()` builds a class on the fly.
+
+CMD python3 -c "import urllib.request, json; r = urllib.request.Request('https://httpbin.org/post', data=json.dumps({'os': 'Fedora'}).encode(), headers={'Content-Type': 'application/json'}); print(json.load(urllib.request.urlopen(r))['json'])"
+TH web
+FR Une requête `POST` qui envoie du JSON à un service de test, qui le renvoie tel quel.
+EN A `POST` request sending JSON to a test service, which echoes it back.
+
+CMD python3 -c "import urllib.request; print(urllib.request.urlopen(urllib.request.Request('https://httpbin.org/user-agent', headers={'User-Agent': 'LinuxDuJour/1.0'})).read().decode())"
+TH web
+FR On choisit l'identité (User-Agent) annoncée au serveur. Le service de test la renvoie.
+EN We choose the identity (User-Agent) announced to the server. The test service echoes it back.
+
+CMD python3 -c "import urllib.robotparser as r; p = r.RobotFileParser('https://www.wikipedia.org/robots.txt'); p.read(); print(p.can_fetch('*', 'https://www.wikipedia.org/w/'))"
+TH web
+FR Un robot poli lit le fichier `robots.txt` d'un site avant de l'explorer.
+EN A polite bot reads a site's `robots.txt` before crawling it.
+
+CMD python3 -c "import webbrowser; webbrowser.open('https://docs.fedoraproject.org/fr/')"
+TH web
+FR `webbrowser` ouvre une adresse dans ton navigateur par défaut, comme `xdg-open`.
+EN `webbrowser` opens an address in your default browser, like `xdg-open`.
+
+CMD python3 -c "import email; m = email.message_from_string('From: tux@linux.org\nSubject: Test\n\nCorps'); print(m['From'], '|', m['Subject'], '|', m.get_payload())"
+TH web
+FR Le module `email` découpe un message en en-têtes et en corps, comme un client de messagerie.
+EN The `email` module splits a message into headers and body, as a mail client does.
+
+CMD python3 -c "import hmac, hashlib, struct, time, base64; k = base64.b32decode('JBSWY3DPEHPK3PXP'); h = hmac.new(k, struct.pack('>Q', int(time.time()) // 30), hashlib.sha1).digest(); o = h[-1] & 15; print(f\"{(struct.unpack('>I', h[o:o + 4])[0] & 0x7fffffff) % 10 ** 6:06d}\")"
+TH securite
+FR Le calcul d'un code de double authentification (TOTP) à 6 chiffres, comme ceux de ton appli d'authentification.
+EN Computing a 6-digit two-factor code (TOTP), like the ones in your authenticator app.
+
+CMD python3 -c "import secrets; print(secrets.compare_digest('motdepasse', 'motdepasse'))"
+TH securite
+FR `compare_digest()` compare en temps constant : un attaquant ne peut rien déduire du temps de réponse.
+EN `compare_digest()` compares in constant time: an attacker can't learn anything from the response time.
+
+CMD python3 -c "import hashlib; print(hashlib.blake2b(b'Linux', digest_size=16).hexdigest())"
+TH securite
+FR BLAKE2 est un algorithme d'empreinte moderne, plus rapide que SHA-256 et tout aussi sûr.
+EN BLAKE2 is a modern fingerprint algorithm, faster than SHA-256 and just as secure.
+
+CMD python3 -c "import hashlib; print(hashlib.scrypt(b'motdepasse', salt=b'sel', n=2 ** 14, r=8, p=1).hex()[:32])"
+TH securite
+FR `scrypt` rend volontairement le calcul lent et gourmand en mémoire pour décourager les attaques par force brute.
+EN `scrypt` makes the computation deliberately slow and memory-hungry to deter brute-force attacks.
+
+CMD python3 -c "import hashlib, os; h = hashlib.sha256(); [h.update(open(os.path.join(d, f), 'rb').read()) for d, _, fs in sorted(os.walk('/etc/skel')) for f in sorted(fs)]; print(h.hexdigest()[:16])"
+TH securite
+FR L'empreinte d'un dossier entier : la moindre modification d'un seul fichier la change.
+EN A fingerprint of a whole folder: the slightest change to a single file alters it.
+
+CMD python3 -c "import uuid; print(uuid.uuid5(uuid.NAMESPACE_DNS, 'fedoraproject.org'))"
+TH securite
+FR `uuid5` produit toujours le même identifiant pour le même nom : unique et reproductible.
+EN `uuid5` always produces the same ID for the same name: unique and reproducible.
+
+CMD python3 -c "import ssl, socket; c = ssl.create_default_context(); s = c.wrap_socket(socket.create_connection(('fedoraproject.org', 443)), server_hostname='fedoraproject.org'); print(s.version(), s.cipher()[0])"
+TH securite
+FR La version de TLS et l'algorithme de chiffrement négociés avec le serveur.
+EN The TLS version and cipher negotiated with the server.
+
+CMD python3 -c "import ssl; print(ssl.get_default_verify_paths().openssl_cafile)"
+TH securite
+FR Le fichier des autorités de certification de confiance que Python utilise.
+EN The trusted certificate authorities file Python uses.
+
+CMD python3 -c "import pickle, os; pickle.dump({'niveau': 4, 'vus': [1, 2, 3]}, open(os.path.expanduser('~/essai_linux/etat.pkl'), 'wb')); print(pickle.load(open(os.path.expanduser('~/essai_linux/etat.pkl'), 'rb')))"
+TH donnees
+FR `pickle` sauvegarde n'importe quel objet Python. Attention : ne jamais charger un `pickle` reçu d'inconnus, il peut exécuter du code.
+EN `pickle` saves any Python object. Careful: never load a `pickle` from strangers, it can run code.
+INV python3 -c "import os; os.remove(os.path.expanduser('~/essai_linux/etat.pkl'))"
+IFR `os.remove()` supprime la sauvegarde.
+IEN `os.remove()` deletes the save file.
+
+CMD python3 -c "import shelve, os; s = shelve.open(os.path.expanduser('~/essai_linux/etagere')); s['vus'] = [1, 5, 9]; s.close(); print(shelve.open(os.path.expanduser('~/essai_linux/etagere'))['vus'])"
+TH donnees
+FR `shelve` est un dictionnaire enregistré sur disque : idéal pour mémoriser les commandes déjà vues.
+EN `shelve` is a dictionary saved to disk: ideal to remember the commands already seen.
+INV python3 -c "import glob, os; [os.remove(f) for f in glob.glob(os.path.expanduser('~/essai_linux/etagere*'))]"
+IFR `shelve` peut créer plusieurs fichiers : le joker les supprime tous.
+IEN `shelve` may create several files: the wildcard deletes them all.
+
+CMD python3 -c "import sqlite3, json; c = sqlite3.connect(':memory:'); print(c.execute(\"select json_extract('{\\\"os\\\": {\\\"nom\\\": \\\"Fedora\\\"}}', '\$.os.nom')\").fetchone())"
+TH donnees
+FR SQLite sait lire du JSON directement dans une requête, avec `json_extract`.
+EN SQLite can read JSON directly inside a query, with `json_extract`.
+
+CMD python3 -c "import csv, io; print(csv.Sniffer().sniff('a;b;c\n1;2;3').delimiter)"
+TH donnees
+FR `Sniffer` devine tout seul le séparateur d'un fichier CSV inconnu.
+EN `Sniffer` works out the separator of an unknown CSV file on its own.
+
+CMD python3 -c "import json; print(json.dumps({'é': 1, 'b': [1, 2]}, ensure_ascii=False, separators=(',', ':')))"
+TH donnees
+FR `ensure_ascii=False` garde les accents, `separators` produit un JSON compact sans espaces.
+EN `ensure_ascii=False` keeps accents, `separators` produces compact JSON with no spaces.
+
+CMD python3 -c "import json, decimal; print(json.loads('{\"prix\": 19.99}', parse_float=decimal.Decimal))"
+TH donnees
+FR `parse_float` lit les décimaux en `Decimal` exact : aucune erreur d'arrondi sur des prix.
+EN `parse_float` reads decimals as exact `Decimal`: no rounding error on prices.
+
+CMD python3 -c "import lzma, bz2, gzip, zlib; d = open('/etc/services', 'rb').read(); print({m.__name__: len(m.compress(d)) for m in (gzip, bz2, lzma, zlib)}, 'sur', len(d))"
+TH donnees
+FR On compare quatre algorithmes de compression sur le même fichier : taille obtenue pour chacun.
+EN We compare four compression algorithms on the same file: the resulting size for each.
+
+CMD python3 -c "import tarfile; t = tarfile.open('/dev/null', 'w'); print(tarfile.TarInfo('x').mode == 0o644)"
+TH donnees
+FR Une entrée d'archive `tar` reçoit par défaut les droits `644`, comme un fichier ordinaire.
+EN A `tar` archive entry gets `644` permissions by default, like an ordinary file.
+
+CMD python3 -c "import zipapp, os, pathlib; d = pathlib.Path.home() / 'essai_linux' / 'app'; d.mkdir(); (d / '__main__.py').write_text('print(\"application zip\")'); zipapp.create_archive(d, d.parent / 'app.pyz')" && python3 ~/essai_linux/app.pyz
+TH donnees
+FR `zipapp` emballe un programme Python dans un seul fichier `.pyz` qui s'exécute directement.
+EN `zipapp` packs a Python program into a single `.pyz` file that runs directly.
+INV rm -r ~/essai_linux/app ~/essai_linux/app.pyz
+IFR `rm -r` supprime le dossier source et l'application emballée.
+IEN `rm -r` deletes the source folder and the packed app.
+
+CMD python3 -c "import ast; print(ast.dump(ast.parse('x = 1 + 2'), indent=1))"
+TH introspection
+FR `ast` montre l'arbre syntaxique : la structure que Python comprend avant d'exécuter ton code.
+EN `ast` shows the syntax tree: the structure Python understands before running your code.
+
+CMD python3 -c "import ast; print(ast.literal_eval('[1, 2, {\"a\": 3}]'))"
+TH introspection
+FR `literal_eval()` lit des valeurs écrites en texte, sans jamais exécuter de code : la version sûre d'`eval`.
+EN `literal_eval()` reads values written as text without ever running code: the safe version of `eval`.
+
+CMD python3 -c "import ast, inspect, shlex; print(sorted({n.id for n in ast.walk(ast.parse(inspect.getsource(shlex))) if isinstance(n, ast.Name)})[:15])"
+TH introspection
+FR On analyse le code source d'un module pour lister les noms qu'il utilise, sans l'exécuter.
+EN We analyse a module's source code to list the names it uses, without running it.
+
+CMD python3 -c "c = compile('a + b', '<calc>', 'eval'); print(eval(c, {'a': 2, 'b': 3}), c.co_names)"
+TH introspection
+FR `compile()` transforme du texte en code exécutable. On l'évalue avec nos propres variables.
+EN `compile()` turns text into executable code. We evaluate it with our own variables.
+
+CMD python3 -c "f = lambda x, y=2: x * y; print(f.__code__.co_varnames, f.__defaults__)"
+TH introspection
+FR Une fonction est un objet : on lit le nom de ses paramètres et ses valeurs par défaut.
+EN A function is an object: we read its parameter names and default values.
+
+CMD python3 -c "import sys; sys.settrace(lambda f, e, a: print(e, f.f_code.co_name) if e == 'call' else None); import json; json.dumps(1)" 2>&1 | head
+TH introspection
+FR `settrace()` espionne chaque appel de fonction : on voit tout ce que fait `json.dumps` en coulisse.
+EN `settrace()` spies on every function call: you see everything `json.dumps` does behind the scenes.
+
+CMD python3 -c "import trace; t = trace.Trace(count=True, trace=False); t.runfunc(sorted, [3, 1, 2]); print(len(t.results().counts), 'lignes exécutées comptées')"
+TH introspection
+FR Le module `trace` compte combien de lignes de code ont été exécutées : la base des mesures de couverture de tests.
+EN The `trace` module counts how many lines of code ran: the basis of test coverage measurement.
+
+CMD python3 -c "import importlib; m = importlib.import_module('json'); print(m.__name__, m.__file__)"
+TH introspection
+FR `import_module()` importe un module dont le nom est connu seulement au moment de l'exécution.
+EN `import_module()` imports a module whose name is only known at run time.
+
+CMD python3 -c "import importlib.util; print(importlib.util.find_spec('numpy') is not None)"
+TH introspection
+FR On teste si un module est installé sans l'importer : `False` si `numpy` est absent.
+EN We test whether a module is installed without importing it: `False` if `numpy` is missing.
+
+CMD python3 -c "import importlib.metadata as m; print(sorted(d.metadata['Name'] for d in m.distributions())[:15])"
+TH introspection
+FR La liste des paquets Python installés, lue dans leurs métadonnées, comme `pip list`.
+EN The list of installed Python packages, read from their metadata, like `pip list`.
+
+CMD python3 -c "import sys; print([m for m in sys.modules if not m.startswith('_')][:20])"
+TH introspection
+FR Les modules déjà chargés au démarrage de Python, avant même ton code.
+EN The modules already loaded when Python starts, before your code even runs.
+
+CMD python3 -c "import sysconfig; print(sysconfig.get_paths()['stdlib'], sysconfig.get_config_var('CC'))"
+TH introspection
+FR Où vit la bibliothèque standard, et quel compilateur C a servi à construire ce Python.
+EN Where the standard library lives, and which C compiler built this Python.
+
+CMD python3 -c "import sys; a = []; b = a; print(sys.getrefcount(a))"
+TH introspection
+FR Python compte les références vers chaque objet : quand le compte tombe à zéro, la mémoire est libérée.
+EN Python counts the references to each object: when the count drops to zero, the memory is freed.
+
+CMD python3 -c "Point = type('Point', (), {'__init__': lambda s, x, y: setattr(s, 'x', x) or setattr(s, 'y', y), '__repr__': lambda s: f'Point({s.x}, {s.y})'}); print(Point(3, 4))"
+TH objets
+FR `type()` à trois arguments crée une classe sans le mot `class` : tout est objet en Python.
+EN Three-argument `type()` creates a class without the `class` keyword: everything is an object in Python.
+
+CMD python3 -c "print(type(type), type(int), int.__mro__)"
+TH objets
+FR `type` est sa propre classe, et `__mro__` montre l'ordre dans lequel Python cherche une méthode.
+EN `type` is its own class, and `__mro__` shows the order Python searches for a method.
+
+CMD python3 -c "import dataclasses as d; C = d.make_dataclass('Cmd', [('nom', str), ('niveau', int, d.field(default=1))], frozen=True); c = C('ls'); print(c); c.niveau = 2"
+TH objets
+FR `frozen=True` rend l'objet non modifiable : la dernière affectation déclenche une erreur.
+EN `frozen=True` makes the object immutable: the final assignment raises an error.
+
+CMD python3 -c "import enum; D = enum.Flag('Droits', 'R W X'); p = D.R | D.W; print(p, D.W in p, D.X in p)"
+TH objets
+FR `Flag` combine des options comme les bits de droits Linux : lecture et écriture, mais pas exécution.
+EN `Flag` combines options like Linux permission bits: read and write, but not execute.
+
+CMD python3 -c "import functools; f = functools.singledispatch(lambda x: 'autre'); f.register(int, lambda x: 'entier'); f.register(str, lambda x: 'texte'); print(f(1), f('a'), f(1.5))"
+TH objets
+FR `singledispatch` choisit la bonne version d'une fonction selon le type de l'argument.
+EN `singledispatch` picks the right version of a function based on the argument's type.
+
+CMD python3 -c "import collections; c = collections.ChainMap({'a': 1}, {'a': 2, 'b': 3}); print(c['a'], c['b'])"
+TH objets
+FR `ChainMap` cherche dans plusieurs dictionnaires dans l'ordre : comme des réglages perso qui masquent les réglages par défaut.
+EN `ChainMap` searches several dictionaries in order: like personal settings hiding the defaults.
+
+CMD python3 -c "import collections, os; c = collections.ChainMap({'EDITOR': 'kate'}, os.environ); print(c['EDITOR'], c['HOME'])"
+TH objets
+FR Un exemple concret : une valeur par défaut d'abord, puis les variables d'environnement.
+EN A concrete example: a default value first, then the environment variables.
+
+CMD python3 -c "import operator, functools; print(functools.reduce(operator.or_, [{1}, {2}, {3}]))"
+TH objets
+FR `operator.or_` est la fonction derrière `|` : on fusionne une liste d'ensembles.
+EN `operator.or_` is the function behind `|`: we merge a list of sets.
+
+CMD python3 -c "import weakref; class_ = type('C', (), {}); o = class_(); r = weakref.ref(o); print(r() is o); del o; print(r())"
+TH objets
+FR Une référence faible désigne un objet sans le retenir : une fois l'objet supprimé, elle renvoie `None`.
+EN A weak reference points to an object without holding it: once the object is deleted, it returns `None`.
+
+CMD python3 -c "import contextlib, io; f = io.StringIO(); contextlib.redirect_stdout(f).__enter__(); print('capturé'); import sys; sys.__stdout__.write(f'Texte capturé : {f.getvalue()}')"
+TH objets
+FR `redirect_stdout` capture tout ce qu'affiche `print` dans une variable.
+EN `redirect_stdout` captures everything `print` shows into a variable.
+
+CMD python3 -c "import itertools, operator; print(list(itertools.starmap(operator.pow, [(2, 5), (3, 2)])))"
+TH iterateurs
+FR `starmap()` applique une fonction en dépliant chaque tuple en arguments.
+EN `starmap()` applies a function by unpacking each tuple into arguments.
+
+CMD python3 -c "import itertools; print(list(itertools.compress('ABCDEF', [1, 0, 1, 0, 1, 1])))"
+TH iterateurs
+FR `compress()` garde les éléments dont le masque vaut 1.
+EN `compress()` keeps the items whose mask is 1.
+
+CMD python3 -c "import itertools; print(list(itertools.zip_longest('abc', '12', fillvalue='-')))"
+TH iterateurs
+FR `zip_longest()` va jusqu'au bout de la liste la plus longue et comble les trous.
+EN `zip_longest()` runs to the end of the longest list and fills the gaps.
+
+CMD python3 -c "import itertools; a, b = itertools.tee(range(3)); print(list(a), list(b))"
+TH iterateurs
+FR `tee()` duplique un itérateur pour le parcourir deux fois, comme la commande `tee`.
+EN `tee()` duplicates an iterator to walk it twice, like the `tee` command.
+
+CMD python3 -c "import itertools; print(list(itertools.combinations_with_replacement('ab', 3)))"
+TH iterateurs
+FR Les combinaisons avec répétition : toutes les façons de tirer 3 lettres parmi `a` et `b`.
+EN Combinations with repetition: every way to draw 3 letters from `a` and `b`.
+
+CMD python3 -c "import itertools; print(sum(1 for p in itertools.product('01', repeat=10) if p.count('1') == 5))"
+TH iterateurs
+FR On parcourt les 1024 nombres binaires de 10 bits pour compter ceux qui ont exactement cinq 1.
+EN We walk all 1,024 10-bit binary numbers to count those with exactly five 1s.
+
+CMD python3 -c "import heapq; print(list(heapq.merge([1, 4, 9], [2, 3, 10], [5])))"
+TH iterateurs
+FR `heapq.merge()` fusionne des listes déjà triées sans tout retrier, comme `sort -m`.
+EN `heapq.merge()` merges already-sorted lists without re-sorting everything, like `sort -m`.
+
+CMD python3 -c "import bisect; l = []; [bisect.insort(l, x) for x in (5, 1, 4, 2)]; print(l)"
+TH iterateurs
+FR `insort()` insère chaque élément à sa place : la liste reste triée en permanence.
+EN `insort()` inserts each item in its place: the list stays sorted at all times.
+
+CMD python3 -c "g = (i for i in range(3)); print(next(g), list(g), list(g))"
+TH iterateurs
+FR Un générateur s'épuise : une fois parcouru, il ne redonne plus rien.
+EN A generator gets used up: once walked through, it yields nothing more.
+
+CMD python3 -c "g = (lambda: (yield 1))(); print(next(g))"
+TH iterateurs
+FR `yield` transforme une fonction en générateur, même une `lambda` : elle s'arrête et reprend à chaque `next()`.
+EN `yield` turns a function into a generator, even a `lambda`: it pauses and resumes at each `next()`.
+
+CMD python3 -c "import sys; it = iter(sys.stdin.readline, ''); print(sum(1 for _ in it))" < /etc/services
+TH iterateurs
+FR `iter()` avec une valeur d'arrêt lit ligne par ligne jusqu'à la fin du fichier.
+EN `iter()` with a sentinel value reads line by line until the end of the file.
+
+CMD python3 -c "import statistics as s, random; d = [random.gauss(170, 8) for _ in range(10000)]; print(round(s.mean(d), 1), round(s.stdev(d), 1), [round(q) for q in s.quantiles(d, n=4)])"
+TH calcul
+FR 10 000 tailles tirées selon une loi normale : moyenne, écart-type et quartiles retrouvés.
+EN 10,000 heights drawn from a normal distribution: mean, standard deviation and quartiles recovered.
+
+CMD python3 -c "import statistics as s; print(s.NormalDist(170, 8).cdf(185))"
+TH calcul
+FR `NormalDist` calcule des probabilités : la part des gens mesurant moins de 1,85 m.
+EN `NormalDist` computes probabilities: the share of people shorter than 1.85 m.
+
+CMD python3 -c "from decimal import Decimal, getcontext; getcontext().prec = 50; print(Decimal(2).sqrt())"
+TH calcul
+FR `Decimal` calcule avec la précision que tu veux : racine de 2 avec 50 chiffres.
+EN `Decimal` computes to whatever precision you like: the square root of 2 to 50 digits.
+
+CMD python3 -c "from decimal import Decimal, ROUND_HALF_UP; print(Decimal('2.675').quantize(Decimal('0.01'), ROUND_HALF_UP))"
+TH calcul
+FR L'arrondi « commercial » exact, celui des factures, impossible à garantir avec des `float`.
+EN Exact "commercial" rounding, the kind used on invoices, impossible to guarantee with `float`s.
+
+CMD python3 -c "from fractions import Fraction; print(Fraction(0.1), Fraction('0.1'))"
+TH calcul
+FR La fraction exacte que l'ordinateur stocke vraiment pour `0.1`, comparée au vrai dixième.
+EN The exact fraction the computer really stores for `0.1`, compared with a true tenth.
+
+CMD python3 -c "import sys; print(sys.float_info.max, sys.float_info.epsilon)"
+TH calcul
+FR Le plus grand nombre à virgule possible, et le plus petit écart détectable autour de 1.
+EN The largest possible floating-point number, and the smallest detectable gap around 1.
+
+CMD python3 -c "print(float('inf') > 10 ** 308, float('nan') == float('nan'))"
+TH calcul
+FR L'infini existe en calcul flottant, et `nan` (« pas un nombre ») n'est même pas égal à lui-même.
+EN Infinity exists in floating-point maths, and `nan` ("not a number") isn't even equal to itself.
+
+CMD python3 -c "print([n for n in range(2, 10 ** 4) if all(n % d for d in range(2, int(n ** 0.5) + 1))][-5:])"
+TH calcul
+FR Les 5 plus grands nombres premiers sous 10 000, en ne testant les diviseurs que jusqu'à la racine.
+EN The 5 largest primes under 10,000, testing divisors only up to the square root.
+
+CMD python3 -c "n = 10 ** 6; s = bytearray([1]) * n; s[0:2] = b'\x00\x00'; [s.__setitem__(slice(i * i, n, i), bytes(len(range(i * i, n, i)))) for i in range(2, int(n ** 0.5) + 1) if s[i]]; print(sum(s), 'premiers sous un million')"
+TH calcul
+FR Le crible d'Ératosthène : on raye les multiples de chaque nombre premier. Il en reste 78 498.
+EN The sieve of Eratosthenes: we strike out the multiples of each prime. 78,498 remain.
+
+CMD python3 -c "import math; print(math.lcm(*range(1, 21)))"
+TH calcul
+FR Le plus petit nombre divisible par tous les entiers de 1 à 20.
+EN The smallest number divisible by every whole number from 1 to 20.
+
+CMD python3 -c "print(sum(int(c) for c in str(2 ** 1000)))"
+TH calcul
+FR La somme des chiffres de 2 puissance 1000 : un classique du Projet Euler.
+EN The sum of the digits of 2 to the power 1000: a Project Euler classic.
+
+CMD python3 -c "import random; r = random.SystemRandom(); print(r.randint(1, 10 ** 12))"
+TH calcul
+FR `SystemRandom` puise son hasard dans le noyau (`/dev/urandom`), adapté à la cryptographie.
+EN `SystemRandom` draws its randomness from the kernel (`/dev/urandom`), fit for cryptography.
+
+CMD python3 -c "import random, collections; print(sorted(collections.Counter(random.randint(1, 6) + random.randint(1, 6) for _ in range(36000)).items()))"
+TH calcul
+FR On lance deux dés 36 000 fois : le 7 sort environ 6 000 fois, le 2 et le 12 environ 1 000.
+EN We roll two dice 36,000 times: 7 comes up about 6,000 times, 2 and 12 about 1,000.
+
+CMD python3 -c "import random; p = list(range(1, 101)); print(sum(random.sample(p, 100)[i] == i + 1 for i in range(100)))"
+TH calcul
+FR On mélange 100 cartes : en moyenne, une seule reste à sa place d'origine.
+EN We shuffle 100 cards: on average, just one stays in its original place.
+
+CMD python3 -c "import math; print(f'{math.comb(52, 5):,} mains de poker possibles')"
+TH calcul
+FR Le nombre de mains de 5 cartes tirées d'un jeu de 52.
+EN The number of 5-card hands drawn from a 52-card deck.
+
+CMD python3 -c "print('\n'.join(''.join('█' if (x * x + y * y) < 100 else '·' for x in range(-12, 13)) for y in range(-10, 11, 2)))"
+TH graphisme
+FR Un disque dessiné en caractères : chaque point est plein s'il est à moins de 10 du centre.
+EN A disc drawn in characters: each point is filled if it lies within 10 of the centre.
+
+CMD python3 -c "print('\n'.join(''.join('#' if abs((lambda c: [z := 0] and [z := z * z + c for _ in range(25)][-1])(complex(x / 30 - 2.2, y / 10 - 1.2))) < 2 else ' ' for x in range(90)) for y in range(25)))"
+TH graphisme
+FR L'ensemble de Mandelbrot en caractères : pour chaque point, on répète `z = z² + c` et on regarde si la suite reste petite.
+EN The Mandelbrot set in characters: for each point we repeat `z = z² + c` and check whether the sequence stays small.
+
+CMD python3 -c "import math; [print(' ' * int(30 + 25 * math.sin(i / 3)) + '*') for i in range(20)]"
+TH graphisme
+FR Une sinusoïde tracée dans le terminal en décalant une étoile ligne après ligne.
+EN A sine wave drawn in the terminal by shifting a star line after line.
+
+CMD python3 -c "import shutil; w = shutil.get_terminal_size().columns; print(''.join(f'\033[48;5;{16 + i % 216}m \033[0m' for i in range(w)))"
+TH graphisme
+FR Une ligne de 216 couleurs du terminal, aussi large que ta fenêtre.
+EN A line of 216 terminal colours, as wide as your window.
+
+CMD python3 -c "print(''.join(f'\033[38;2;{r};{255 - r};200m█' for r in range(0, 256, 8)) + '\033[0m')"
+TH graphisme
+FR Un dégradé en couleurs 24 bits, rendu directement par Konsole.
+EN A gradient in 24-bit colour, rendered straight by Konsole.
+
+CMD python3 -c "import time, sys; [sys.stdout.write(f'\r[{\"#\" * i}{\" \" * (30 - i)}] {i * 100 // 30} %') or sys.stdout.flush() or time.sleep(0.05) for i in range(31)]; print()"
+TH graphisme
+FR Une vraie barre de progression qui se redessine sur place grâce à `\r`.
+EN A real progress bar redrawn in place thanks to `\r`.
+
+CMD python3 -c "import time; s = '|/-\\\\'; [print(f'\r{s[i % 4]} calcul…', end='', flush=True) or time.sleep(0.1) for i in range(30)]; print('\rterminé   ')"
+TH graphisme
+FR Un indicateur d'attente qui tourne, comme ceux des installateurs.
+EN A spinning wait indicator, like the ones installers use.
+
+CMD python3 -c "import curses; curses.wrapper(lambda s: (s.addstr(2, 4, 'Linux du jour en plein écran', curses.A_BOLD), s.addstr(4, 4, 'Appuie sur une touche'), s.getch()))"
+TH graphisme
+FR `curses.wrapper` prend tout le terminal, affiche du texte placé au caractère près, puis restaure l'écran.
+EN `curses.wrapper` takes over the whole terminal, places text to the character, then restores the screen.
+
+CMD python3 -c "import turtle; t = turtle.Turtle(); [t.forward(100) or t.left(144) for _ in range(5)]; turtle.done()"
+TH graphisme
+FR `turtle` dessine une étoile dans une fenêtre graphique. Ferme la fenêtre pour terminer. Nécessite `python3-tkinter`.
+EN `turtle` draws a star in a graphical window. Close the window to finish. Needs `python3-tkinter`.
+
+CMD python3 -c "import tkinter as tk; r = tk.Tk(); r.title('Horloge'); l = tk.Label(r, font=('monospace', 40)); l.pack(padx=20, pady=20); u = lambda: l.config(text=__import__('time').strftime('%H:%M:%S')) or r.after(1000, u); u(); r.mainloop()"
+TH graphisme
+FR Une horloge graphique en une ligne : `after()` rappelle la mise à jour chaque seconde.
+EN A graphical clock in one line: `after()` calls the update again every second.
+
+CMD python3 -c "import subprocess, json; print([(b['name'], b.get('mountpoints')) for b in json.loads(subprocess.run(['lsblk', '-J', '-o', 'NAME,MOUNTPOINTS'], capture_output=True, text=True).stdout)['blockdevices'][0].get('children', [])])"
+TH systeme
+FR On descend dans l'arbre JSON de `lsblk` : les partitions du premier disque et leurs points de montage.
+EN We go down `lsblk`'s JSON tree: the first disk's partitions and their mount points.
+
+CMD python3 -c "import time; f = lambda: [int(l.split()[5]) * 512 for l in open('/proc/diskstats') if l.split()[2].startswith('nvme0n1') and len(l.split()[2]) == 7][0]; a = f(); time.sleep(1); print(f'{(f() - a) / 1024:.0f} Ko/s lus')"
+TH systeme
+FR Le débit de lecture du disque NVMe, mesuré sur une seconde avec les compteurs du noyau.
+EN The NVMe disk's read throughput, measured over one second with kernel counters.
+
+CMD python3 -c "import time, glob; f = lambda: sum(int(open(x).read()) for x in glob.glob('/sys/class/power_supply/BAT*/energy_now')); a = f(); time.sleep(10); print(f'{(a - f()) * 360 / 1e6:.1f} W en moyenne')"
+TH systeme
+FR La consommation moyenne sur 10 secondes, déduite de la baisse d'énergie de la batterie.
+EN Average power draw over 10 seconds, worked out from the battery's energy drop.
+
+CMD python3 -c "import subprocess; o = subprocess.run(['nvidia-smi', '--query-gpu=temperature.gpu,utilization.gpu', '--format=csv,noheader,nounits'], capture_output=True, text=True).stdout.split(','); print(f'GPU : {o[0]} °C, {o[1].strip()} %')"
+TH systeme
+FR Python interroge la carte graphique NVIDIA et formate ses mesures, comme un moniteur système.
+EN Python queries the NVIDIA graphics card and formats its readings, like a system monitor.
+
+CMD python3 -c "import subprocess, json; u = json.loads(subprocess.run(['systemctl', 'list-units', '--type=service', '--state=running', '-o', 'json'], capture_output=True, text=True).stdout); print(len(u), 'services', [x['unit'] for x in u][:5])"
+TH systeme
+FR `systemctl -o json` donne la liste des services en JSON, prête à être triée et filtrée en Python.
+EN `systemctl -o json` gives the services list as JSON, ready to sort and filter in Python.
+
+CMD python3 -c "import os, time; print(time.strftime('%d/%m/%Y', time.localtime(os.stat('/').st_ctime)))"
+TH systeme
+FR La date de dernier changement du dossier racine, lue en Python.
+EN The root folder's last change date, read in Python.
+
+CMD python3 -c "import platform; d = platform.freedesktop_os_release(); print({k: d[k] for k in ('NAME', 'VERSION_ID', 'VARIANT') if k in d})"
+TH systeme
+FR Les champs utiles de `/etc/os-release`, dont la variante : KDE Plasma Desktop Edition.
+EN The useful fields from `/etc/os-release`, including the variant: KDE Plasma Desktop Edition.
+
+CMD python3 -c "import os, pwd; print({u.pw_name: u.pw_dir for u in pwd.getpwall() if os.path.isdir(u.pw_dir) and u.pw_dir.startswith('/home')})"
+TH systeme
+FR Les comptes dont le dossier perso existe vraiment dans `/home`.
+EN The accounts whose home folder really exists in `/home`.
+
+CMD python3 -c "import os; print(sorted(os.listdir('/sys/firmware/efi/efivars'))[:5] if os.path.isdir('/sys/firmware/efi') else 'démarrage BIOS')"
+TH systeme
+FR La présence de `/sys/firmware/efi` prouve un démarrage UEFI. On liste quelques variables du micrologiciel.
+EN The presence of `/sys/firmware/efi` proves a UEFI boot. We list a few firmware variables.
+
+CMD python3 -c "print(open('/sys/kernel/security/lsm').read())"
+TH systeme
+FR Les modules de sécurité chargés dans le noyau, dont SELinux.
+EN The security modules loaded in the kernel, SELinux among them.
+
+CMD python3 -c "import os; print(os.getxattr('/etc/passwd', 'security.selinux').decode())"
+TH systeme
+FR L'étiquette SELinux est stockée dans un attribut étendu du fichier : Python la lit directement.
+EN The SELinux label is stored in the file's extended attribute: Python reads it directly.
+
+CMD python3 -c "import os; p = os.path.expanduser('~/essai_linux/attr.txt'); open(p, 'w').close(); os.setxattr(p, 'user.niveau', b'expert'); print(os.listxattr(p), os.getxattr(p, 'user.niveau'))"
+TH systeme
+FR Les attributs étendus stockent des métadonnées libres sur un fichier, invisibles pour `ls`.
+EN Extended attributes store free-form metadata on a file, invisible to `ls`.
+INV python3 -c "import os; os.remove(os.path.expanduser('~/essai_linux/attr.txt'))"
+IFR `os.remove()` supprime le fichier et ses attributs.
+IEN `os.remove()` deletes the file and its attributes.
+
+CMD python3 -c "import os; d = os.path.expanduser('~/essai_linux'); fd = os.open(d, os.O_TMPFILE | os.O_WRONLY); os.write(fd, b'fantome'); print(os.listdir(d)); os.close(fd)"
+TH systeme
+FR `O_TMPFILE` crée un fichier sans nom : il existe sur le disque mais n'apparaît dans aucun dossier, et disparaît à la fermeture.
+EN `O_TMPFILE` creates a nameless file: it exists on disk but appears in no folder, and vanishes when closed.
+
+CMD python3 -c "import os, time; p = os.path.expanduser('~/essai_linux/espion.txt'); open(p, 'w').close(); m = os.stat(p).st_mtime; time.sleep(1); open(p, 'a').write('x'); print('modifié' if os.stat(p).st_mtime > m else 'inchangé')"
+TH systeme
+FR La base de toute surveillance de fichier : comparer la date de modification avant et après.
+EN The basis of any file watcher: compare the modification date before and after.
+INV python3 -c "import os; os.remove(os.path.expanduser('~/essai_linux/espion.txt'))"
+IFR `os.remove()` supprime le fichier.
+IEN `os.remove()` deletes the file.
+
+CMD python3 -c "import filecmp; d = filecmp.dircmp('/etc/skel', '/etc/skel'); print(d.same_files, d.left_only)"
+TH fichiers
+FR `dircmp` compare deux dossiers entiers : fichiers identiques, différents, présents d'un seul côté.
+EN `dircmp` compares two whole folders: identical files, different ones, ones on one side only.
+
+CMD python3 -c "import pathlib; print(sorted(((p.stat().st_size, p.name) for p in pathlib.Path('/usr/bin').iterdir() if p.is_file() and not p.is_symlink()), reverse=True)[:5])"
+TH fichiers
+FR Les 5 plus gros programmes de `/usr/bin`, liens symboliques exclus.
+EN The 5 largest programs in `/usr/bin`, symbolic links excluded.
+
+CMD python3 -c "import pathlib, collections; print(collections.Counter(p.suffix for p in pathlib.Path.home().rglob('*') if p.is_file() and '.cache' not in p.parts).most_common(8))"
+TH fichiers
+FR Le profil de ton dossier perso : les 8 types de fichiers les plus nombreux, cache exclu.
+EN Your home folder's profile: the 8 most common file types, cache excluded.
+
+CMD python3 -c "import pathlib, datetime as dt; s = dt.datetime.now().timestamp() - 7 * 86400; print(sum(1 for p in pathlib.Path.home().rglob('*') if p.is_file() and '.cache' not in p.parts and p.stat().st_mtime > s), 'fichiers modifiés cette semaine')"
+TH fichiers
+FR Combien de fichiers ont changé dans ton dossier perso ces 7 derniers jours ?
+EN How many files changed in your home folder over the last 7 days?
+
+CMD python3 -c "import os, shutil; d = os.path.expanduser('~/essai_linux/sauve'); shutil.copytree('/etc/skel', d, ignore=shutil.ignore_patterns('.bash_logout')); print(os.listdir(d))"
+TH fichiers
+FR `ignore_patterns` exclut certains fichiers d'une copie : une sauvegarde sélective.
+EN `ignore_patterns` leaves some files out of a copy: a selective backup.
+INV python3 -c "import shutil, os; shutil.rmtree(os.path.expanduser('~/essai_linux/sauve'))"
+IFR `shutil.rmtree()` supprime la sauvegarde.
+IEN `shutil.rmtree()` deletes the backup.
+
+CMD python3 -m compileall -q /usr/lib64/python3*/json && echo "déjà compilé par Fedora"
+TH outils
+FR `compileall` précompile des modules en bytecode. Fedora le fait déjà à l'installation, d'où l'absence de travail.
+EN `compileall` precompiles modules to bytecode. Fedora already does it at install time, so there's no work to do.
+
+CMD python3 -c "import pdb; pdb.run('x = 2 + 3; y = x * 2')"
+TH outils
+FR `pdb` est le débogueur de Python : `n` avance d'une ligne, `p x` affiche une variable, `c` continue jusqu'à la fin.
+EN `pdb` is Python's debugger: `n` steps one line, `p x` prints a variable, `c` continues to the end.
+
+CMD python3 -c "import doctest; f = lambda x: x * 2; f.__doc__ = '>>> f(3)\n6\n'; doctest.run_docstring_examples(f, {'f': f}, verbose=True)"
+TH outils
+FR `doctest` vérifie les exemples écrits dans la documentation d'une fonction.
+EN `doctest` checks the examples written in a function's documentation.
+
+CMD python3 -m unittest -v 2>&1 | tail -n 3
+TH outils
+FR `unittest` cherche et lance les tests du dossier courant. Ici il n'y en a aucun : « Ran 0 tests ».
+EN `unittest` finds and runs the current folder's tests. There are none here: "Ran 0 tests".
+
+CMD python3 -c "import cProfile; cProfile.run('sorted(range(10 ** 5), key=str)', sort='cumtime')" | head -n 12
+TH outils
+FR Le profileur classe les fonctions par temps cumulé : on voit où part le temps d'un tri.
+EN The profiler ranks functions by cumulative time: you see where a sort spends its time.
+
+CMD python3 -X dev -c "open('/etc/hostname')"
+TH outils
+FR Le mode développeur (`-X dev`) signale les mauvaises pratiques, comme ce fichier ouvert jamais refermé.
+EN Developer mode (`-X dev`) flags bad practices, like this file opened and never closed.
+
+CMD python3 -X frozen_modules=off -c "import sys; print(sys.flags)"
+TH outils
+FR `sys.flags` montre les options avec lesquelles l'interpréteur a été lancé.
+EN `sys.flags` shows the options the interpreter was started with.
+
+CMD python3 -I -c "import sys; print(sys.path)"
+TH outils
+FR `-I` (isolé) ignore le dossier courant et les variables d'environnement : une protection contre les modules piégés.
+EN `-I` (isolated) ignores the current folder and environment variables: a protection against booby-trapped modules.
+
+CMD python3 -c "import sys; print(sys.orig_argv)"
+TH outils
+FR La ligne de commande complète qui a lancé l'interpréteur, options comprises.
+EN The full command line that started the interpreter, options included.
+
+CMD PYTHONDONTWRITEBYTECODE=1 PYTHONHASHSEED=0 python3 -c "print(hash('Linux'))"
+TH outils
+FR Les variables d'environnement `PYTHON...` règlent l'interpréteur : avec une graine fixe, le hachage devient reproductible.
+EN The `PYTHON...` environment variables tune the interpreter: with a fixed seed, hashing becomes reproducible.
+
+CMD python3 -c "print(hash('Linux'))"; python3 -c "print(hash('Linux'))"
+TH outils
+FR Sans graine fixe, le hachage d'un texte change à chaque lancement : une protection contre certaines attaques.
+EN Without a fixed seed, a text's hash changes on every run: a protection against certain attacks.
+
+CMD python3 -c "import readline; print(readline.get_current_history_length())"
+TH outils
+FR `readline` gère l'édition de ligne et l'historique, comme dans ton shell.
+EN `readline` handles line editing and history, as in your shell.
+
+CMD python3 -c "import cmd; c = type('C', (cmd.Cmd,), {'prompt': 'linux> ', 'do_salut': lambda s, a: print('Salut', a), 'do_quitter': lambda s, a: True, 'do_EOF': lambda s, a: True})(); c.cmdloop()"
+TH outils
+FR `cmd` crée un mini interpréteur de commandes avec son invite. Tape `salut Tux`, puis `quitter`.
+EN `cmd` builds a mini command interpreter with its own prompt. Type `salut Tux`, then `quitter`.
+
+CMD python3 -c "import argparse; p = argparse.ArgumentParser(prog='ldj'); p.add_argument('--niveau', type=int, choices=range(1, 5)); p.print_help()"
+TH outils
+FR `argparse` construit l'aide et la vérification des options d'un vrai outil en ligne de commande.
+EN `argparse` builds the help and option checking of a real command-line tool.
+
+CMD python3 -c "import argparse; p = argparse.ArgumentParser(); p.add_argument('--niveau', type=int, choices=range(1, 5)); print(p.parse_args(['--niveau', '7']))"
+TH outils
+FR `argparse` refuse tout seul une valeur hors de la plage autorisée, avec un message clair.
+EN `argparse` rejects an out-of-range value on its own, with a clear message.
+
+CMD python3 -c "import gettext; t = gettext.translation('bash', fallback=True); print(t.gettext('Hello'))"
+TH outils
+FR `gettext` est le système de traduction des logiciels Linux : chaque texte est cherché dans un catalogue par langue.
+EN `gettext` is Linux software's translation system: each text is looked up in a per-language catalogue.
+
+CMD python3 -c "import locale; locale.setlocale(locale.LC_ALL, ''); print(locale.currency(1234.5, grouping=True), locale.localeconv()['decimal_point'])"
+TH outils
+FR Avec la langue du système, Python formate les montants en euros, avec la virgule décimale française.
+EN With the system language, Python formats amounts in euros, with the French decimal comma.
+
+CMD python3 -c "import unicodedata; print([unicodedata.category(c) for c in 'é1 €'])"
+TH outils
+FR Chaque caractère Unicode a une catégorie : lettre minuscule, chiffre, espace, symbole monétaire.
+EN Every Unicode character has a category: lowercase letter, digit, space, currency symbol.
+
+CMD python3 -c "print(len('é'), len('é'.encode()), len('é'), 'é' == 'é')"
+TH outils
+FR Deux façons d'écrire « é » : un caractère, ou un « e » suivi d'un accent combinant. Elles ne sont pas égales.
+EN Two ways to write "é": one character, or an "e" followed by a combining accent. They aren't equal.
+
+CMD python3 -c "import unicodedata; print(unicodedata.normalize('NFC', 'é') == 'é')"
+TH outils
+FR La normalisation `NFC` unifie les deux écritures : indispensable pour comparer des noms de fichiers.
+EN `NFC` normalisation unifies both spellings: essential when comparing file names.
+
+CMD python3 -c "import re; p = re.compile(r'''(?x) ^(?P<user>[^:]+) : [^:]* : (?P<uid>\d+) : (?P<gid>\d+)'''); print([m.groupdict() for m in map(p.match, open('/etc/passwd')) if int(m['uid']) >= 1000])"
+TH regex
+FR `(?x)` autorise espaces et mise en page dans une expression régulière pour la rendre lisible.
+EN `(?x)` allows spaces and layout inside a regular expression to make it readable.
+
+CMD python3 -c "import re; print(re.sub(r'\d+', lambda m: str(int(m[0]) * 2), 'niveau 2, série 14'))"
+TH regex
+FR Le remplacement peut être une fonction : chaque nombre trouvé est doublé.
+EN The replacement can be a function: every number found is doubled.
+
+CMD python3 -c "import re; print([m.span() for m in re.finditer(r'(?=aa)', 'aaaa')])"
+TH regex
+FR Un « lookahead » trouve des correspondances qui se chevauchent : `aa` apparaît 3 fois dans `aaaa`.
+EN A lookahead finds overlapping matches: `aa` appears 3 times in `aaaa`.
+
+CMD python3 -c "import re, time; t = time.time(); re.match(r'(a+)+b', 'a' * 24); print(round(time.time() - t, 2), 's pour un motif piège')"
+TH regex
+FR Un motif mal construit peut exploser en temps de calcul (« backtracking catastrophique ») : chaque `a` de plus double la durée.
+EN A badly built pattern can blow up in computing time ("catastrophic backtracking"): each extra `a` doubles the time.
+
+CMD python3 -c "import fnmatch, re; print(fnmatch.translate('*.conf'), re.match(fnmatch.translate('*.conf'), 'dnf.conf') is not None)"
+TH regex
+FR `fnmatch.translate()` montre l'expression régulière qui se cache derrière un joker du shell.
+EN `fnmatch.translate()` shows the regular expression hiding behind a shell wildcard.
+
+CMD python3 -c "import datetime as dt; d = dt.date(2026, 4, 5); print([(d + dt.timedelta(n)).strftime('%d/%m') for n in (1, 39, 50)])"
+TH dates
+FR À partir de Pâques 2026, on calcule le lundi de Pâques, l'Ascension et la Pentecôte.
+EN Starting from Easter 2026, we work out Easter Monday, Ascension Day and Whit Monday.
+
+CMD python3 -c "import datetime as dt; z = dt.timezone(dt.timedelta(hours=2)); print(dt.datetime(2026, 10, 25, 2, 30, tzinfo=z).astimezone(dt.timezone.utc))"
+TH dates
+FR Une heure avec son décalage converti en UTC : la base pour comparer des événements d'un pays à l'autre.
+EN A time with its offset converted to UTC: the basis for comparing events across countries.
+
+CMD python3 -c "from zoneinfo import ZoneInfo as Z; import datetime as dt; p = Z('Europe/Paris'); print([dt.datetime(2026, m, 1, tzinfo=p).utcoffset() for m in (1, 7)])"
+TH dates
+FR Le décalage horaire de Paris en hiver et en été : `zoneinfo` connaît le changement d'heure.
+EN Paris's UTC offset in winter and summer: `zoneinfo` knows about daylight saving time.
+
+CMD python3 -c "import time; print(time.clock_gettime(time.CLOCK_BOOTTIME), time.clock_gettime(time.CLOCK_MONOTONIC))"
+TH dates
+FR Deux horloges du noyau : l'une compte aussi le temps de mise en veille, l'autre non.
+EN Two kernel clocks: one also counts time spent suspended, the other doesn't.
+
+CMD python3 -c "import time; print(time.get_clock_info('perf_counter'))"
+TH dates
+FR La précision réelle de l'horloge utilisée pour chronométrer le code.
+EN The real resolution of the clock used to time code.
+
+CMD python3 -c "import calendar; print(calendar.TextCalendar(calendar.MONDAY).formatmonth(2026, 12, w=3))"
+TH dates
+FR Un calendrier qui commence le lundi, avec des colonnes élargies.
+EN A calendar starting on Monday, with wider columns.
+
+CMD python3 -c "import threading, time; e = threading.Event(); threading.Thread(target=lambda: (time.sleep(1), e.set())).start(); print('signal reçu' if e.wait(3) else 'délai dépassé')"
+TH parallelisme
+FR Un `Event` permet à un fil d'en prévenir un autre : le programme attend le signal, avec un délai maximal.
+EN An `Event` lets one thread notify another: the program waits for the signal, with a time limit.
+
+CMD python3 -c "import threading; n = [0]; v = threading.Lock(); f = lambda: [(v.acquire(), n.__setitem__(0, n[0] + 1), v.release()) for _ in range(10 ** 5)]; t = [threading.Thread(target=f) for _ in range(4)]; [x.start() for x in t]; [x.join() for x in t]; print(n[0])"
+TH parallelisme
+FR Quatre fils incrémentent un même compteur. Le verrou (`Lock`) garantit le bon total : 400 000.
+EN Four threads increment the same counter. The lock (`Lock`) guarantees the right total: 400,000.
+
+CMD python3 -c "import queue, threading; q = queue.Queue(); threading.Thread(target=lambda: [q.put(i) for i in range(5)] and q.put(None)).start(); print(list(iter(q.get, None)))"
+TH parallelisme
+FR Une `Queue` fait passer des données d'un fil à l'autre en toute sécurité : un producteur, un consommateur.
+EN A `Queue` passes data safely from one thread to another: one producer, one consumer.
+
+CMD python3 -c "import concurrent.futures as cf, math; print(sum(cf.ProcessPoolExecutor().map(math.factorial, range(2000), chunksize=100)) % 1000)"
+TH parallelisme
+FR Un calcul lourd réparti sur tous les cœurs du processeur, chacun dans son propre processus.
+EN A heavy computation spread across every processor core, each in its own process.
+
+CMD python3 -c "import multiprocessing as mp; print(mp.cpu_count(), mp.get_start_method())"
+TH parallelisme
+FR Le nombre de cœurs disponibles et la méthode de création des processus enfants.
+EN The number of available cores and the method used to create child processes.
+
+CMD python3 -c "import multiprocessing as mp; v = mp.Value('i', 0); p = [mp.Process(target=lambda: setattr(v, 'value', v.value + 1)) for _ in range(3)]; [x.start() for x in p]; [x.join() for x in p]; print(v.value)"
+TH parallelisme
+FR Une valeur partagée entre plusieurs processus, placée en mémoire commune.
+EN A value shared between several processes, placed in common memory.
+
+CMD python3 -c "import subprocess; p = subprocess.Popen(['ping', '-c', '3', '127.0.0.1'], stdout=subprocess.PIPE, text=True); [print('>', l.strip()) for l in p.stdout]"
+TH parallelisme
+FR On lit la sortie d'une commande ligne par ligne, au fur et à mesure qu'elle arrive.
+EN We read a command's output line by line, as it arrives.
+
+CMD python3 -c "import subprocess; a = subprocess.Popen(['ls', '/etc'], stdout=subprocess.PIPE); b = subprocess.run(['wc', '-l'], stdin=a.stdout, capture_output=True, text=True); print(b.stdout.strip(), 'éléments')"
+TH parallelisme
+FR On reconstruit un pipe `ls | wc -l` entièrement en Python, en reliant deux processus.
+EN We rebuild a `ls | wc -l` pipe entirely in Python, by linking two processes.
+
+CMD python3 -c "import subprocess; r = subprocess.run(['bash', '-c', 'echo sortie; echo erreur >&2; exit 3'], capture_output=True, text=True); print(repr(r.stdout), repr(r.stderr), r.returncode)"
+TH parallelisme
+FR Python sépare proprement la sortie, la sortie d'erreur et le code de retour d'une commande.
+EN Python cleanly separates a command's output, error output and exit code.
+
+CMD python3 -c "import os, subprocess; e = dict(os.environ, LANG='C'); print(subprocess.run(['date'], env=e, capture_output=True, text=True).stdout)"
+TH parallelisme
+FR On lance une commande avec un environnement modifié : la date s'affiche en anglais.
+EN We run a command with a modified environment: the date prints in English.
+
+CMD python3 -c "import subprocess; print(subprocess.run(['cat'], input='envoyé à cat\n', capture_output=True, text=True).stdout)"
+TH parallelisme
+FR `input=` envoie du texte sur l'entrée standard de la commande, comme un `echo |`.
+EN `input=` sends text to the command's standard input, like an `echo |`.
+
+CMD python3 -c "import venv, os; venv.create(os.path.expanduser('~/essai_linux/env2'), with_pip=False); print(os.listdir(os.path.expanduser('~/essai_linux/env2/bin')))"
+TH environnements
+FR Le module `venv` crée l'environnement virtuel depuis Python lui-même, sans `pip` pour aller vite.
+EN The `venv` module creates the virtual environment from Python itself, without `pip` to keep it quick.
+INV rm -r ~/essai_linux/env2
+IFR `rm -r` supprime l'environnement virtuel.
+IEN `rm -r` deletes the virtual environment.
+
+CMD python3 -m venv ~/essai_linux/env3 && ~/essai_linux/env3/bin/pip install -q cowsay && ~/essai_linux/env3/bin/python -m cowsay -t "Linux du jour"
+TH environnements
+FR On installe un module externe dans un environnement isolé et on l'utilise aussitôt. Rien n'est installé sur le système.
+EN We install an external module into an isolated environment and use it straight away. Nothing is installed system-wide.
+INV rm -r ~/essai_linux/env3
+IFR Supprimer le dossier efface l'environnement et le module installé.
+IEN Deleting the folder wipes the environment and the installed module.
+
+CMD python3 -m pip list --outdated 2>/dev/null | head
+TH environnements
+FR Les modules Python dont une version plus récente existe.
+EN The Python modules that have a newer version available.
+
+CMD python3 -m pip show pip
+TH environnements
+FR La fiche détaillée d'un module installé : version, emplacement, dépendances.
+EN The detailed card of an installed module: version, location, dependencies.
+
+CMD python3 -m ensurepip --version
+TH environnements
+FR `ensurepip` peut réinstaller `pip` s'il manque. Ici, on regarde seulement quelle version il fournirait.
+EN `ensurepip` can reinstall `pip` if it's missing. Here we only check which version it would provide.
+
+CMD python3 -c "import zipimport, sys; print([p for p in sys.path if p.endswith('.zip')])"
+TH environnements
+FR Python sait importer des modules directement depuis une archive zip placée dans son chemin.
+EN Python can import modules straight from a zip archive placed on its path.
+
+CMD python3 -c "import site, sys; print(site.ENABLE_USER_SITE, sys.flags.no_user_site)"
+TH environnements
+FR Le dossier de modules personnels est-il actif ? Cela détermine où `pip install --user` écrit.
+EN Is the personal modules folder active? It decides where `pip install --user` writes.
+
+CMD python3 -c "import keyword; print(keyword.softkwlist)"
+TH environnements
+FR Les mots-clés « souples » comme `match` et `case` : réservés seulement dans certains contextes.
+EN The "soft" keywords like `match` and `case`: reserved only in certain contexts.
+
+CMD python3 -c "import __future__; print([f for f in __future__.all_feature_names])"
+TH environnements
+FR Les fonctionnalités que Python a introduites progressivement via `from __future__ import`.
+EN The features Python introduced gradually via `from __future__ import`.
+
+CMD python3 -c "import sys; print(sys.version_info.releaselevel, sys.implementation.name, sys.implementation.cache_tag)"
+TH environnements
+FR L'implémentation de Python utilisée (`cpython`) et l'étiquette de ses fichiers compilés.
+EN The Python implementation in use (`cpython`) and its compiled files' tag.
+
+CMD python3 -c "import sys, os; print(os.path.join(sys.prefix, 'lib64'), sys.maxsize == 2 ** 63 - 1)"
+TH environnements
+FR `sys.maxsize` confirme qu'il s'agit d'un Python 64 bits.
+EN `sys.maxsize` confirms this is a 64-bit Python.

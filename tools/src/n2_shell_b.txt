@@ -1,0 +1,32 @@
+@level 2
+@type shell
+
+CMD sort /etc/shells | uniq -d
+TH pipes
+FR `uniq -d` n'affiche que les lignes en double. Rien ne s'affiche si le fichier n'en contient pas.
+EN `uniq -d` prints only duplicated lines. Nothing shows if the file has none.
+
+CMD wc -l /etc/passwd /etc/group
+TH texte
+FR Avec plusieurs fichiers, `wc` compte chacun et ajoute une ligne de total.
+EN With several files, `wc` counts each one and adds a total line.
+
+CMD head -n 1 /etc/*-release
+TH jokers
+FR `head` affiche un en-tête `==> nom <==` devant chaque fichier trouvé par le joker.
+EN `head` prints a `==> name <==` header in front of each file the wildcard finds.
+
+CMD ls -l /etc | grep ^d | wc -l
+TH pipes
+FR Les lignes de `ls -l` qui commencent par `d` sont des dossiers : on compte les sous-dossiers de `/etc`.
+EN `ls -l` lines starting with `d` are folders: we count the subfolders of `/etc`.
+
+CMD grep -v '^#' /etc/services | grep -v '^$' | wc -l
+TH pipes
+FR Deux filtres à la suite : on retire les commentaires, puis les lignes vides, avant de compter.
+EN Two filters in a row: we remove comments, then empty lines, before counting.
+
+CMD tail -n +3 /etc/shells
+TH texte
+FR `+3` signifie « à partir de la ligne 3 » : on saute les deux premières lignes.
+EN `+3` means "from line 3 onwards": the first two lines are skipped.

@@ -1,0 +1,1016 @@
+@level 1
+@type python
+
+CMD python3 -c "print('Bonjour Linux')"
+TH bases
+FR `python3 -c` exécute le code entre guillemets. `print()` affiche ce qu'on lui donne.
+EN `python3 -c` runs the quoted code. `print()` displays whatever it is given.
+
+CMD python3 -c "print(2 + 3)"
+TH calcul
+FR Python calcule l'expression avant de l'afficher : `5`.
+EN Python works out the expression before printing it: `5`.
+
+CMD python3 -c "print(2 ** 10)"
+TH calcul
+FR `**` est la puissance : 2 multiplié 10 fois par lui-même, soit `1024`.
+EN `**` is the power operator: 2 multiplied by itself 10 times, i.e. `1024`.
+
+CMD python3 -c "print(17 / 5)"
+TH calcul
+FR `/` fait une vraie division et donne un nombre à virgule : `3.4`.
+EN `/` does a true division and gives a decimal number: `3.4`.
+
+CMD python3 -c "print(17 // 5)"
+TH calcul
+FR `//` est la division entière : il garde seulement la partie entière, `3`.
+EN `//` is floor division: it keeps only the whole part, `3`.
+
+CMD python3 -c "print(17 % 5)"
+TH calcul
+FR `%` (modulo) donne le reste de la division : `2`.
+EN `%` (modulo) gives the remainder of the division: `2`.
+
+CMD python3 -c "print(10 % 2 == 0)"
+TH calcul
+FR `==` compare deux valeurs. Un nombre est pair si le reste par 2 vaut zéro : `True`.
+EN `==` compares two values. A number is even if its remainder by 2 is zero: `True`.
+
+CMD python3 -c "print(0.1 + 0.2)"
+TH calcul
+FR Surprise : `0.30000000000000004`. Les ordinateurs stockent les décimaux de façon approchée.
+EN Surprise: `0.30000000000000004`. Computers store decimals approximately.
+
+CMD python3 -c "print(round(0.1 + 0.2, 2))"
+TH calcul
+FR `round()` arrondit un nombre. Le `2` demande deux chiffres après la virgule.
+EN `round()` rounds a number. The `2` asks for two digits after the decimal point.
+
+CMD python3 -c "print(abs(-42))"
+TH calcul
+FR `abs()` donne la valeur absolue : le nombre sans son signe moins.
+EN `abs()` gives the absolute value: the number without its minus sign.
+
+CMD python3 -c "print(max(4, 9, 2))"
+TH calcul
+FR `max()` renvoie la plus grande des valeurs données.
+EN `max()` returns the largest of the given values.
+
+CMD python3 -c "print(min(4, 9, 2))"
+TH calcul
+FR `min()` renvoie la plus petite.
+EN `min()` returns the smallest.
+
+CMD python3 -c "print(sum([1, 2, 3, 4]))"
+TH calcul
+FR `sum()` additionne tous les éléments d'une liste, écrite entre crochets `[ ]`.
+EN `sum()` adds up every item in a list, written between square brackets `[ ]`.
+
+CMD python3 -c "print(divmod(17, 5))"
+TH calcul
+FR `divmod()` donne d'un coup le quotient et le reste : `(3, 2)`.
+EN `divmod()` gives the quotient and the remainder at once: `(3, 2)`.
+
+CMD python3 -c "print(pow(3, 4))"
+TH calcul
+FR `pow()` fait la même chose que `**` : 3 puissance 4.
+EN `pow()` does the same as `**`: 3 to the power of 4.
+
+CMD python3 -c "print(1_000_000 * 3)"
+TH calcul
+FR Les `_` dans un nombre ne servent qu'à la lisibilité : Python les ignore.
+EN The `_` in a number is only for readability: Python ignores it.
+
+CMD python3 -c "print(2 ** 100)"
+TH calcul
+FR Python gère des nombres entiers aussi grands que tu veux, sans perte de précision.
+EN Python handles whole numbers as large as you like, with no loss of precision.
+
+CMD python3 -c "print(7 > 3, 7 < 3)"
+TH calcul
+FR Une comparaison donne un booléen : `True` (vrai) ou `False` (faux).
+EN A comparison gives a boolean: `True` or `False`.
+
+CMD python3 -c "print(int('42') + 1)"
+TH types
+FR `int()` convertit un texte en nombre entier, pour pouvoir calculer avec.
+EN `int()` turns text into a whole number, so you can do maths with it.
+
+CMD python3 -c "print(float('3.5') * 2)"
+TH types
+FR `float()` convertit un texte en nombre à virgule.
+EN `float()` turns text into a decimal number.
+
+CMD python3 -c "print(str(42) + ' ans')"
+TH types
+FR `str()` convertit un nombre en texte. On peut alors le coller à un autre texte avec `+`.
+EN `str()` turns a number into text. It can then be joined to other text with `+`.
+
+CMD python3 -c "print(type(42))"
+TH types
+FR `type()` indique le type d'une valeur : `int` pour un nombre entier.
+EN `type()` tells a value's type: `int` for a whole number.
+
+CMD python3 -c "print(type(3.14))"
+TH types
+FR `float` désigne un nombre à virgule flottante.
+EN `float` means a floating-point number.
+
+CMD python3 -c "print(type('salut'))"
+TH types
+FR `str` (string) désigne une chaîne de caractères, autrement dit du texte.
+EN `str` (string) means a sequence of characters, in other words text.
+
+CMD python3 -c "print(type([1, 2]))"
+TH types
+FR `list` désigne une liste : une suite ordonnée d'éléments.
+EN `list` means a list: an ordered sequence of items.
+
+CMD python3 -c "print(type(True))"
+TH types
+FR `bool` désigne un booléen, qui ne vaut que `True` ou `False`.
+EN `bool` means a boolean, which is only ever `True` or `False`.
+
+CMD python3 -c "print(bool(0), bool(5))"
+TH types
+FR `bool()` convertit en vrai ou faux. Zéro vaut `False`, tout autre nombre `True`.
+EN `bool()` converts to true or false. Zero is `False`, any other number is `True`.
+
+CMD python3 -c "print(bool(''), bool('a'))"
+TH types
+FR Un texte vide vaut `False`, un texte non vide vaut `True`.
+EN Empty text is `False`, non-empty text is `True`.
+
+CMD python3 -c "print(hex(255))"
+TH types
+FR `hex()` écrit un nombre en hexadécimal (base 16) : `0xff`.
+EN `hex()` writes a number in hexadecimal (base 16): `0xff`.
+
+CMD python3 -c "print(bin(10))"
+TH types
+FR `bin()` écrit un nombre en binaire (base 2) : `0b1010`.
+EN `bin()` writes a number in binary (base 2): `0b1010`.
+
+CMD python3 -c "print(int('ff', 16))"
+TH types
+FR `int()` avec une base fait l'inverse : il lit `ff` en hexadécimal et donne `255`.
+EN `int()` with a base does the reverse: it reads `ff` as hex and gives `255`.
+
+CMD python3 -c "print(ord('A'))"
+TH types
+FR `ord()` donne le code numérique d'un caractère : `65` pour `A`.
+EN `ord()` gives a character's numeric code: `65` for `A`.
+
+CMD python3 -c "print(chr(65))"
+TH types
+FR `chr()` fait l'inverse : il transforme le code `65` en lettre `A`.
+EN `chr()` does the reverse: it turns code `65` into the letter `A`.
+
+CMD python3 -c "print(chr(9731))"
+TH types
+FR Les codes vont bien au-delà de l'alphabet : 9731 est un bonhomme de neige.
+EN Codes go far beyond the alphabet: 9731 is a snowman.
+
+CMD python3 -c "print('Linux' * 3)"
+TH chaines
+FR Multiplier un texte le répète : `LinuxLinuxLinux`.
+EN Multiplying text repeats it: `LinuxLinuxLinux`.
+
+CMD python3 -c "print('-' * 30)"
+TH chaines
+FR Une astuce pour tracer une ligne de séparation dans un affichage.
+EN A trick to draw a separator line in your output.
+
+CMD python3 -c "print('Fedora' + ' ' + 'Linux')"
+TH chaines
+FR `+` colle deux textes bout à bout. On ajoute un espace entre les deux.
+EN `+` glues two pieces of text together. We add a space between them.
+
+CMD python3 -c "print(len('Fedora'))"
+TH chaines
+FR `len()` donne la longueur : ici, le nombre de lettres, `6`.
+EN `len()` gives the length: here, the number of letters, `6`.
+
+CMD python3 -c "print('fedora'.upper())"
+TH chaines
+FR `.upper()` met tout le texte en majuscules.
+EN `.upper()` turns all the text into capitals.
+
+CMD python3 -c "print('FEDORA'.lower())"
+TH chaines
+FR `.lower()` met tout le texte en minuscules.
+EN `.lower()` turns all the text into lowercase.
+
+CMD python3 -c "print('bonjour le monde'.title())"
+TH chaines
+FR `.title()` met une majuscule au début de chaque mot.
+EN `.title()` capitalises the first letter of every word.
+
+CMD python3 -c "print('bonjour'.capitalize())"
+TH chaines
+FR `.capitalize()` met seulement la première lettre en majuscule.
+EN `.capitalize()` capitalises only the first letter.
+
+CMD python3 -c "print('Linux'[0])"
+TH chaines
+FR Les crochets lisent un caractère. Python compte à partir de `0` : ici, `L`.
+EN Brackets read one character. Python counts from `0`: here, `L`.
+
+CMD python3 -c "print('Linux'[-1])"
+TH chaines
+FR Un indice négatif part de la fin : `-1` est le dernier caractère, `x`.
+EN A negative index counts from the end: `-1` is the last character, `x`.
+
+CMD python3 -c "print('Fedora Linux'[0:6])"
+TH chaines
+FR `[0:6]` découpe une tranche du caractère 0 jusqu'au 6 exclu : `Fedora`.
+EN `[0:6]` slices from character 0 up to 6, excluded: `Fedora`.
+
+CMD python3 -c "print('Linux'[::-1])"
+TH chaines
+FR `[::-1]` parcourt le texte à l'envers : `xuniL`.
+EN `[::-1]` walks the text backwards: `xuniL`.
+
+CMD python3 -c "print('banane'.count('a'))"
+TH chaines
+FR `.count()` compte combien de fois un morceau apparaît dans le texte.
+EN `.count()` counts how many times a piece appears in the text.
+
+CMD python3 -c "print('Linux'.replace('u', 'U'))"
+TH chaines
+FR `.replace()` remplace un morceau de texte par un autre.
+EN `.replace()` swaps one piece of text for another.
+
+CMD python3 -c "print('  espaces  '.strip())"
+TH chaines
+FR `.strip()` enlève les espaces au début et à la fin du texte.
+EN `.strip()` removes spaces at the start and end of the text.
+
+CMD python3 -c "print('a,b,c'.split(','))"
+TH chaines
+FR `.split()` coupe un texte en liste, à chaque virgule ici.
+EN `.split()` cuts text into a list, at each comma here.
+
+CMD python3 -c "print('-'.join(['a', 'b', 'c']))"
+TH chaines
+FR `.join()` fait l'inverse de `split` : il recolle une liste avec un séparateur.
+EN `.join()` is the reverse of `split`: it glues a list back with a separator.
+
+CMD python3 -c "print('Linux'.startswith('Li'))"
+TH chaines
+FR `.startswith()` vérifie si le texte commence par un morceau donné.
+EN `.startswith()` checks whether the text starts with a given piece.
+
+CMD python3 -c "print('photo.jpg'.endswith('.jpg'))"
+TH chaines
+FR `.endswith()` vérifie la fin du texte : pratique pour tester une extension de fichier.
+EN `.endswith()` checks the end of the text: handy to test a file extension.
+
+CMD python3 -c "print('nux' in 'Linux')"
+TH chaines
+FR `in` vérifie si un morceau se trouve dans le texte.
+EN `in` checks whether a piece is found in the text.
+
+CMD python3 -c "print('Linux'.find('n'))"
+TH chaines
+FR `.find()` donne la position de la première occurrence : `2`.
+EN `.find()` gives the position of the first occurrence: `2`.
+
+CMD python3 -c "print('42'.isdigit(), 'abc'.isdigit())"
+TH chaines
+FR `.isdigit()` vérifie si le texte ne contient que des chiffres.
+EN `.isdigit()` checks whether the text contains only digits.
+
+CMD python3 -c "print('Linux'.center(20, '*'))"
+TH chaines
+FR `.center()` centre le texte sur 20 caractères en complétant avec des `*`.
+EN `.center()` centres the text on 20 characters, padding with `*`.
+
+CMD python3 -c "print('7'.zfill(3))"
+TH chaines
+FR `.zfill()` complète par des zéros à gauche : `007`.
+EN `.zfill()` pads with zeros on the left: `007`.
+
+CMD python3 -c "print('ligne 1\nligne 2')"
+TH chaines
+FR `\n` dans un texte provoque un retour à la ligne.
+EN `\n` inside text starts a new line.
+
+CMD python3 -c "print('a', 'b', 'c', sep=' | ')"
+TH chaines
+FR `sep=` choisit le séparateur que `print()` met entre les valeurs.
+EN `sep=` chooses the separator `print()` puts between values.
+
+CMD python3 -c "print('sans retour', end=' ... '); print('suite')"
+TH chaines
+FR `end=` remplace le retour à la ligne final. Le `;` enchaîne deux instructions.
+EN `end=` replaces the final newline. The `;` chains two statements.
+
+CMD python3 -c "nom = 'Tux'; print(f'Salut {nom}')"
+TH chaines
+FR Un texte précédé de `f` (f-string) remplace `{nom}` par la valeur de la variable.
+EN Text prefixed with `f` (an f-string) replaces `{nom}` with the variable's value.
+
+CMD python3 -c "x = 7; print(f'{x} au carré = {x * x}')"
+TH chaines
+FR On peut même calculer directement entre les accolades d'une f-string.
+EN You can even compute directly inside an f-string's braces.
+
+CMD python3 -c "print(f'{3.14159:.2f}')"
+TH chaines
+FR `:.2f` affiche le nombre avec exactement deux décimales : `3.14`.
+EN `:.2f` prints the number with exactly two decimals: `3.14`.
+
+CMD python3 -c "print(f'{1234567:,}')"
+TH chaines
+FR `:,` ajoute un séparateur de milliers : `1,234,567`.
+EN `:,` adds a thousands separator: `1,234,567`.
+
+CMD python3 -c "print(f'{0.256:.0%}')"
+TH chaines
+FR `:.0%` transforme un nombre en pourcentage arrondi : `26%`.
+EN `:.0%` turns a number into a rounded percentage: `26%`.
+
+CMD python3 -c "print(f'[{42:>6}]')"
+TH chaines
+FR `:>6` aligne la valeur à droite sur 6 caractères, comme dans un tableau.
+EN `:>6` right-aligns the value on 6 characters, as in a table.
+
+CMD python3 -c "a = 5; b = 3; print(a + b)"
+TH variables
+FR `=` range une valeur dans une variable. On peut ensuite s'en servir par son nom.
+EN `=` stores a value in a variable. You can then use it by its name.
+
+CMD python3 -c "a, b = 1, 2; a, b = b, a; print(a, b)"
+TH variables
+FR Python échange deux variables en une seule ligne, sans variable intermédiaire.
+EN Python swaps two variables in one line, with no helper variable.
+
+CMD python3 -c "x = 10; x += 5; print(x)"
+TH variables
+FR `+=` ajoute à la valeur actuelle : `x` passe de 10 à 15.
+EN `+=` adds to the current value: `x` goes from 10 to 15.
+
+CMD python3 -c "x = None; print(x is None)"
+TH variables
+FR `None` signifie « aucune valeur ». On le teste avec `is`.
+EN `None` means "no value". You test for it with `is`.
+
+CMD python3 -c "print([1, 2, 3])"
+TH listes
+FR Une liste s'écrit entre crochets, éléments séparés par des virgules.
+EN A list is written between brackets, items separated by commas.
+
+CMD python3 -c "print(len([5, 8, 13]))"
+TH listes
+FR `len()` donne aussi le nombre d'éléments d'une liste.
+EN `len()` also gives the number of items in a list.
+
+CMD python3 -c "print(sorted([5, 2, 9, 1]))"
+TH listes
+FR `sorted()` renvoie une copie triée de la liste, du plus petit au plus grand.
+EN `sorted()` returns a sorted copy of the list, smallest first.
+
+CMD python3 -c "print(sorted([5, 2, 9, 1], reverse=True))"
+TH listes
+FR `reverse=True` inverse le tri : du plus grand au plus petit.
+EN `reverse=True` flips the sort: largest first.
+
+CMD python3 -c "print(sorted(['poire', 'Kiwi', 'abricot']))"
+TH listes
+FR Les majuscules passent avant les minuscules : `Kiwi` arrive en tête.
+EN Capitals sort before lowercase: `Kiwi` comes first.
+
+CMD python3 -c "l = [1, 2]; l.append(3); print(l)"
+TH listes
+FR `.append()` ajoute un élément à la fin de la liste.
+EN `.append()` adds an item to the end of the list.
+
+CMD python3 -c "l = [1, 2, 3]; l.remove(2); print(l)"
+TH listes
+FR `.remove()` retire la première occurrence de la valeur donnée.
+EN `.remove()` takes out the first occurrence of the given value.
+
+CMD python3 -c "l = [1, 2, 3]; print(l.pop(), l)"
+TH listes
+FR `.pop()` retire le dernier élément et le renvoie.
+EN `.pop()` removes the last item and returns it.
+
+CMD python3 -c "l = [3, 1, 2]; l.sort(); print(l)"
+TH listes
+FR `.sort()` trie la liste elle-même, contrairement à `sorted()` qui fait une copie.
+EN `.sort()` sorts the list itself, unlike `sorted()` which makes a copy.
+
+CMD python3 -c "l = [1, 2, 3]; l.reverse(); print(l)"
+TH listes
+FR `.reverse()` inverse l'ordre des éléments.
+EN `.reverse()` reverses the order of the items.
+
+CMD python3 -c "l = ['a', 'b', 'c']; print(l.index('c'))"
+TH listes
+FR `.index()` donne la position d'un élément dans la liste : `2`.
+EN `.index()` gives an item's position in the list: `2`.
+
+CMD python3 -c "print([1, 2] + [3, 4])"
+TH listes
+FR `+` met deux listes bout à bout.
+EN `+` joins two lists end to end.
+
+CMD python3 -c "print([0] * 5)"
+TH listes
+FR Multiplier une liste la répète : cinq zéros.
+EN Multiplying a list repeats it: five zeros.
+
+CMD python3 -c "print(3 in [1, 2, 3])"
+TH listes
+FR `in` vérifie si une valeur fait partie de la liste.
+EN `in` checks whether a value is part of the list.
+
+CMD python3 -c "print([10, 20, 30, 40][1:3])"
+TH listes
+FR Les tranches marchent aussi sur les listes : éléments 1 et 2.
+EN Slices work on lists too: items 1 and 2.
+
+CMD python3 -c "print(list(range(5)))"
+TH listes
+FR `range(5)` produit les nombres de 0 à 4. `list()` les rassemble dans une liste.
+EN `range(5)` produces the numbers 0 to 4. `list()` gathers them into a list.
+
+CMD python3 -c "print(list(range(1, 11)))"
+TH listes
+FR `range(1, 11)` va de 1 à 10 : la borne de fin est toujours exclue.
+EN `range(1, 11)` goes from 1 to 10: the end value is always excluded.
+
+CMD python3 -c "print(list(range(0, 50, 10)))"
+TH listes
+FR Le troisième nombre est le pas : de 10 en 10.
+EN The third number is the step: by tens.
+
+CMD python3 -c "print(list(range(10, 0, -1)))"
+TH listes
+FR Un pas négatif compte à rebours, de 10 à 1.
+EN A negative step counts down, from 10 to 1.
+
+CMD python3 -c "print(list('Linux'))"
+TH listes
+FR `list()` découpe un texte en liste de caractères.
+EN `list()` splits text into a list of characters.
+
+CMD python3 -c "print(set([1, 2, 2, 3, 3, 3]))"
+TH listes
+FR Un `set` (ensemble) ne garde chaque valeur qu'une fois : les doublons disparaissent.
+EN A `set` keeps each value only once: duplicates disappear.
+
+CMD python3 -c "print((1, 2, 3))"
+TH listes
+FR Un tuple s'écrit entre parenthèses. C'est une liste qu'on ne peut plus modifier.
+EN A tuple is written between parentheses. It is a list that can't be changed.
+
+CMD python3 -c "d = {'nom': 'Tux', 'age': 34}; print(d['nom'])"
+TH dictionnaires
+FR Un dictionnaire associe des clés à des valeurs. `d['nom']` lit la valeur de la clé `nom`.
+EN A dictionary maps keys to values. `d['nom']` reads the value for the `nom` key.
+
+CMD python3 -c "d = {'a': 1, 'b': 2}; print(d.keys())"
+TH dictionnaires
+FR `.keys()` liste les clés du dictionnaire.
+EN `.keys()` lists the dictionary's keys.
+
+CMD python3 -c "d = {'a': 1, 'b': 2}; print(d.values())"
+TH dictionnaires
+FR `.values()` liste ses valeurs.
+EN `.values()` lists its values.
+
+CMD python3 -c "d = {'a': 1}; d['b'] = 2; print(d)"
+TH dictionnaires
+FR Affecter une nouvelle clé l'ajoute au dictionnaire.
+EN Assigning a new key adds it to the dictionary.
+
+CMD python3 -c "d = {'a': 1}; print(d.get('z', 'absent'))"
+TH dictionnaires
+FR `.get()` lit une clé sans planter si elle n'existe pas : il renvoie la valeur par défaut.
+EN `.get()` reads a key without crashing if it is missing: it returns the default value.
+
+CMD python3 -c "print(len({'a': 1, 'b': 2, 'c': 3}))"
+TH dictionnaires
+FR `len()` compte le nombre de paires clé-valeur.
+EN `len()` counts the number of key-value pairs.
+
+CMD python3 -c "print('a' in {'a': 1, 'b': 2})"
+TH dictionnaires
+FR `in` vérifie si une clé existe dans le dictionnaire.
+EN `in` checks whether a key exists in the dictionary.
+
+CMD python3 -c "for i in range(3): print('tour', i)"
+TH boucles
+FR `for` répète une instruction pour chaque valeur de `range(3)` : 0, 1 et 2.
+EN `for` repeats a statement for each value of `range(3)`: 0, 1 and 2.
+
+CMD python3 -c "for c in 'Tux': print(c)"
+TH boucles
+FR Une boucle peut parcourir un texte, lettre par lettre.
+EN A loop can walk through text, letter by letter.
+
+CMD python3 -c "for f in ['pomme', 'kiwi']: print(f.upper())"
+TH boucles
+FR Ici, la boucle parcourt une liste et traite chaque élément.
+EN Here the loop walks a list and handles each item.
+
+CMD python3 -c "for i in range(1, 11): print(7, 'x', i, '=', 7 * i)"
+TH boucles
+FR La table de 7 en une ligne : la boucle fait varier `i` de 1 à 10.
+EN The 7 times table in one line: the loop varies `i` from 1 to 10.
+
+CMD python3 -c "for i, f in enumerate(['a', 'b']): print(i, f)"
+TH boucles
+FR `enumerate()` donne à la fois la position et l'élément à chaque tour.
+EN `enumerate()` gives both the position and the item at each step.
+
+CMD python3 -c "print([x * 2 for x in range(5)])"
+TH boucles
+FR Une liste en compréhension construit une liste en une ligne : chaque `x` doublé.
+EN A list comprehension builds a list in one line: each `x` doubled.
+
+CMD python3 -c "print([x for x in range(20) if x % 3 == 0])"
+TH boucles
+FR Le `if` en fin de compréhension filtre : on ne garde que les multiples de 3.
+EN The `if` at the end of a comprehension filters: only multiples of 3 remain.
+
+CMD python3 -c "x = 5; print('grand' if x > 3 else 'petit')"
+TH conditions
+FR L'expression `if ... else` choisit une valeur selon une condition, en une ligne.
+EN The `if ... else` expression picks a value based on a condition, in one line.
+
+CMD python3 -c "age = 20; print(age >= 18 and age < 65)"
+TH conditions
+FR `and` exige que les deux conditions soient vraies.
+EN `and` requires both conditions to be true.
+
+CMD python3 -c "print(True or False, not True)"
+TH conditions
+FR `or` est vrai si l'une des deux conditions l'est. `not` inverse une valeur.
+EN `or` is true if either condition is. `not` flips a value.
+
+CMD python3 -c "print(1 < 5 < 10)"
+TH conditions
+FR Python permet d'enchaîner les comparaisons, comme en maths.
+EN Python lets you chain comparisons, like in maths.
+
+CMD python3 -c "import math; print(math.pi)"
+TH modules
+FR `import` charge un module, une boîte à outils. `math` contient des fonctions mathématiques.
+EN `import` loads a module, a toolbox. `math` holds mathematical functions.
+
+CMD python3 -c "import math; print(math.sqrt(144))"
+TH modules
+FR `math.sqrt()` calcule une racine carrée.
+EN `math.sqrt()` computes a square root.
+
+CMD python3 -c "import math; print(math.floor(3.7), math.ceil(3.2))"
+TH modules
+FR `floor()` arrondit vers le bas, `ceil()` vers le haut.
+EN `floor()` rounds down, `ceil()` rounds up.
+
+CMD python3 -c "import math; print(math.factorial(5))"
+TH modules
+FR `factorial(5)` calcule 5 × 4 × 3 × 2 × 1.
+EN `factorial(5)` computes 5 × 4 × 3 × 2 × 1.
+
+CMD python3 -c "import math; print(math.gcd(48, 36))"
+TH modules
+FR `gcd()` donne le plus grand diviseur commun de deux nombres : `12`.
+EN `gcd()` gives the greatest common divisor of two numbers: `12`.
+
+CMD python3 -c "from math import pi; print(round(pi * 5 ** 2, 2))"
+TH modules
+FR `from ... import` charge un seul élément du module. Ici, l'aire d'un disque de rayon 5.
+EN `from ... import` loads a single item from the module. Here, the area of a disc of radius 5.
+
+CMD python3 -c "import random; print(random.randint(1, 6))"
+TH modules
+FR `random.randint()` tire un nombre entier au hasard, comme un dé à six faces.
+EN `random.randint()` draws a random whole number, like a six-sided die.
+
+CMD python3 -c "import random; print(random.choice(['pile', 'face']))"
+TH modules
+FR `random.choice()` tire un élément au hasard dans une liste.
+EN `random.choice()` picks a random item from a list.
+
+CMD python3 -c "import random; print(random.random())"
+TH modules
+FR `random.random()` donne un nombre à virgule au hasard entre 0 et 1.
+EN `random.random()` gives a random decimal number between 0 and 1.
+
+CMD python3 -c "import random; l = [1, 2, 3, 4]; random.shuffle(l); print(l)"
+TH modules
+FR `random.shuffle()` mélange une liste, comme un jeu de cartes.
+EN `random.shuffle()` shuffles a list, like a deck of cards.
+
+CMD python3 -c "import random; print(random.sample(range(1, 50), 6))"
+TH modules
+FR `random.sample()` tire 6 nombres différents : une grille de loto.
+EN `random.sample()` draws 6 different numbers: a lottery ticket.
+
+CMD python3 -c "import datetime; print(datetime.date.today())"
+TH dates
+FR Le module `datetime` gère les dates. `date.today()` donne la date du jour.
+EN The `datetime` module handles dates. `date.today()` gives today's date.
+
+CMD python3 -c "import datetime; print(datetime.datetime.now())"
+TH dates
+FR `datetime.now()` donne la date et l'heure précises, jusqu'à la microseconde.
+EN `datetime.now()` gives the precise date and time, down to the microsecond.
+
+CMD python3 -c "import datetime; print(datetime.date.today().year)"
+TH dates
+FR `.year` extrait seulement l'année d'une date.
+EN `.year` extracts just the year from a date.
+
+CMD python3 -c "import datetime; print(datetime.date.today().weekday())"
+TH dates
+FR `.weekday()` donne le jour de la semaine en chiffre : 0 pour lundi, 6 pour dimanche.
+EN `.weekday()` gives the day of the week as a number: 0 for Monday, 6 for Sunday.
+
+CMD python3 -c "import datetime; print(datetime.date.today().strftime('%d/%m/%Y'))"
+TH dates
+FR `strftime()` formate une date. Les codes `%d`, `%m` et `%Y` sont les mêmes que ceux de la commande `date`.
+EN `strftime()` formats a date. The `%d`, `%m` and `%Y` codes are the same as the `date` command's.
+
+CMD python3 -c "import calendar; print(calendar.month(2026, 12))"
+TH dates
+FR Le module `calendar` dessine le calendrier d'un mois, comme la commande `cal`.
+EN The `calendar` module draws a month's calendar, like the `cal` command.
+
+CMD python3 -c "import calendar; print(calendar.isleap(2028))"
+TH dates
+FR `isleap()` indique si une année est bissextile.
+EN `isleap()` tells whether a year is a leap year.
+
+CMD python3 -c "import time; print(time.time())"
+TH dates
+FR `time.time()` donne le nombre de secondes écoulées depuis le 1er janvier 1970, l'« époque Unix ».
+EN `time.time()` gives the seconds elapsed since 1 January 1970, the "Unix epoch".
+
+CMD python3 -c "import time; print('début'); time.sleep(2); print('fin')"
+TH dates
+FR `time.sleep()` met le programme en pause, comme la commande `sleep`.
+EN `time.sleep()` pauses the program, like the `sleep` command.
+
+CMD python3 -c "import time; print(time.strftime('%H:%M:%S'))"
+TH dates
+FR `time.strftime()` formate l'heure actuelle : heures, minutes, secondes.
+EN `time.strftime()` formats the current time: hours, minutes, seconds.
+
+CMD python3 -c "import os; print(os.getcwd())"
+TH systeme
+FR Le module `os` parle au système. `getcwd()` est l'équivalent Python de `pwd`.
+EN The `os` module talks to the system. `getcwd()` is Python's equivalent of `pwd`.
+
+CMD python3 -c "import os; print(os.listdir('.'))"
+TH systeme
+FR `listdir()` liste le contenu d'un dossier, comme `ls`, mais sous forme de liste Python.
+EN `listdir()` lists a folder's contents, like `ls`, but as a Python list.
+
+CMD python3 -c "import os; print(os.path.expanduser('~'))"
+TH systeme
+FR `expanduser()` remplace `~` par le chemin de ton dossier perso, comme le fait le shell.
+EN `expanduser()` replaces `~` with your home folder path, just like the shell does.
+
+CMD python3 -c "import os; print(os.getlogin())"
+TH systeme
+FR `getlogin()` donne le nom de l'utilisateur connecté, comme `whoami`.
+EN `getlogin()` gives the logged-in user's name, like `whoami`.
+
+CMD python3 -c "import os; print(os.cpu_count())"
+TH systeme
+FR `cpu_count()` donne le nombre de cœurs logiques que Linux voit sur ton PC.
+EN `cpu_count()` gives the number of logical cores Linux sees on your PC.
+
+CMD python3 -c "import os; print(os.environ['HOME'])"
+TH systeme
+FR `os.environ` donne accès aux variables d'environnement, comme `$HOME` dans le shell.
+EN `os.environ` gives access to environment variables, like `$HOME` in the shell.
+
+CMD python3 -c "import os; print(os.getpid())"
+TH systeme
+FR `getpid()` donne le numéro de processus (PID) du programme Python en cours.
+EN `getpid()` gives the process number (PID) of the running Python program.
+
+CMD python3 -c "import os; print(os.path.exists('/etc/os-release'))"
+TH systeme
+FR `os.path.exists()` vérifie si un fichier ou un dossier existe.
+EN `os.path.exists()` checks whether a file or folder exists.
+
+CMD python3 -c "import os; print(os.path.isdir('/etc'))"
+TH systeme
+FR `isdir()` vérifie qu'un chemin est bien un dossier.
+EN `isdir()` checks that a path really is a folder.
+
+CMD python3 -c "import os; print(os.path.getsize('/etc/os-release'))"
+TH systeme
+FR `getsize()` donne la taille d'un fichier en octets.
+EN `getsize()` gives a file's size in bytes.
+
+CMD python3 -c "import os; print(os.path.basename('/etc/os-release'))"
+TH systeme
+FR `os.path.basename()` extrait le nom du fichier, comme la commande `basename`.
+EN `os.path.basename()` extracts the file name, like the `basename` command.
+
+CMD python3 -c "import os; print(os.path.join('dossier', 'sous', 'fichier.txt'))"
+TH systeme
+FR `os.path.join()` assemble un chemin avec les bons `/`, sans risque d'oubli.
+EN `os.path.join()` builds a path with the right `/`, with no risk of forgetting one.
+
+CMD python3 -c "import os; print(os.path.splitext('photo.jpg'))"
+TH systeme
+FR `splitext()` sépare le nom de son extension : `('photo', '.jpg')`.
+EN `splitext()` splits the name from its extension: `('photo', '.jpg')`.
+
+CMD python3 -c "import platform; print(platform.system())"
+TH systeme
+FR Le module `platform` décrit la machine. `system()` répond `Linux`.
+EN The `platform` module describes the machine. `system()` answers `Linux`.
+
+CMD python3 -c "import platform; print(platform.release())"
+TH systeme
+FR `release()` donne la version du noyau, comme `uname -r`.
+EN `release()` gives the kernel version, like `uname -r`.
+
+CMD python3 -c "import platform; print(platform.machine())"
+TH systeme
+FR `machine()` donne l'architecture du processeur, comme `uname -m`.
+EN `machine()` gives the processor architecture, like `uname -m`.
+
+CMD python3 -c "import platform; print(platform.node())"
+TH systeme
+FR `node()` donne le nom de la machine, comme `hostname`.
+EN `node()` gives the machine name, like `hostname`.
+
+CMD python3 -c "import platform; print(platform.platform())"
+TH systeme
+FR `platform()` résume le système en une ligne : noyau et architecture.
+EN `platform()` sums up the system in one line: kernel and architecture.
+
+CMD python3 -c "import platform; print(platform.python_version())"
+TH systeme
+FR `python_version()` donne la version de Python qui exécute ce code.
+EN `python_version()` gives the version of Python running this code.
+
+CMD python3 -c "import platform; print(platform.freedesktop_os_release()['PRETTY_NAME'])"
+TH systeme
+FR Python sait lire `/etc/os-release` : voici le nom complet de ta distribution.
+EN Python can read `/etc/os-release`: here is your distribution's full name.
+
+CMD python3 -c "import sys; print(sys.version)"
+TH systeme
+FR Le module `sys` concerne Python lui-même. `sys.version` détaille sa version.
+EN The `sys` module is about Python itself. `sys.version` details its version.
+
+CMD python3 -c "import sys; print(sys.executable)"
+TH systeme
+FR `sys.executable` donne le chemin du programme Python en cours d'exécution.
+EN `sys.executable` gives the path of the running Python program.
+
+CMD python3 -c "import sys; print(sys.platform)"
+TH systeme
+FR `sys.platform` identifie le système : `linux`.
+EN `sys.platform` identifies the system: `linux`.
+
+CMD python3 -c "import sys; print(sys.path)"
+TH systeme
+FR `sys.path` liste les dossiers où Python cherche les modules, comme `$PATH` pour les commandes.
+EN `sys.path` lists the folders where Python looks for modules, like `$PATH` for commands.
+
+CMD python3 -c "import getpass; print(getpass.getuser())"
+TH systeme
+FR `getpass.getuser()` donne ton nom d'utilisateur à partir des variables d'environnement.
+EN `getpass.getuser()` gives your username from the environment variables.
+
+CMD python3 -c "import socket; print(socket.gethostname())"
+TH reseau
+FR Le module `socket` gère le réseau. `gethostname()` donne le nom de ta machine.
+EN The `socket` module handles networking. `gethostname()` gives your machine's name.
+
+CMD python3 -c "import socket; print(socket.gethostbyname('localhost'))"
+TH reseau
+FR `gethostbyname()` traduit un nom en adresse IP. `localhost` désigne toujours ta propre machine.
+EN `gethostbyname()` turns a name into an IP address. `localhost` always means your own machine.
+
+CMD python3 -c "import string; print(string.ascii_lowercase)"
+TH modules
+FR Le module `string` fournit des listes de caractères toutes prêtes : ici, l'alphabet.
+EN The `string` module provides ready-made character sets: here, the alphabet.
+
+CMD python3 -c "import string; print(string.digits)"
+TH modules
+FR `string.digits` contient les dix chiffres.
+EN `string.digits` holds the ten digits.
+
+CMD python3 -c "import string; print(string.punctuation)"
+TH modules
+FR `string.punctuation` contient tous les signes de ponctuation.
+EN `string.punctuation` holds every punctuation sign.
+
+CMD python3 -c "import secrets; print(secrets.token_hex(8))"
+TH modules
+FR `secrets` produit du hasard sûr, adapté aux mots de passe. Ici, 8 octets en hexadécimal.
+EN `secrets` produces secure randomness, fit for passwords. Here, 8 bytes in hex.
+
+CMD python3 -c "import uuid; print(uuid.uuid4())"
+TH modules
+FR `uuid4()` génère un identifiant unique au monde, sur le modèle des `UUID` affichés par `lsblk -f`.
+EN `uuid4()` generates a worldwide unique ID, like the `UUID`s shown by `lsblk -f`.
+
+CMD python3 -c "import statistics; print(statistics.mean([12, 15, 9, 14]))"
+TH modules
+FR Le module `statistics` calcule des moyennes. `mean()` donne la moyenne de la liste.
+EN The `statistics` module computes averages. `mean()` gives the list's mean.
+
+CMD python3 -c "import statistics; print(statistics.median([3, 9, 1, 7, 5]))"
+TH modules
+FR `median()` donne la médiane : la valeur du milieu une fois la liste triée.
+EN `median()` gives the median: the middle value once the list is sorted.
+
+CMD python3 -c "import this"
+TH modules
+FR Un module caché qui affiche le « Zen de Python », les principes de conception du langage.
+EN A hidden module that prints the "Zen of Python", the language's design principles.
+
+CMD python3 -c "help(len)"
+TH aide
+FR `help()` affiche l'aide d'une fonction. Comme pour `man`, `q` pour quitter.
+EN `help()` shows a function's help. As with `man`, `q` to quit.
+
+CMD python3 -c "print(dir('texte'))"
+TH aide
+FR `dir()` liste tout ce qu'on peut faire avec une valeur : ici, les méthodes du texte.
+EN `dir()` lists everything you can do with a value: here, the text methods.
+
+CMD python3 -c "import keyword; print(keyword.kwlist)"
+TH aide
+FR La liste des mots réservés de Python, qu'on ne peut pas utiliser comme noms de variables.
+EN The list of Python's reserved words, which can't be used as variable names.
+
+CMD python3 -c "print(len(open('/etc/passwd').readlines()))"
+TH fichiers
+FR `open()` ouvre un fichier et `readlines()` le lit ligne par ligne. Équivalent de `wc -l`.
+EN `open()` opens a file and `readlines()` reads it line by line. Equivalent to `wc -l`.
+
+CMD python3 -c "print(open('/etc/hostname').read())"
+TH fichiers
+FR `.read()` lit tout le contenu d'un fichier d'un coup, comme `cat`.
+EN `.read()` reads a file's whole contents at once, like `cat`.
+
+CMD python3 -c "print(open('/etc/os-release').readline())"
+TH fichiers
+FR `.readline()` ne lit que la première ligne du fichier.
+EN `.readline()` reads only the file's first line.
+
+CMD python3 -c "print(open('/proc/loadavg').read().split()[0])"
+TH fichiers
+FR On lit la charge système, on la découpe, puis on garde le premier nombre : la charge sur 1 minute.
+EN We read the system load, split it, then keep the first number: the 1-minute load.
+
+CMD python3 -c "import os; open(os.path.expanduser('~/essai_linux/py.txt'), 'w').write('Bonjour')"
+TH fichiers
+FR `open(..., 'w')` ouvre un fichier en écriture et le crée. `.write()` y écrit le texte.
+EN `open(..., 'w')` opens a file for writing and creates it. `.write()` writes the text into it.
+INV python3 -c "import os; os.remove(os.path.expanduser('~/essai_linux/py.txt'))"
+IFR `os.remove()` supprime le fichier, comme `rm`.
+IEN `os.remove()` deletes the file, like `rm`.
+
+CMD python3 -c "import os; os.mkdir(os.path.expanduser('~/essai_linux/dossier_py'))"
+TH fichiers
+FR `os.mkdir()` crée un dossier, comme `mkdir`. `expanduser` traduit `~` pour Python.
+EN `os.mkdir()` creates a folder, like `mkdir`. `expanduser` translates `~` for Python.
+INV python3 -c "import os; os.rmdir(os.path.expanduser('~/essai_linux/dossier_py'))"
+IFR `os.rmdir()` supprime ce dossier vide, comme `rmdir`.
+IEN `os.rmdir()` deletes this empty folder, like `rmdir`.
+
+CMD python3 -c "from pathlib import Path; Path.home().joinpath('essai_linux', 'vide.txt').touch()"
+TH fichiers
+FR `pathlib` manipule les chemins comme des objets. `.touch()` crée un fichier vide, comme `touch`.
+EN `pathlib` handles paths as objects. `.touch()` creates an empty file, like `touch`.
+INV python3 -c "from pathlib import Path; Path.home().joinpath('essai_linux', 'vide.txt').unlink()"
+IFR `.unlink()` supprime le fichier : c'est le nom technique de la suppression sous Linux.
+IEN `.unlink()` deletes the file: it is the technical name for deletion on Linux.
+
+CMD python3 -c "from pathlib import Path; print(Path.home())"
+TH fichiers
+FR `Path.home()` donne ton dossier perso sous forme d'objet chemin.
+EN `Path.home()` gives your home folder as a path object.
+
+CMD python3 -c "from pathlib import Path; print(Path('/etc/os-release').suffix or 'aucune')"
+TH fichiers
+FR `.suffix` donne l'extension d'un fichier. `os-release` n'en a pas, d'où `aucune`.
+EN `.suffix` gives a file's extension. `os-release` has none, hence `aucune`.
+
+CMD python3 -c "from pathlib import Path; print(Path('/etc/os-release').parent)"
+TH fichiers
+FR `.parent` donne le dossier qui contient le fichier, comme `dirname`.
+EN `.parent` gives the folder holding the file, like `dirname`.
+
+CMD python3 -c "from pathlib import Path; print(Path('photo.jpg').stem)"
+TH fichiers
+FR `.stem` donne le nom du fichier sans son extension : `photo`.
+EN `.stem` gives the file name without its extension: `photo`.
+
+CMD python3 -c "from pathlib import Path; print(Path('/etc').is_dir())"
+TH fichiers
+FR `.is_dir()` vérifie qu'un chemin est un dossier.
+EN `.is_dir()` checks that a path is a folder.
+
+CMD python3 -c "print(abs(-7.5), round(7.5), round(8.5))"
+TH calcul
+FR Piège : Python arrondit au pair le plus proche, donc 7.5 et 8.5 donnent tous deux `8`.
+EN Gotcha: Python rounds to the nearest even number, so 7.5 and 8.5 both give `8`.
+
+CMD python3 -c "print(len(str(2 ** 1000)))"
+TH calcul
+FR 2 puissance 1000 s'écrit avec 302 chiffres. `str()` le convertit en texte pour les compter.
+EN 2 to the power 1000 has 302 digits. `str()` turns it into text to count them.
+
+CMD python3 -c "print(10 / 3, 10 // 3)"
+TH calcul
+FR Côte à côte, la division classique et la division entière.
+EN Side by side, normal division and floor division.
+
+CMD python3 -c "print(sum(range(1, 101)))"
+TH calcul
+FR La somme des nombres de 1 à 100 : `5050`, le célèbre calcul du jeune Gauss.
+EN The sum of the numbers 1 to 100: `5050`, young Gauss's famous calculation.
+
+CMD python3 -c "print(any([False, True]), all([True, False]))"
+TH conditions
+FR `any()` est vrai si au moins un élément l'est. `all()` exige qu'ils le soient tous.
+EN `any()` is true if at least one item is. `all()` requires them all to be.
+
+CMD python3 -c "print(list(zip([1, 2, 3], ['a', 'b', 'c'])))"
+TH listes
+FR `zip()` assemble deux listes par paires, comme une fermeture éclair.
+EN `zip()` pairs up two lists, like a zip fastener.
+
+CMD python3 -c "print(list(reversed([1, 2, 3])))"
+TH listes
+FR `reversed()` parcourt une liste à l'envers.
+EN `reversed()` walks a list backwards.
+
+CMD python3 -c "print(max(['pomme', 'kiwi', 'banane'], key=len))"
+TH listes
+FR `key=len` demande à `max()` de comparer les longueurs : le mot le plus long gagne.
+EN `key=len` tells `max()` to compare lengths: the longest word wins.
+
+CMD python3 -c "print(sorted(['pomme', 'kiwi', 'banane'], key=len))"
+TH listes
+FR Le même `key=len` trie les mots du plus court au plus long.
+EN The same `key=len` sorts the words from shortest to longest.
+
+CMD python3 -c "print(' '.join(sorted('linux')))"
+TH chaines
+FR `sorted()` sur un texte trie ses lettres. `join` les recolle avec des espaces.
+EN `sorted()` on text sorts its letters. `join` glues them back with spaces.
+
+CMD python3 -c "print('radar' == 'radar'[::-1])"
+TH chaines
+FR On compare un mot à son inverse pour vérifier qu'il s'agit d'un palindrome.
+EN Comparing a word with its reverse checks whether it is a palindrome.
+
+CMD python3 -c "print('Fedora Linux KDE'.split())"
+TH chaines
+FR Sans argument, `.split()` coupe sur les espaces.
+EN With no argument, `.split()` cuts on spaces.
+
+CMD python3 -c "print(len('Fedora Linux KDE'.split()))"
+TH chaines
+FR En comptant les morceaux, on obtient le nombre de mots, comme `wc -w`.
+EN Counting the pieces gives the number of words, like `wc -w`.
+
+CMD python3 -c "print('été'.encode('utf-8'))"
+TH chaines
+FR `.encode()` montre les octets d'un texte. Les lettres accentuées prennent deux octets.
+EN `.encode()` shows a text's bytes. Accented letters take two bytes.
+
+CMD python3 -c "print(repr('tab\tici'))"
+TH chaines
+FR `repr()` montre la valeur telle que Python la voit, caractères spéciaux compris.
+EN `repr()` shows the value as Python sees it, special characters included.
+
+CMD python3 -c "print(input('Ton prénom ? ').upper())"
+TH bases
+FR `input()` pose une question et attend ta réponse au clavier. Tape un prénom puis Entrée.
+EN `input()` asks a question and waits for your keyboard answer. Type a name, then Enter.
+
+CMD python3 -c "n = int(input('Un nombre : ')); print(n * n)"
+TH bases
+FR `input()` renvoie toujours du texte : `int()` le convertit avant de calculer le carré.
+EN `input()` always returns text: `int()` converts it before squaring.
+
+CMD python3
+TH bases
+FR Sans `-c`, Python ouvre son mode interactif : tape du code ligne par ligne. `exit()` pour sortir.
+EN Without `-c`, Python opens its interactive mode: type code line by line. `exit()` to leave.
+
+CMD python3 -c "import antigravity"
+TH modules
+FR Une blague cachée dans Python : ce module ouvre une bande dessinée dans ton navigateur.
+EN A joke hidden in Python: this module opens a comic in your browser.

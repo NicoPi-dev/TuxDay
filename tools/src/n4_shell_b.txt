@@ -1,0 +1,27 @@
+@level 4
+@type shell
+
+CMD ss -ltnH | awk '{print $4}' | rev | cut -d: -f1 | rev | sort -nu
+TH reseau
+FR Les ports en écoute, sans doublon. `rev` permet de couper sur le dernier `:`, même pour une adresse IPv6.
+EN The listening ports, without duplicates. `rev` lets us cut on the last `:`, even for an IPv6 address.
+
+CMD printf '%s\n' /usr/bin/* | awk -F/ '{print substr($4, 1, 1)}' | sort | uniq -c | sort -rn | head -n 5
+TH awk
+FR Par quelle lettre commencent le plus de commandes ? `substr` extrait la première lettre de chaque nom.
+EN Which letter do most commands start with? `substr` extracts the first letter of each name.
+
+CMD env -i bash --norc -c 'echo "PATH : $PATH"; env | wc -l'
+TH bash
+FR `env -i` lance un shell avec un environnement vide : on voit ce que `bash` définit tout seul.
+EN `env -i` starts a shell with an empty environment: you see what `bash` sets up on its own.
+
+CMD getconf ARG_MAX
+TH bash
+FR La longueur maximale d'une ligne de commande, en octets. Au-delà, il faut passer par `xargs`.
+EN The maximum length of a command line, in bytes. Beyond it, you need `xargs`.
+
+CMD xargs --show-limits < /dev/null 2>&1 | head -n 4
+TH bash
+FR `xargs` explique les limites qu'il respecte quand il découpe une longue liste d'arguments.
+EN `xargs` explains the limits it respects when it splits a long list of arguments.

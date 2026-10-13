@@ -1,0 +1,957 @@
+@level 3
+@type shell
+
+CMD ps
+TH processus
+FR `ps` (process status) liste les programmes lancés depuis ce terminal, avec leur numéro (PID).
+EN `ps` (process status) lists the programs started from this terminal, with their number (PID).
+
+CMD ps aux | head -n 10
+TH processus
+FR `aux` affiche tous les processus de la machine, de tous les utilisateurs. On en garde le début.
+EN `aux` shows every process on the machine, from every user. We keep the start.
+
+CMD ps aux | wc -l
+TH processus
+FR Combien de processus tournent en ce moment ? Souvent plusieurs centaines.
+EN How many processes are running right now? Often several hundred.
+
+CMD ps -u $USER | wc -l
+TH processus
+FR `-u` filtre par utilisateur : le nombre de processus qui t'appartiennent.
+EN `-u` filters by user: the number of processes that belong to you.
+
+CMD ps aux --sort=-%mem | head -n 6
+TH processus
+FR Les 5 processus qui consomment le plus de mémoire. Le `-` devant `%mem` trie du plus grand au plus petit.
+EN The 5 processes using the most memory. The `-` before `%mem` sorts largest first.
+
+CMD ps aux --sort=-%cpu | head -n 6
+TH processus
+FR Les 5 processus qui sollicitent le plus le processeur.
+EN The 5 processes using the processor the most.
+
+CMD ps -o pid,ppid,cmd -p $$
+TH processus
+FR `-o` choisit les colonnes. `ppid` est le numéro du processus parent, celui qui a lancé ton shell.
+EN `-o` picks the columns. `ppid` is the parent process number, the one that started your shell.
+
+CMD ps -eo comm --sort=comm | uniq -c | sort -rn | head
+TH processus
+FR Les programmes qui ont le plus de processus en parallèle. Les navigateurs en lancent souvent beaucoup.
+EN The programs running the most processes in parallel. Browsers often start a lot.
+
+CMD pstree -p $$
+TH processus
+FR `pstree` dessine la filiation des processus : ton shell et ses enfants.
+EN `pstree` draws the process family tree: your shell and its children.
+
+CMD pstree | head -n 20
+TH processus
+FR L'arbre complet commence par `systemd`, l'ancêtre de tous les processus.
+EN The full tree starts with `systemd`, the ancestor of every process.
+
+CMD pgrep -l plasma
+TH processus
+FR `pgrep` trouve des processus par leur nom. `-l` affiche aussi le nom complet.
+EN `pgrep` finds processes by name. `-l` also shows the full name.
+
+CMD pgrep -c chrome
+TH processus
+FR `-c` compte les processus trouvés : combien de morceaux de Chrome tournent ?
+EN `-c` counts the processes found: how many pieces of Chrome are running?
+
+CMD pidof plasmashell
+TH processus
+FR `pidof` donne le numéro du processus d'un programme précis : ici, le bureau KDE.
+EN `pidof` gives a given program's process number: here, the KDE desktop.
+
+CMD top -b -n 1 | head -n 15
+TH processus
+FR `top` surveille les processus en direct. `-b -n 1` prend une seule photo, sans mode interactif.
+EN `top` watches processes live. `-b -n 1` takes a single snapshot, without interactive mode.
+
+CMD top
+TH processus
+FR La version interactive : `M` trie par mémoire, `P` par processeur, `q` pour quitter.
+EN The interactive version: `M` sorts by memory, `P` by processor, `q` to quit.
+
+CMD cat /proc/$$/status | head -n 10
+TH processus
+FR Chaque processus a son dossier dans `/proc`. Voici la fiche de ton propre shell.
+EN Every process has its folder in `/proc`. Here is your own shell's sheet.
+
+CMD ls -l /proc/$$/fd
+TH processus
+FR Les fichiers ouverts par ton shell. `0`, `1` et `2` sont l'entrée, la sortie et la sortie d'erreur.
+EN The files your shell has open. `0`, `1` and `2` are input, output and error output.
+
+CMD cat /proc/$$/cmdline | tr '\0' ' '; echo
+TH processus
+FR La ligne de commande exacte qui a lancé le processus. `tr` remplace les séparateurs invisibles par des espaces.
+EN The exact command line that started the process. `tr` swaps the invisible separators for spaces.
+
+CMD kill -l
+TH processus
+FR La liste des signaux qu'on peut envoyer à un processus. `15` (TERM) demande poliment, `9` (KILL) force.
+EN The list of signals you can send a process. `15` (TERM) asks politely, `9` (KILL) forces.
+
+CMD vmstat 1 3
+TH processus
+FR `vmstat` relève mémoire, processeur et disque toutes les secondes, 3 fois.
+EN `vmstat` samples memory, CPU and disk every second, 3 times.
+
+CMD cat /proc/pressure/cpu
+TH processus
+FR La « pression » sur le processeur : le pourcentage de temps où des tâches ont dû attendre.
+EN CPU "pressure": the percentage of time tasks had to wait.
+
+CMD nice -n 10 sleep 1 && echo "fini"
+TH processus
+FR `nice` lance un programme avec une priorité réduite : il laisse passer les autres en premier.
+EN `nice` starts a program with lower priority: it lets the others go first.
+
+CMD timeout 2 sleep 5; echo $?
+TH processus
+FR `timeout` coupe une commande trop longue. Le code `124` signale qu'elle a été interrompue.
+EN `timeout` cuts off a command that runs too long. Code `124` means it was interrupted.
+
+CMD sleep 300 &
+TH processus
+FR `&` lance la commande en arrière-plan : tu récupères la main tout de suite. `jobs` la montre.
+EN `&` runs the command in the background: you get control back straight away. `jobs` shows it.
+INV pkill -f "sleep 300"
+IFR `pkill -f` envoie le signal d'arrêt à tout processus dont la ligne de commande correspond.
+IEN `pkill -f` sends the stop signal to any process whose command line matches.
+
+CMD jobs
+TH processus
+FR `jobs` liste les tâches en arrière-plan de ce terminal. Rien ne s'affiche s'il n'y en a pas.
+EN `jobs` lists this terminal's background tasks. Nothing prints if there are none.
+
+CMD systemd-cgls --no-pager | head -n 25
+TH processus
+FR `systemd` range les processus en groupes (cgroups) : système, utilisateur, services.
+EN `systemd` sorts processes into groups (cgroups): system, user, services.
+
+CMD ls -l /etc/shadow
+TH droits
+FR `/etc/shadow` contient les mots de passe chiffrés : seul `root` peut le lire. Remarque les droits `----------`.
+EN `/etc/shadow` holds the encrypted passwords: only `root` can read it. Note the `----------` permissions.
+
+CMD stat -c '%A %a %U %G %n' /etc/passwd /etc/shadow
+TH droits
+FR `-c` choisit l'affichage : droits en lettres et en chiffres, propriétaire et groupe.
+EN `-c` picks the output: permissions in letters and digits, owner and group.
+
+CMD ls -l /usr/bin/passwd
+TH droits
+FR Le `s` dans les droits (setuid) : `passwd` s'exécute avec les droits de `root` pour modifier ton mot de passe.
+EN The `s` in the permissions (setuid): `passwd` runs with `root`'s rights to change your password.
+
+CMD ls -ld /tmp
+TH droits
+FR Le `t` final (sticky bit) : tout le monde écrit dans `/tmp`, mais chacun ne supprime que ses propres fichiers.
+EN The final `t` (sticky bit): everyone can write in `/tmp`, but each can only delete their own files.
+
+CMD find /usr/bin -perm -4000 2>/dev/null
+TH droits
+FR Tous les programmes setuid du système. Ce sont les premiers que regarde un audit de sécurité.
+EN Every setuid program on the system. They are the first thing a security audit checks.
+
+CMD umask
+TH droits
+FR `umask` indique les droits retirés par défaut aux nouveaux fichiers. `0022` retire l'écriture aux autres.
+EN `umask` shows the permissions removed by default from new files. `0022` removes write access for others.
+
+CMD umask -S
+TH droits
+FR `-S` affiche les droits accordés par défaut en lettres : `u=rwx,g=rx,o=rx`.
+EN `-S` shows the default granted permissions in letters: `u=rwx,g=rx,o=rx`.
+
+CMD id -nG
+TH droits
+FR Tes groupes, par leur nom. Chaque groupe peut ouvrir des droits sur certains fichiers ou appareils.
+EN Your groups, by name. Each group can grant rights on certain files or devices.
+
+CMD getent group wheel
+TH droits
+FR Les membres du groupe `wheel`, qui ont le droit d'utiliser `sudo` sur Fedora.
+EN The members of the `wheel` group, who may use `sudo` on Fedora.
+
+CMD getfacl ~
+TH droits
+FR `getfacl` affiche les droits détaillés (ACL) d'un fichier ou d'un dossier, au-delà de `rwx`.
+EN `getfacl` shows a file's or folder's detailed permissions (ACLs), beyond `rwx`.
+
+CMD sudo -l
+TH droits
+FR `sudo -l` liste ce que tu as le droit de faire en administrateur. Il demande ton mot de passe.
+EN `sudo -l` lists what you may do as administrator. It asks for your password.
+
+CMD touch ~/essai_linux/prive.txt && chmod 600 ~/essai_linux/prive.txt && ls -l ~/essai_linux/prive.txt
+TH droits
+FR `chmod 600` : lecture et écriture pour toi (6), rien pour le groupe (0) ni pour les autres (0).
+EN `chmod 600`: read and write for you (6), nothing for the group (0) or for others (0).
+INV rm ~/essai_linux/prive.txt
+IFR `rm` supprime le fichier.
+IEN `rm` deletes the file.
+
+CMD echo 'echo "Bonjour depuis un script"' > ~/essai_linux/salut.sh && chmod +x ~/essai_linux/salut.sh && ~/essai_linux/salut.sh
+TH droits
+FR `chmod +x` rend le fichier exécutable : tu viens d'écrire et de lancer ton premier script.
+EN `chmod +x` makes the file executable: you have just written and run your first script.
+INV rm ~/essai_linux/salut.sh
+IFR `rm` supprime le script.
+IEN `rm` deletes the script.
+
+CMD touch ~/essai_linux/lecture.txt && chmod 444 ~/essai_linux/lecture.txt && echo test >> ~/essai_linux/lecture.txt
+TH droits
+FR `444` donne la lecture seule à tout le monde : l'écriture échoue, avec « Permission denied ».
+EN `444` gives read-only access to everyone: the write fails with "Permission denied".
+INV rm -f ~/essai_linux/lecture.txt
+IFR `-f` (force) supprime sans demander de confirmation, même si le fichier est en lecture seule.
+IEN `-f` (force) deletes without asking for confirmation, even if the file is read-only.
+
+CMD mkdir ~/essai_linux/coffre && chmod 700 ~/essai_linux/coffre && ls -ld ~/essai_linux/coffre
+TH droits
+FR `700` : un dossier où toi seul peux entrer, lire et écrire.
+EN `700`: a folder only you can enter, read and write.
+INV rmdir ~/essai_linux/coffre
+IFR `rmdir` supprime le dossier vide.
+IEN `rmdir` deletes the empty folder.
+
+CMD touch ~/essai_linux/droits.txt && chmod u=rw,g=r,o= ~/essai_linux/droits.txt && stat -c %A ~/essai_linux/droits.txt
+TH droits
+FR La notation en lettres : `u` (toi), `g` (groupe), `o` (autres). Le résultat est `-rw-r-----`.
+EN The letter notation: `u` (you), `g` (group), `o` (others). The result is `-rw-r-----`.
+INV rm ~/essai_linux/droits.txt
+IFR `rm` supprime le fichier.
+IEN `rm` deletes the file.
+
+CMD mkdir -m 1777 ~/essai_linux/partage && ls -ld ~/essai_linux/partage
+TH droits
+FR `-m` fixe les droits à la création. `1777` reproduit `/tmp` : ouvert à tous, avec le sticky bit.
+EN `-m` sets permissions at creation. `1777` mimics `/tmp`: open to all, with the sticky bit.
+INV rmdir ~/essai_linux/partage
+IFR `rmdir` supprime le dossier.
+IEN `rmdir` deletes the folder.
+
+CMD systemctl status --no-pager | head -n 12
+TH services
+FR `systemctl` pilote `systemd`, le chef d'orchestre des services. `status` donne l'état général de la machine.
+EN `systemctl` drives `systemd`, the conductor of services. `status` gives the machine's overall state.
+
+CMD systemctl --failed
+TH services
+FR Les services qui ont échoué au démarrage. Idéalement : `0 loaded units listed`.
+EN The services that failed at startup. Ideally: `0 loaded units listed`.
+
+CMD systemctl list-units --type=service --state=running --no-pager
+TH services
+FR Tous les services actuellement en marche.
+EN Every service currently running.
+
+CMD systemctl list-unit-files --state=enabled --no-pager | head -n 20
+TH services
+FR Les services activés, c'est-à-dire lancés automatiquement au démarrage.
+EN The enabled services, i.e. those started automatically at boot.
+
+CMD systemctl status NetworkManager --no-pager
+TH services
+FR L'état détaillé d'un service : actif ou non, depuis quand, et ses derniers messages.
+EN A service's detailed state: active or not, since when, and its latest messages.
+
+CMD systemctl is-active NetworkManager
+TH services
+FR Une réponse d'un mot, `active` ou `inactive` : parfait pour un script.
+EN A one-word answer, `active` or `inactive`: perfect for a script.
+
+CMD systemctl is-enabled bluetooth
+TH services
+FR Le service démarre-t-il tout seul au boot ? `enabled` ou `disabled`.
+EN Does the service start on its own at boot? `enabled` or `disabled`.
+
+CMD systemctl cat NetworkManager --no-pager
+TH services
+FR Le fichier qui décrit le service : ce qu'il lance, quand et sous quelles conditions.
+EN The file describing the service: what it runs, when and under what conditions.
+
+CMD systemctl show -p ActiveEnterTimestamp NetworkManager
+TH services
+FR `show -p` lit une seule propriété : l'heure exacte de démarrage du service.
+EN `show -p` reads a single property: the exact time the service started.
+
+CMD systemctl list-timers --no-pager
+TH services
+FR Les minuteurs de `systemd`, l'équivalent moderne de `cron` : tâches planifiées et prochaine exécution.
+EN `systemd`'s timers, the modern equivalent of `cron`: scheduled tasks and their next run.
+
+CMD systemctl --user list-units --type=service --no-pager
+TH services
+FR `--user` liste tes services personnels, ceux de ta session et pas du système.
+EN `--user` lists your personal services, those of your session rather than the system.
+
+CMD systemctl get-default
+TH services
+FR La cible de démarrage : `graphical.target` signifie que le système démarre en mode graphique.
+EN The boot target: `graphical.target` means the system boots into graphical mode.
+
+CMD systemd-analyze blame --no-pager | head -n 10
+TH services
+FR Les 10 services qui ont le plus ralenti ton dernier démarrage.
+EN The 10 services that slowed your last boot the most.
+
+CMD systemd-analyze critical-chain
+TH services
+FR La chaîne critique du démarrage : les étapes qui se sont attendues les unes les autres.
+EN The boot's critical chain: the steps that had to wait for one another.
+
+CMD journalctl -b -p err --no-pager | tail -n 20
+TH journaux
+FR `journalctl` lit les journaux système. `-b` depuis le démarrage, `-p err` seulement les erreurs.
+EN `journalctl` reads the system logs. `-b` since boot, `-p err` only errors.
+
+CMD journalctl --user -n 20 --no-pager
+TH journaux
+FR Les 20 derniers messages de ta session : applications et services personnels.
+EN The last 20 messages from your session: apps and personal services.
+
+CMD journalctl -u NetworkManager -n 15 --no-pager
+TH journaux
+FR `-u` filtre un service précis : l'historique récent de ta connexion réseau.
+EN `-u` filters one service: your network connection's recent history.
+
+CMD journalctl -k -n 15 --no-pager
+TH journaux
+FR `-k` affiche les messages du noyau : détection du matériel, pilotes, erreurs disque…
+EN `-k` shows kernel messages: hardware detection, drivers, disk errors…
+
+CMD journalctl --since "1 hour ago" --no-pager | tail -n 20
+TH journaux
+FR `--since` comprend des expressions comme « il y a une heure ».
+EN `--since` understands phrases like "1 hour ago".
+
+CMD journalctl --list-boots --no-pager | tail -n 5
+TH journaux
+FR Tes derniers démarrages, avec leur date. Utile pour enquêter sur un plantage.
+EN Your latest boots, with their dates. Handy to investigate a crash.
+
+CMD journalctl -b -1 -p warning --no-pager | tail -n 10
+TH journaux
+FR `-b -1` désigne le démarrage précédent : ses derniers avertissements avant l'arrêt.
+EN `-b -1` means the previous boot: its last warnings before shutdown.
+
+CMD journalctl --disk-usage
+TH journaux
+FR La place occupée sur le disque par tous les journaux.
+EN The disk space used by all the logs.
+
+CMD journalctl -f
+TH journaux
+FR `-f` (follow) affiche les nouveaux messages en direct. Branche une clé USB pour voir défiler. Ctrl+C pour arrêter.
+EN `-f` (follow) shows new messages live. Plug in a USB stick to watch them scroll. Ctrl+C to stop.
+
+CMD sudo dmesg | tail -n 20
+TH journaux
+FR `dmesg` affiche le tampon du noyau. `sudo` est nécessaire, ici uniquement pour lire.
+EN `dmesg` shows the kernel buffer. `sudo` is needed, here only to read.
+
+CMD logger "Test depuis le terminal" && journalctl --user -n 1 --no-pager
+TH journaux
+FR `logger` écrit un message dans le journal. On vérifie aussitôt qu'il y est arrivé.
+EN `logger` writes a message to the log. We check right away that it arrived.
+
+CMD rpm -qa | wc -l
+TH paquets
+FR `rpm -qa` liste tous les paquets installés. Fedora en compte souvent plus de 2000.
+EN `rpm -qa` lists every installed package. Fedora often has over 2,000.
+
+CMD rpm -qi bash
+TH paquets
+FR `-qi` donne la fiche d'un paquet : version, taille, licence, description.
+EN `-qi` gives a package's card: version, size, licence, description.
+
+CMD rpm -qf /usr/bin/ls
+TH paquets
+FR `-qf` répond à la question : quel paquet a installé ce fichier ?
+EN `-qf` answers the question: which package installed this file?
+
+CMD rpm -ql bash | head -n 15
+TH paquets
+FR `-ql` liste tous les fichiers installés par un paquet.
+EN `-ql` lists every file a package installed.
+
+CMD rpm -qa --last | head -n 10
+TH paquets
+FR `--last` trie par date d'installation : les 10 derniers paquets installés ou mis à jour.
+EN `--last` sorts by install date: the last 10 packages installed or updated.
+
+CMD rpm -qd bash | head -n 5
+TH paquets
+FR `-qd` liste la documentation fournie avec le paquet.
+EN `-qd` lists the documentation shipped with the package.
+
+CMD rpm -q --whatrequires bash | head
+TH paquets
+FR Les paquets qui ont besoin de `bash` pour fonctionner.
+EN The packages that need `bash` to work.
+
+CMD dnf repolist
+TH paquets
+FR `dnf` est le gestionnaire de paquets de Fedora. `repolist` montre les dépôts où il télécharge.
+EN `dnf` is Fedora's package manager. `repolist` shows the repositories it downloads from.
+
+CMD dnf info htop
+TH paquets
+FR La fiche d'un paquet disponible, même s'il n'est pas installé. Aucune installation n'a lieu.
+EN The card of an available package, even if not installed. Nothing gets installed.
+
+CMD dnf search weather
+TH paquets
+FR `search` cherche un mot dans les noms et descriptions des paquets disponibles.
+EN `search` looks for a word in the names and descriptions of available packages.
+
+CMD dnf provides /usr/bin/convert
+TH paquets
+FR Quel paquet fournit ce fichier ? Pratique quand une commande est introuvable.
+EN Which package provides this file? Handy when a command can't be found.
+
+CMD dnf list --installed | wc -l
+TH paquets
+FR Le nombre de paquets installés, vu par `dnf` cette fois.
+EN The number of installed packages, as seen by `dnf` this time.
+
+CMD dnf check-upgrade
+TH paquets
+FR Liste les mises à jour disponibles, sans rien installer.
+EN Lists the available updates, without installing anything.
+
+CMD dnf history list | head -n 10
+TH paquets
+FR L'historique des installations et mises à jour, numérotées.
+EN The history of installs and updates, numbered.
+
+CMD flatpak list
+TH paquets
+FR Les applications installées en Flatpak, une autre façon d'installer des logiciels, isolée du système.
+EN Apps installed as Flatpak, another way to install software, isolated from the system.
+
+CMD flatpak remotes
+TH paquets
+FR Les sources Flatpak configurées, comme Flathub.
+EN The configured Flatpak sources, such as Flathub.
+
+CMD ss -tuln
+TH reseau
+FR `ss` liste les connexions. `-tuln` : ports TCP et UDP en écoute, en chiffres. Ce sont les portes ouvertes de ta machine.
+EN `ss` lists connections. `-tuln`: TCP and UDP ports listening, as numbers. They are your machine's open doors.
+
+CMD ss -tn state established
+TH reseau
+FR Les connexions TCP actuellement établies : vers quels serveurs ta machine parle-t-elle ?
+EN The TCP connections currently established: which servers is your machine talking to?
+
+CMD ss -s
+TH reseau
+FR Un résumé chiffré de toutes les connexions réseau.
+EN A numeric summary of every network connection.
+
+CMD ip -s link
+TH reseau
+FR `-s` ajoute les statistiques de chaque interface : octets envoyés et reçus, erreurs.
+EN `-s` adds each interface's statistics: bytes sent and received, errors.
+
+CMD ip neigh
+TH reseau
+FR Les voisins réseau connus : les appareils de ton réseau local avec leur adresse MAC.
+EN The known network neighbours: devices on your local network with their MAC address.
+
+CMD cat /proc/net/dev
+TH reseau
+FR Les compteurs bruts du noyau pour chaque interface réseau.
+EN The kernel's raw counters for each network interface.
+
+CMD resolvectl status
+TH reseau
+FR Les serveurs DNS utilisés par chaque interface, gérés par `systemd-resolved`.
+EN The DNS servers used by each interface, managed by `systemd-resolved`.
+
+CMD resolvectl query fedoraproject.org
+TH reseau
+FR Résolution DNS détaillée : adresses obtenues et temps de réponse.
+EN Detailed DNS lookup: addresses obtained and response time.
+
+CMD nmcli general status
+TH reseau
+FR L'état global du réseau : connecté, Wi-Fi activé, accès complet à Internet…
+EN The network's overall state: connected, Wi-Fi on, full Internet access…
+
+CMD nmcli -f IN-USE,SSID,SIGNAL,SECURITY device wifi
+TH reseau
+FR `-f` choisit les colonnes : l'étoile `*` marque le réseau Wi-Fi utilisé.
+EN `-f` picks the columns: the `*` marks the Wi-Fi network in use.
+
+CMD nmcli radio
+TH reseau
+FR L'état des radios : Wi-Fi et réseau mobile, activés ou non.
+EN The radios' state: Wi-Fi and mobile broadband, on or off.
+
+CMD tracepath -n fedoraproject.org
+TH reseau
+FR `tracepath` montre le chemin des paquets jusqu'au serveur, routeur par routeur.
+EN `tracepath` shows the path packets take to the server, router by router.
+
+CMD curl -s -o /dev/null -w "%{http_code} en %{time_total} s\n" https://fedoraproject.org
+TH reseau
+FR `-w` affiche des mesures : le code de réponse HTTP et le temps de chargement.
+EN `-w` prints measurements: the HTTP response code and the load time.
+
+CMD curl -sI https://github.com | grep -i server
+TH reseau
+FR Quel logiciel de serveur web répond ? On ne garde que l'en-tête `server`.
+EN Which web server software answers? We keep only the `server` header.
+
+CMD sudo firewall-cmd --list-all
+TH reseau
+FR La configuration du pare-feu : zone active, services et ports autorisés. Lecture seule.
+EN The firewall configuration: active zone, allowed services and ports. Read-only.
+
+CMD firewall-cmd --state
+TH reseau
+FR Le pare-feu est-il actif ? Réponse : `running`.
+EN Is the firewall on? Answer: `running`.
+
+CMD ssh -V
+TH reseau
+FR La version d'OpenSSH installée, l'outil de connexion à distance sécurisée.
+EN The installed OpenSSH version, the secure remote login tool.
+
+CMD ssh-keygen -t ed25519 -f ~/essai_linux/cle_test -N "" -C "test"
+TH securite
+FR Crée une paire de clés SSH : `cle_test` (privée, à garder secrète) et `cle_test.pub` (publique, à partager).
+EN Creates an SSH key pair: `cle_test` (private, keep it secret) and `cle_test.pub` (public, to share).
+INV rm ~/essai_linux/cle_test ~/essai_linux/cle_test.pub
+IFR `rm` supprime les deux clés de test.
+IEN `rm` deletes both test keys.
+
+CMD ls -la ~/.ssh
+TH securite
+FR Ton dossier SSH : clés, hôtes connus. Les droits doivent rester stricts, en `700`.
+EN Your SSH folder: keys, known hosts. Its permissions must stay strict, at `700`.
+
+CMD findmnt
+TH disques
+FR `findmnt` dessine l'arbre de tout ce qui est monté : disques, systèmes virtuels, partitions.
+EN `findmnt` draws a tree of everything mounted: disks, virtual systems, partitions.
+
+CMD findmnt -t btrfs
+TH disques
+FR `-t` filtre par type : seulement les montages `btrfs`, souvent plusieurs sous-volumes du même disque.
+EN `-t` filters by type: only `btrfs` mounts, often several subvolumes of one disk.
+
+CMD findmnt /
+TH disques
+FR Ce qui est monté sur la racine : partition, type et options.
+EN What is mounted on the root: partition, type and options.
+
+CMD mount | grep -c ' type '
+TH disques
+FR Le nombre total de points de montage, réels et virtuels.
+EN The total number of mount points, real and virtual.
+
+CMD lsblk -o NAME,FSTYPE,SIZE,FSUSE%,MOUNTPOINTS
+TH disques
+FR `FSUSE%` ajoute le taux de remplissage de chaque partition.
+EN `FSUSE%` adds how full each partition is.
+
+CMD df -i /
+TH disques
+FR `-i` compte les inodes, les fiches qui décrivent chaque fichier. On peut en manquer avant de manquer de place.
+EN `-i` counts inodes, the records describing each file. You can run out of them before running out of space.
+
+CMD cat /etc/fstab
+TH disques
+FR `/etc/fstab` liste les partitions montées automatiquement au démarrage.
+EN `/etc/fstab` lists the partitions mounted automatically at boot.
+
+CMD sudo blkid
+TH disques
+FR `blkid` identifie chaque partition : UUID, type et étiquette. `sudo` pour tout voir, en lecture seule.
+EN `blkid` identifies each partition: UUID, type and label. `sudo` to see everything, read-only.
+
+CMD sudo btrfs subvolume list /
+TH disques
+FR Les sous-volumes `btrfs` : Fedora sépare `root` et `home` sur le même disque.
+EN The `btrfs` subvolumes: Fedora keeps `root` and `home` apart on the same disk.
+
+CMD zramctl
+TH disques
+FR Le détail du swap compressé en mémoire : taille, algorithme et taux de compression.
+EN The details of compressed in-memory swap: size, algorithm and compression ratio.
+
+CMD du -sh /usr/* 2>/dev/null | sort -h | tail -n 5
+TH disques
+FR Les 5 sous-dossiers les plus lourds de `/usr`, là où vivent les programmes.
+EN The 5 heaviest subfolders of `/usr`, where programs live.
+
+CMD stat -f /
+TH disques
+FR `-f` décrit le système de fichiers lui-même : type, taille des blocs, blocs libres.
+EN `-f` describes the file system itself: type, block size, free blocks.
+
+CMD lsmod | head -n 15
+TH noyau
+FR `lsmod` liste les modules chargés dans le noyau : surtout des pilotes de matériel.
+EN `lsmod` lists the modules loaded into the kernel: mostly hardware drivers.
+
+CMD lsmod | wc -l
+TH noyau
+FR Combien de modules sont chargés en ce moment ?
+EN How many modules are loaded right now?
+
+CMD modinfo btrfs | head -n 8
+TH noyau
+FR `modinfo` décrit un module : son fichier, sa licence, sa description.
+EN `modinfo` describes a module: its file, licence and description.
+
+CMD uname -v
+TH noyau
+FR `-v` donne la date de compilation du noyau.
+EN `-v` gives the kernel's build date.
+
+CMD cat /proc/cmdline
+TH noyau
+FR Les options transmises au noyau par le chargeur de démarrage.
+EN The options passed to the kernel by the boot loader.
+
+CMD sysctl vm.swappiness
+TH noyau
+FR `sysctl` lit les réglages du noyau. `swappiness` dit à quel point il utilise le swap.
+EN `sysctl` reads kernel settings. `swappiness` says how eagerly it uses swap.
+
+CMD sysctl -a 2>/dev/null | wc -l
+TH noyau
+FR Le nombre de réglages du noyau modifiables à chaud.
+EN The number of kernel settings that can be changed on the fly.
+
+CMD cat /proc/sys/kernel/pid_max
+TH noyau
+FR Le numéro de processus le plus grand possible avant de recommencer à zéro.
+EN The highest possible process number before it wraps around.
+
+CMD ls /sys/class
+TH noyau
+FR `/sys/class` range le matériel par catégorie : réseau, sons, écrans, batteries…
+EN `/sys/class` sorts hardware by category: network, sound, displays, batteries…
+
+CMD cat /sys/class/dmi/id/product_name
+TH materiel
+FR Le nom du modèle de ton PC, tel qu'enregistré par le fabricant.
+EN Your PC's model name, as recorded by the manufacturer.
+
+CMD cat /sys/class/dmi/id/sys_vendor /sys/class/dmi/id/bios_version
+TH materiel
+FR Le fabricant et la version du BIOS. Utile avant une mise à jour du micrologiciel.
+EN The manufacturer and BIOS version. Useful before a firmware update.
+
+CMD lscpu --extended
+TH materiel
+FR Une ligne par cœur : fréquences, cache et cœur physique associé.
+EN One line per core: frequencies, cache and matching physical core.
+
+CMD nvidia-smi
+TH materiel
+FR L'état d'une carte NVIDIA : température, mémoire, consommation. Nécessite le pilote propriétaire.
+EN An NVIDIA card's state: temperature, memory, power draw. Needs the proprietary driver.
+
+CMD upower -e
+TH materiel
+FR `upower` gère l'alimentation. `-e` liste les appareils suivis : batterie, secteur…
+EN `upower` manages power. `-e` lists the tracked devices: battery, mains…
+
+CMD upower -i $(upower -e | grep BAT)
+TH materiel
+FR La fiche complète de la batterie : capacité d'origine, usure et temps restant.
+EN The battery's full card: original capacity, wear and time remaining.
+
+CMD cat /proc/interrupts | head -n 10
+TH materiel
+FR Les interruptions : combien de fois chaque matériel a sollicité chaque cœur.
+EN Interrupts: how many times each device has called on each core.
+
+CMD hostnamectl --static
+TH systeme
+FR Le nom de la machine tel qu'il est configuré de façon permanente.
+EN The machine name as permanently configured.
+
+CMD localectl
+TH systeme
+FR Les réglages de langue et de disposition du clavier du système.
+EN The system's language and keyboard layout settings.
+
+CMD timedatectl list-timezones | grep Europe | head
+TH systeme
+FR Les fuseaux horaires disponibles. On filtre ceux d'Europe.
+EN The available time zones. We filter the European ones.
+
+CMD notify-send "Linux du jour" "Bonjour depuis le terminal"
+TH bureau
+FR `notify-send` affiche une notification KDE, comme celles de tes applications.
+EN `notify-send` shows a KDE notification, like your apps' ones.
+
+CMD sleep 5 && notify-send "Pause" "5 secondes écoulées"
+TH bureau
+FR Un mini-minuteur : la notification apparaît 5 secondes plus tard.
+EN A mini timer: the notification appears 5 seconds later.
+
+CMD kreadconfig6 --file kdeglobals --group KDE --key LookAndFeelPackage
+TH bureau
+FR `kreadconfig6` lit un réglage KDE sans ouvrir les paramètres : ici, le thème global de ton bureau.
+EN `kreadconfig6` reads a KDE setting without opening System Settings: here, your desktop's global theme.
+
+CMD grep -c '\[Desktop' ~/.config/kwinrc
+TH bureau
+FR Les réglages de KWin, le gestionnaire de fenêtres, sont rangés en sections entre crochets.
+EN KWin's settings, the window manager's, are stored in bracketed sections.
+
+CMD busctl --user list | head -n 15
+TH bureau
+FR Les services connectés au bus de ta session, le canal de discussion entre applications.
+EN The services connected to your session bus, the channel apps use to talk.
+
+CMD xdg-mime query default text/plain
+TH bureau
+FR Quelle application ouvre les fichiers texte par défaut ? La réponse est un fichier `.desktop`.
+EN Which app opens text files by default? The answer is a `.desktop` file.
+
+CMD xdg-settings get default-web-browser
+TH bureau
+FR Ton navigateur par défaut, tel que le bureau le connaît.
+EN Your default web browser, as the desktop knows it.
+
+CMD ls /usr/share/applications | wc -l
+TH bureau
+FR Chaque application du menu est décrite par un fichier `.desktop` dans ce dossier.
+EN Every app in the menu is described by a `.desktop` file in this folder.
+
+CMD grep -E '^(Name|Exec)=' /usr/share/applications/org.kde.konsole.desktop | head -n 2
+TH bureau
+FR L'intérieur d'un fichier `.desktop` : le nom affiché dans le menu et la commande réellement lancée.
+EN Inside a `.desktop` file: the name shown in the menu and the command actually run.
+
+CMD crontab -l
+TH automatisation
+FR `crontab -l` liste tes tâches planifiées avec `cron`. Souvent vide sur un PC récent.
+EN `crontab -l` lists your tasks scheduled with `cron`. Often empty on a recent PC.
+
+CMD systemd-run --user --on-active=30 notify-send "Rappel" "30 secondes"
+TH automatisation
+FR `systemd-run` planifie une commande unique : la notification arrive dans 30 secondes.
+EN `systemd-run` schedules a one-off command: the notification arrives in 30 seconds.
+
+CMD bonjour() { echo "Salut $1"; }; bonjour Tux
+TH scripts
+FR On définit une fonction shell. `$1` est le premier argument qu'on lui donne.
+EN We define a shell function. `$1` is the first argument it receives.
+
+CMD carre() { echo $(( $1 * $1 )); }; carre 12
+TH scripts
+FR Une fonction qui calcule le carré de son argument.
+EN A function that squares its argument.
+
+CMD fruits=(pomme kiwi poire); echo ${fruits[1]}
+TH scripts
+FR Un tableau shell. Comme en Python, on compte à partir de 0 : `[1]` donne `kiwi`.
+EN A shell array. As in Python, counting starts at 0: `[1]` gives `kiwi`.
+
+CMD fruits=(pomme kiwi poire); echo ${#fruits[@]}
+TH scripts
+FR `${#tableau[@]}` donne le nombre d'éléments du tableau.
+EN `${#array[@]}` gives the number of items in the array.
+
+CMD fruits=(pomme kiwi poire); for f in "${fruits[@]}"; do echo "- $f"; done
+TH scripts
+FR On parcourt un tableau avec `for`. Les guillemets protègent les éléments qui contiennent des espaces.
+EN We walk an array with `for`. The quotes protect items that contain spaces.
+
+CMD declare -A age=([Tux]=34 [Beastie]=31); echo ${age[Tux]}
+TH scripts
+FR `declare -A` crée un tableau associatif, le dictionnaire du shell.
+EN `declare -A` creates an associative array, the shell's dictionary.
+
+CMD x=fichier.txt; case $x in *.txt) echo texte;; *.jpg) echo image;; *) echo autre;; esac
+TH scripts
+FR `case` compare une valeur à plusieurs motifs et exécute la branche qui correspond.
+EN `case` matches a value against several patterns and runs the branch that fits.
+
+CMD IFS=: read -r nom x uid reste <<< "$(getent passwd $USER)"; echo "$nom a l'UID $uid"
+TH scripts
+FR `IFS=:` change le séparateur de `read`. `<<<` envoie un texte en entrée.
+EN `IFS=:` changes `read`'s separator. `<<<` feeds text as input.
+
+CMD wc -w <<< "un deux trois quatre"
+TH scripts
+FR `<<<` (here-string) envoie directement un texte à une commande, sans `echo` ni pipe.
+EN `<<<` (here-string) feeds text straight to a command, with no `echo` or pipe.
+
+CMD diff <(seq 5) <(seq 6)
+TH scripts
+FR `<( )` transforme la sortie d'une commande en faux fichier. `diff` compare les deux.
+EN `<( )` turns a command's output into a pseudo-file. `diff` compares the two.
+
+CMD paste <(seq 3) <(printf "a\nb\nc\n")
+TH scripts
+FR `paste` colle deux sorties côte à côte, ligne par ligne.
+EN `paste` puts two outputs side by side, line by line.
+
+CMD comm -12 <(ls /bin | sort) <(ls /usr/sbin | sort) | head
+TH scripts
+FR `comm -12` affiche seulement les lignes communes aux deux listes triées.
+EN `comm -12` shows only the lines common to both sorted lists.
+
+CMD seq 3 | while read n; do echo "ligne $n"; done
+TH scripts
+FR `while read` traite une entrée ligne par ligne : la base de beaucoup de scripts.
+EN `while read` handles input line by line: the basis of many scripts.
+
+CMD ( cd /tmp && pwd ); pwd
+TH scripts
+FR Les parenthèses lancent un sous-shell : le `cd` fait à l'intérieur n'a pas d'effet à l'extérieur.
+EN Parentheses start a subshell: the `cd` inside has no effect outside.
+
+CMD { date; uptime; } > /dev/null && echo "bloc exécuté"
+TH scripts
+FR Les accolades groupent des commandes pour rediriger leur sortie en une fois.
+EN Braces group commands to redirect their output in one go.
+
+CMD bash -c 'set -x; a=2; echo $((a * 3))'
+TH scripts
+FR `set -x` affiche chaque commande avant de l'exécuter, préfixée par `+` : l'outil de débogage du shell.
+EN `set -x` prints each command before running it, prefixed with `+`: the shell's debugging tool.
+
+CMD bash -c 'set -e; false; echo "jamais affiché"'; echo "code : $?"
+TH scripts
+FR `set -e` arrête le script à la première erreur. Une sécurité à mettre en tête de tes scripts.
+EN `set -e` stops the script at the first error. A safety net for the top of your scripts.
+
+CMD echo $(( 2#1010 )) $(( 16#ff )) $(( 8#17 ))
+TH calcul
+FR Le shell lit les nombres en binaire, hexadécimal ou octal avec la notation `base#nombre`.
+EN The shell reads binary, hex or octal numbers with the `base#number` notation.
+
+CMD printf "%x %o %d\n" 255 8 0x1F
+TH calcul
+FR `printf` convertit dans l'autre sens : hexadécimal, octal et décimal.
+EN `printf` converts the other way: hex, octal and decimal.
+
+CMD date -d "+3 hours 20 minutes" +%H:%M
+TH dates
+FR `date` sait faire de l'arithmétique : quelle heure sera-t-il dans 3 h 20 ?
+EN `date` can do arithmetic: what time will it be in 3 h 20?
+
+CMD awk -F: '{print $1}' /etc/passwd | head -n 5
+TH texte
+FR `awk` traite du texte en colonnes. `-F:` fixe le séparateur, `$1` est la première colonne.
+EN `awk` processes text in columns. `-F:` sets the separator, `$1` is the first column.
+
+CMD awk '{print NR": "$0}' /etc/shells
+TH texte
+FR `NR` est le numéro de la ligne, `$0` la ligne entière : une numérotation maison.
+EN `NR` is the line number, `$0` the whole line: home-made numbering.
+
+CMD awk -F: '$3 >= 1000 {print $1}' /etc/passwd
+TH texte
+FR `awk` peut filtrer : seuls les comptes avec un UID d'au moins 1000, les vrais utilisateurs.
+EN `awk` can filter: only accounts with a UID of 1000 or more, the real users.
+
+CMD sed 's/bash/BASH/' /etc/shells
+TH texte
+FR `sed` modifie un texte au passage. `s/ancien/nouveau/` remplace. Le fichier d'origine n'est pas touché.
+EN `sed` edits text on the fly. `s/old/new/` replaces. The original file is untouched.
+
+CMD sed -n '2,4p' /etc/passwd
+TH texte
+FR `-n` et `p` n'affichent que certaines lignes : de la 2e à la 4e.
+EN `-n` and `p` print only certain lines: from the 2nd to the 4th.
+
+CMD sed '/^#/d' /etc/fstab
+TH texte
+FR `d` supprime les lignes qui correspondent : ici, les commentaires qui commencent par `#`.
+EN `d` deletes the matching lines: here, the comments starting with `#`.
+
+CMD find /etc -maxdepth 1 -name "*.conf" -exec wc -l {} +
+TH recherche
+FR `-exec` lance une commande sur chaque résultat. `{}` est remplacé par les fichiers trouvés.
+EN `-exec` runs a command on each result. `{}` is replaced by the files found.
+
+CMD find /usr/share/doc -maxdepth 1 -type d | xargs -n 1 basename | head
+TH recherche
+FR `xargs -n 1` lance `basename` une fois par ligne reçue.
+EN `xargs -n 1` runs `basename` once per received line.
+
+CMD seq 3 | xargs -I{} echo "fichier_{}.txt"
+TH recherche
+FR `-I{}` place chaque ligne reçue à l'endroit voulu dans la commande.
+EN `-I{}` puts each received line wherever you want in the command.
+
+CMD ls /etc | xargs -n 5 | head -n 3
+TH recherche
+FR `xargs -n 5` regroupe les noms par paquets de cinq sur chaque ligne.
+EN `xargs -n 5` groups the names five to a line.
+
+CMD touch ~/essai_linux/{un,deux,trois}.tmp && find ~/essai_linux -name "*.tmp"
+TH recherche
+FR On crée trois fichiers `.tmp`, puis `find` les retrouve.
+EN We create three `.tmp` files, then `find` finds them again.
+INV find ~/essai_linux -name "*.tmp" -delete
+IFR `-delete` supprime chaque fichier trouvé. Lance toujours `find` sans `-delete` d'abord pour vérifier.
+IEN `-delete` deletes each file found. Always run `find` without `-delete` first to check.
+
+CMD mkfifo ~/essai_linux/tuyau && ls -l ~/essai_linux/tuyau
+TH scripts
+FR `mkfifo` crée un tube nommé : un fichier qui sert de pipe entre deux programmes. Le `p` en tête des droits le signale.
+EN `mkfifo` creates a named pipe: a file acting as a pipe between two programs. The leading `p` marks it.
+INV rm ~/essai_linux/tuyau
+IFR `rm` supprime le tube.
+IEN `rm` deletes the pipe.
+
+CMD mktemp -d ~/essai_linux/tmp.XXXX
+TH scripts
+FR `mktemp` crée un dossier au nom unique : les `X` sont remplacés par des caractères aléatoires.
+EN `mktemp` creates a uniquely named folder: the `X`s are replaced with random characters.
+INV rm -r ~/essai_linux/tmp.*
+IFR Le joker supprime le dossier, quel que soit le nom tiré au hasard.
+IEN The wildcard deletes the folder, whatever random name it got.
+
+CMD head -c 1M /dev/urandom > ~/essai_linux/alea.bin && sha256sum ~/essai_linux/alea.bin
+TH securite
+FR On crée un fichier d'1 Mo de hasard pur et on calcule son empreinte unique.
+EN We create a 1 MB file of pure randomness and compute its unique fingerprint.
+INV rm ~/essai_linux/alea.bin
+IFR `rm` supprime le fichier.
+IEN `rm` deletes the file.
+
+CMD tar -cJf ~/essai_linux/etc_conf.tar.xz -C /etc os-release hostname shells && ls -lh ~/essai_linux/etc_conf.tar.xz
+TH archives
+FR `-J` compresse avec `xz`, plus lent mais plus efficace que `gzip`.
+EN `-J` compresses with `xz`, slower but more effective than `gzip`.
+INV rm ~/essai_linux/etc_conf.tar.xz
+IFR `rm` supprime l'archive.
+IEN `rm` deletes the archive.
+
+CMD seq 1000 > ~/essai_linux/mille.txt && split -l 250 ~/essai_linux/mille.txt ~/essai_linux/morceau_ && ls ~/essai_linux
+TH archives
+FR `split -l 250` découpe un fichier en morceaux de 250 lignes chacun.
+EN `split -l 250` cuts a file into chunks of 250 lines each.
+INV rm ~/essai_linux/mille.txt ~/essai_linux/morceau_*
+IFR On supprime le fichier d'origine et tous ses morceaux.
+IEN We delete the original file and all its chunks.
+
+CMD cp /etc/services ~/essai_linux/ && zstd -q --rm ~/essai_linux/services && ls -lh ~/essai_linux
+TH archives
+FR `zstd` est un compresseur moderne et très rapide, utilisé par Fedora pour ses paquets.
+EN `zstd` is a modern, very fast compressor, used by Fedora for its packages.
+INV rm ~/essai_linux/services.zst
+IFR `rm` supprime le fichier compressé.
+IEN `rm` deletes the compressed file.
